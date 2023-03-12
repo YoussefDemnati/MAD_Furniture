@@ -5,6 +5,8 @@ body{
   font-weight: 500;
 }
 
+/* --------------------- HEADER --------------------- */
+
 ul { padding:0; } 
 
 nav {
@@ -72,4 +74,109 @@ nav {
 .btn_cart{
   background:url('../img/icon_cart.png') no-repeat left center;
   background-size: contain;
+}
+
+
+
+/* --------------------- FOOTER --------------------- */
+
+.logo_footer { grid-area: logo; }
+.contacts { grid-area: contacts; }
+.about_us { grid-area: about; }
+.account { grid-area: account; }
+.support { grid-area: support; }
+.footer_container{
+    position: fixed;
+    bottom: 0;
+    box-sizing: border-box;
+    width: calc(100% - 15px);
+}
+.footer {
+    background-color: #f5f5f5;
+    display: grid;
+    grid-template-areas:
+        'logo logo account support'
+        'contacts about account support';
+    grid-gap: 10px;
+    padding: 50px;
+}
+.footer img{
+    width: 400px;
+}
+.footer li{
+    list-style: none;
+    padding-bottom: 15px;
+}
+.footer li a{
+    text-decoration: none;
+    color: #4f4f4f;
+}
+.footer li a:hover{
+    color: #4f4f4f;
+    font-weight: bold;
+}
+.footer_section{
+    display: inline-block;
+    margin-left: 30px;
+}
+.footer textarea{
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none; /* makes it not resizable */
+    color: #333; /* custom text color */
+    font-size: 15px;
+}
+
+.footer  textarea:focus {
+    border: 2px solid #4f4f4f; /* adds a border when focused */
+}
+.footer form button{
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    background-color: #C19E54;
+    border: 0;
+    color: #ffffff;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+.footer form button:hover{
+    background-color: #b88c2f;
+}
+.go_up img{
+    display: block;
+    width: 50px;
+    float: right;
+    margin-top: 10;
+    margin-right: 10;
+}
+h2{
+    color: #6D6D6D;
+}
+.copyright span{
+   margin-left: 100px;
+}
+#paypal{
+    width: 150px;
+    margin-top: 15px;
+    margin-left: 100px;
+}
+.copyright span, a, img{
+    display: block;
+}
+#paypal { grid-area: paypal; }
+#copyright { grid-area: copyright; }
+.go_up { grid-area: go_up; }
+.copyright{
+    background-color: #ffffff00;
+    height: 70px;
+    display: grid;
+    grid-template-areas:
+        'copyright copyight paypal go_up';
+    grid-gap: 10px;
+}
+.copyright span{
+    color: #4F4F4F;
+    margin-top: 25px;
 }

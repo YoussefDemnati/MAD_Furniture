@@ -4,11 +4,12 @@
         <link rel="stylesheet" href="../assets/css/style.css">
       </head>
 <body>
+    <div class="footer_container">
     <div class="footer">
-        <div class="logo_footer">
+          <div class="footer_section logo_footer">
             <img src="../assets/img/logo.png" alt="Logo">
           </div>
-          <div class="footer_section">
+          <div class="footer_section contacts">
             <h2>Contacts</h2>
             <ul>
                 <li>Address: ----------------------</li>
@@ -16,7 +17,7 @@
                 <li>Email: ----------------------</li>
             </ul>
         </div>
-        <div class="footer_section">
+        <div class="footer_section about_us">
             <h2>About Us</h2>
             <ul>
                 <li>Miner's Foreman: Youssef Demnati</li>
@@ -24,7 +25,7 @@
                 <li>Miner N°2: Azzalin Gabriele</li>
             </ul>
         </div>
-        <div class="footer_section">
+        <div class="footer_section account">
             <h2>Account</h2>
             <ul>
                 <li><a href="#">My Account</a></li>
@@ -35,7 +36,7 @@
                 <li><a href="#">Delete Account</a></li>
             </ul>
         </div>
-        <div class="footer_section">
+        <div class="footer_section support">
             <h2>Support Center</h2>
             <p>Ask us Something, Usually Answers in 24H.</p>
             <form action="#">
@@ -44,67 +45,17 @@
                 <button type="submit">Send</button>
             </form>
         </div>
+
     </div>
+    <div class="copyright">
+        <span id="copyright">Copiright © 2023 MAD Miners Co. All Right Reserved</span>
+        <img src="../assets/img/paypal.png" alt="paypal" id="paypal">
+        <a href="#" class="go_up">
+            <img src="../assets/img/go_up.png" alt="Torna Su">
+        </a>                        
+    </div>
+</div>
 
-    
+
 </body>
-<style>
-    body { 
-        background-color: antiquewhite;
-    }
-    .footer {
-        height: 450px;
-        background-color: #f5f5f5;
-        position: relative;
-        float: bottom;
-        padding: 50px
-    }
-
-    .logo_footer{
-        width: 50%;
-    }
-    .footer li{
-        list-style: none;
-        padding-bottom: 15px;
-    }
-    .footer li a{
-        text-decoration: none;
-        color: #4f4f4f;
-    }
-    .footer li a:hover{
-        color: #4f4f4f;
-        font-weight: bold;
-    }
-    .footer_section{
-        display: inline-block;
-        margin-left: 30px;
-        margin-right: 100px;
-        max-width: 350px;
-    }
-    .footer textarea{
-        border: 2px solid #ccc;
-        border-radius: 4px;
-        background-color: #f8f8f8;
-        resize: none; /* makes it not resizable */
-        color: #333; /* custom text color */
-        font-size: 15px;
-    }
-    
-    .footer  textarea:focus {
-        border: 2px solid #4f4f4f; /* adds a border when focused */
-    }
-    .footer form button{
-        width: 100px;
-        height: 30px;
-        font-size: 20px;
-        background-color: #C19E54;
-        border: 0;
-        color: #ffffff;
-        border-radius: 5px;
-        margin-top: 10px;
-    }
-    .footer form button:hover{
-        background-color: #b88c2f;
-    }
-    </style>
 </html>
