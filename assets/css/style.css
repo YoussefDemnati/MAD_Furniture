@@ -1,5 +1,8 @@
 body{
-  padding: 10px 30px;
+  
+  font-family: 'inter', sans-serif;
+  font-size: 20;
+  font-weight: 500;
 }
 
 ul { padding:0; } 
@@ -11,7 +14,7 @@ nav {
   background-color: #c24c4c;
   position: relative;
   z-index: 999;
-  background-color: rgba(250, 235, 215, 0);
+  background-color: rgba(156, 97, 20, 0);
   width: 100%;
 }
 
@@ -40,9 +43,6 @@ nav {
   border-right: 1px solid #C19E54;
   text-decoration: none;
   color: inherit;
-  font-family: 'inter', sans-serif;
-  font-size: 20;
-  font-weight: 500;
 }
 
 .links li:last-child a {
@@ -62,14 +62,14 @@ nav {
   padding: 0;
 }
 .btn_search{
-  background:url('../assets/img/icon_search.png') no-repeat left center;
+  background:url('../img/icon_search.png') no-repeat left center;
   background-size: contain;
 }
 .btn_user{
-  background:url('../assets/img/icon_user.png') no-repeat left center;
+  background:url('../img/icon_user.png') no-repeat left center;
   background-size: contain;
 }
 .btn_cart{
-  background:url('../assets/img/icon_cart.png') no-repeat left center;
+  background:url('../img/icon_cart.png') no-repeat left center;
   background-size: contain;
 }
