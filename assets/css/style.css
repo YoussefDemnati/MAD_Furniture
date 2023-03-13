@@ -1,8 +1,9 @@
 body{
-  
+  background-color: #ffffff;
   font-family: 'inter', sans-serif;
   font-size: 20;
   font-weight: 500;
+  color: #4f4f4f;
 }
 
 /* --------------------- HEADER --------------------- */
@@ -14,10 +15,13 @@ nav {
   justify-content: space-between;
   align-items: center;
   background-color: #c24c4c;
-  position: relative;
+  position: fixed;
+  top: 0;
   z-index: 999;
-  background-color: rgba(156, 97, 20, 0);
-  width: 100%;
+  background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
+  width: calc(100% - 15px);
+  padding: 0px 20px;
 }
 
 .logo img {
@@ -51,6 +55,10 @@ nav {
   border-right: none;
 }
 
+.links li a:hover {
+  font-weight: bold;
+}
+
 .nav_buttons {
   margin-left: auto;
 }
@@ -75,7 +83,10 @@ nav {
   background:url('../img/icon_cart.png') no-repeat left center;
   background-size: contain;
 }
-
+.btn_search:hover, .btn_user:hover, .btn_cart:hover{
+  padding: 3px;
+  cursor: pointer;
+}
 
 
 /* --------------------- FOOTER --------------------- */
@@ -85,12 +96,14 @@ nav {
 .about_us { grid-area: about; }
 .account { grid-area: account; }
 .support { grid-area: support; }
+
 .footer_container{
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    /* bottom: 0; */
     box-sizing: border-box;
     width: calc(100% - 15px);
 }
+
 .footer {
     background-color: #f5f5f5;
     display: grid;
@@ -180,3 +193,67 @@ h2{
     color: #4F4F4F;
     margin-top: 25px;
 }
+
+
+
+/* --------------------- CONTENT --------------------- */
+.content{
+  background: #b88d2f00;
+  padding: 100px 20px;
+}
+
+/*###### BIG MAMA #######*/
+
+.big_mama, .home_volantino, .home_trending, .home_categories{
+  background-color: #c24c4c;
+  margin: 20px;
+  height: 500px;
+}
+
+.big_mama{
+  background-color: #F5F5F5;
+  padding-left: 150px;
+  padding-right: 150px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 550px;
+
+}
+
+.big_mama span{
+  display: block;
+  padding-top: 15px;
+}
+
+.big_mama button{
+    display: block;
+    margin-top: 30px;
+    padding: 15px;
+    font-size: 17pt;
+    border-color:  #4F4F4F;
+    border-width: 5px;
+    border-style: solid;
+    color: #4F4F4F;
+}
+.big_mama button:hover{
+  cursor: pointer;
+  font-size: 18pt;
+  border-color:  #7a7a7a;
+}
+
+#big_mama_sub{
+  font-size: 32pt;
+}
+#big_mama_title{
+  font-size: 48pt;
+  font-weight: bold;
+}
+#big_mama_desc{
+  font-size: 24pt;
+  max-width: 500px;
+}
+
+/*###### VOLANTINO #######*/
+
