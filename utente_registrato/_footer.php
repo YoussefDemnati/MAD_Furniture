@@ -1,4 +1,4 @@
-</div>
+    </div>
     
     <div class="footer_container">
         <div class="footer">
@@ -28,7 +28,7 @@
                 <li><a href="#">Cart</a></li>
                 <li><a href="#">Wishlist</a></li>
                 <li><a href="#">My Orders</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="#"">Logout</a></li>
                 <li><a href="#">Delete Account</a></li>
             </ul>
         </div>
