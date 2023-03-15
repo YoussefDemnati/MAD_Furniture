@@ -1,0 +1,110 @@
+.profile {
+    height: 100vh;
+}
+
+.cart {
+    grid-area: cart;
+}
+
+.wishlist {
+    grid-area: wishlist;
+}
+
+.orders {
+    grid-area: orders;
+}
+
+.history {
+    grid-area: history;
+}
+
+.logout {
+    grid-area: logout;
+}
+
+.delAcc {
+    grid-area: delAcc;
+}
+
+.profile-options-container {
+    display: grid;
+    grid-template-areas: 
+        "cart wishlist orders"
+        "history logout delAcc";
+    gap: 10px;
+}
+
+.profile-options-container > div {
+    text-align: center;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.profile-options-container > div > a {
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+    color: #4f4f4f;
+    margin: 10px 10px;
+}
+
+.profile-image {
+    grid-area: profile-image;
+}
+
+.profile-name {
+    grid-area: profile-name;
+}
+
+.profile-email {
+    grid-area: profile-email;
+}
+
+.address {
+    grid-area: address;
+}
+
+.province {
+    grid-area: province;
+}
+
+.profile-name > input, .profile-email > input {
+    border: 0px;
+    color: #4f4f4f;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+}
+
+.profile-name > input:focus, .profile-email > input:focus {
+    border: 0px;
+    outline: none;
+    color: #4f4f4f;
+    background-color: white;
+    font-weight: bold;
+    font-family: 'Inter', sans-serif;
+}
+
+.address > input {
+    border: 0px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.province > select {
+    border: 0px;
+    border-radius: 8px;
+}
+
+.profile-desc-container {
+    display: grid;
+    grid-template-areas: 
+        "profile-image profile-name profile-name profile-name"
+        "profile-image profile-email profile-email profile-email"
+        "address address province province";
+    gap: 10px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    height: 300px;
+    margin-bottom: 10px;
+}
