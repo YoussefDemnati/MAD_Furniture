@@ -267,6 +267,7 @@ nav {
 }
 .footer form button:hover{
     background-color: #b88c2f;
+    cursor: pointer;
 }
 .go_up img{
     display: block;
@@ -502,7 +503,7 @@ h2{
 .carousell-wrapper {
   display: flex;
 }
-.home_categories_container{
+.home_categori07es_container{
   display: flex;
 }
 #go-right{
@@ -519,4 +520,105 @@ h2{
 }
 #go-right:hover, #go-left:hover{
   cursor: pointer;
+}
+
+/* ---------------------- REGISTER ---------------------*/
+
+/* message */
+.msg {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.05);
+}
+
+.msg-danger {
+  background-color: #dc3545;
+}
+
+/*fade*/
+.animate {
+  opacity: 0;
+  transition: all 1s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animate.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.slide-in-down {
+  transform: translateY(-100%) translateX(-50%);
+}
+
+.btn_signup{
+  width: 150px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #C19E54;
+  border: 0;
+  color: #ffffff;
+  border-radius: 5px;
+  margin-top: 15px;
+
+}
+.btn_signup:hover{
+  cursor: pointer;
+  background-color: #b88c2f;
+}
+
+.giga_logo img{
+  width: 25%;
+  margin-bottom: 20px;
+}
+/* .giga_logo{
+  background-color: #a72896;
+} */
+.signup-container{
+  width: 300px;
+  background-color: #F5F5F5;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 75px;
+  margin-top: 10px;
+  border-radius: 5px;
+  height: fit-content;
+  padding: 20px 40px;
+  text-align: center;
+}
+
+.input_field input{
+  box-sizing: border-box;
+  width: 100%;
+  display:block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 30px;
+  border-color: #7a7a7a;
+  border-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.input_field:hover{
+  border-width: 2;
+}
+.input_field label{
+  font-weight: 700;
+}
+.input_field{
+  text-align: left;
+}
+.signup-container span{
+  margin-top: 20px;
+  display: block;
+  font-size: 15px;
 }
