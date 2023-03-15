@@ -2,10 +2,10 @@
     
     <div class="footer_container">
         <div class="footer">
-          <div class="footer_section logo_footer">
+        <div class="footer_section logo_footer">
             <img src="./assets/img/logo.png" alt="Logo">
-          </div>
-          <div class="footer_section contacts">
+        </div>
+        <div class="footer_section contacts">
             <h2>Contacts</h2>
             <ul>
                 <li>Address: ----------------------</li>
@@ -15,7 +15,7 @@
         </div>
         <div class="footer_section about_us">
             <h2>About Us</h2>
-            <ul>
+            <ul> 
                 <li>Miner's Foreman: Youssef Demnati</li>
                 <li>Miner N°1: Nikita Macreniuc</li>
                 <li>Miner N°2: Azzalin Gabriele</li>

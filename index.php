@@ -1,6 +1,6 @@
 
 <?php
-include './utente_registrato\_header.php';
+include 'include\_header.inc.php';
 ?>
 <div class="big_mama">
     <div>
@@ -206,5 +206,5 @@ include './utente_registrato\_header.php';
 
 
 <?php
-include './utente_registrato\_footer.php';
+include 'include\_footer.inc.php';
 ?>
