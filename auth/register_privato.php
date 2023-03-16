@@ -9,31 +9,38 @@
         </div>
 
         <div class="signup-container">
-            <h1>Benvenuto!</h1>
-            <form action="" method="post">
+            <h1>Welcome!</h1>
+            <form action="act_signup.php" method="POST">
                 <div class="input_field">
-                    <label for="firstname">Firs name</label>
-                    <input type="text" name="name" required maxlength="255">
+                    <label for="firstname">First name</label>
+                    <input type="text" id="tb_fname" name="name" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="">Last name</label>
-                    <input type="text" name="secondname" required maxlength="255">
+                    <input type="text" id="tb_lname" name="lastname" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="email">Email</label>
-                    <input type="email" name="email" required maxlength="255">
+                    <input type="email" id="tb_email" name="email" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="address">Address</label>
-                    <input type="text" name="address" required maxlength="255">
+                    <input type="text" id="tb_address" name="address" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="password">Password</label>
-                    <input type="password" name="password" required maxlength="255">
+                    <input type="password" name="password" id="tb_password" required maxlength="255">
+                    
                 </div>
                 <div class="input_field">
                     <label for="conf_password">Confirm password</label>
-                    <input type="conf_password" name="conf_password" required maxlength="255">
+                    <input type="password" name="conf_password" id="tb_conf_password" required maxlength="255">
+                </div>
+                
+                <div class="input_field align-left">
+                    <input type="checkbox" id="show-password-checkbox" style="display: inline; width: auto; height: auto;">
+                    <!-- <label for="show-password-checkbox" style="font-size: 12pt">show password</label> -->
+                    <span style="margin-top: 0; display: inline; ">show password</span>
                 </div>
                 <button class="btn_signup" type="submit">Signup</button>
                 
@@ -44,37 +51,35 @@
     </body>
 </html>
 
-<script>
+<script
   src="https://code.jquery.com/jquery-3.6.4.js"
   integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
   crossorigin="anonymous">
 </script>
-<script>
-    (function(){
 
+<script>
     // data
     var clear;
     var msgDuration = 2000; // 2 seconds
-    var $msgSuccess = 'Operazione avvenuta con successo!';
-    var $msgDanger  = 'Careful with that!';
 
     // cache DOM
-    var $msg        = $('.msg');
-    var $signup = $('.btn_signup')
+    var $msg = $('.msg');
+ 
+    const form = document.querySelector('form');
+    const fnameInput = document.getElementById('tb_fname');
+    const lnameInput = document.getElementById('tb_lname');
+    const addressInput = document.getElementById('tb_address');
+    const emailInput = document.getElementById('tb_email');
+    const passwordInput = document.getElementById('tb_password');
+    const confirmPasswordInput = document.getElementById('tb_conf_password');
+    const showPasswordCheckbox = document.getElementById('show-password-checkbox');
+
+    $msg.on('transitionend', timer);
 
     // render message
-    function render(message){
-
+    function render($msgError){
         hide();
-
-        switch (message) {
-            case 'success':
-                $msg.addClass('msg-success active').text($msgSuccess);
-                break;
-            case 'danger':
-                $msg.addClass('msg-danger active').text($msgDanger);
-                break;
-        }
+        $msg.addClass('msg-error active').text($msgError);
     }
 
     function timer(){
@@ -85,17 +90,44 @@
     }
 
     function hide(){
-        $msg.removeClass('msg-success msg-danger active');
+        $msg.removeClass('msg-error active');
     }
 
-    // bind events
-    $signup .on('click', function(){render('danger');});
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fnameValue = fnameInput.value.trim();
+        const lnameValue = lnameInput.value.trim();
+        const addressValue = addressInput.value.trim();
+        const emailValue = emailInput.value.trim();
+        const passwordValue = passwordInput.value.trim();
+        const confirmPasswordValue = confirmPasswordInput.value.trim();
 
-    $msg       .on('transitionend', timer);
+        if (lnameValue === '' || fnameValue === '' || addressValue === '' ||  emailValue === '' || passwordValue === '' || confirmPasswordValue === '') {
+            render('Please fill out all fields.');
+            return;
+        }
 
-    })();
+        if (passwordValue !== confirmPasswordValue) {
+            render('Passwords do not match.');
+            return;
+        }
+
+        if (passwordValue.length < 8) {
+            render('Password must be at least 8 characters long.');
+            return;
+        }
+
+        form.submit();
+    });
+
+    showPasswordCheckbox.addEventListener('change', function() {
+        const type = this.checked ? 'text' : 'password';
+        passwordInput.type = type;
+        confirmPasswordInput.type = type;
+    });
 
 </script>
+
 
 <?php
 include './_footer.php';

@@ -116,6 +116,9 @@ body{
   font-weight: 500;
   color: #4f4f4f;
 }
+.align-left {
+  text-align: left;
+}
 
 /* --------------------- HEADER --------------------- */
 
@@ -537,8 +540,11 @@ h2{
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.05);
 }
 
-.msg-danger {
-  background-color: #dc3545;
+.msg-error {
+  text-align: center;
+  width: fit-content;
+
+  background-color: #b41121;
 }
 
 /*fade*/
@@ -594,6 +600,7 @@ h2{
   height: fit-content;
   padding: 20px 40px;
   text-align: center;
+  
 }
 
 .input_field input{
@@ -622,3 +629,8 @@ h2{
   display: block;
   font-size: 15px;
 }
+/* .signup-container :not(.input_field, .btn_signup, span){
+  text-align: left;
+} */
+
+
