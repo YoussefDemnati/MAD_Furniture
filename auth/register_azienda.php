@@ -1,5 +1,9 @@
 
 <html>
+<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../assets/css/style.css">
+    </head>
     <body>
         <!-- message -->
         <div class="msg animate slide-in-down"></div>
@@ -46,10 +50,10 @@
                 
                 <span>Already Have an Account? <a href="#">Login</a></span>
             </form>
-
         </div>
-    </body>
-</html>
+        <div class="btn_change_signup_container">
+            <button class="btn_change_signup" onclick="window.location.href='register_privato.php';">Accedi come Privato</button>
+        </div>
 
 <script
   src="https://code.jquery.com/jquery-3.6.4.js"

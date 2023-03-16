@@ -215,7 +215,7 @@ nav {
     position: relative;
     /* bottom: 0; */
     box-sizing: border-box;
-    width: calc(100% - 15px);
+    
 }
 
 .footer {
@@ -629,8 +629,22 @@ h2{
   display: block;
   font-size: 15px;
 }
-/* .signup-container :not(.input_field, .btn_signup, span){
-  text-align: left;
-} */
 
-
+.btn_change_signup{
+  width: 250px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #C19E54;
+  border: 0;
+  color: #ffffff;
+  border-radius: 5px;
+}
+.btn_change_signup:hover{
+  cursor: pointer;
+  background-color: #b88c2f;
+}
+.btn_change_signup_container{
+  text-align: right;
+  padding-right: 30px;
+  margin-bottom: 30px;
+}
