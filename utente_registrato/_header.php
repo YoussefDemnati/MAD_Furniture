@@ -8,7 +8,7 @@
   <body>
     <nav>
       <div class="logo">
-        <img src="./assets/img/logo.png" alt="Logo">
+        <img src="../assets/img/logo.png" alt="Logo">
       </div>
 
       <ul class="links">
