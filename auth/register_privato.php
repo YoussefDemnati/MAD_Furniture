@@ -14,7 +14,7 @@
 
         <div class="signup-container">
             <h1>Welcome!</h1>
-            <form action="act_signup.php" method="POST">
+            <form action="act_signup.php?type=privato" method="POST">
                 <div class="input_field">
                     <label for="firstname">First name</label>
                     <input type="text" id="tb_fname" name="name" required maxlength="255">
@@ -47,7 +47,7 @@
                     <span style="margin-top: 0; display: inline; ">show password</span>
                 </div>
                 <button class="btn_signup"  type="submit">Signup</button>
-                
+
                 <span>Already Have an Account? <a href="#">Login</a></span>
             </form>
         </div>
