@@ -19,8 +19,11 @@ function signup_privato(){
     $conn = db_connect();
 }
 
+<<<<<<< HEAD
 function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,$casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$image){
     $oggi = date('d/m/Y H:i:s');
 
 }
+=======
+>>>>>>> fe1931db6d7f05e48e93ae3235299bcee018e379
 ?>
