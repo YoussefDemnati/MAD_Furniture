@@ -17,7 +17,7 @@ function db_connect(){
         return $conn;
     }
 }
-
+/* DA FARE: Aggiungere controllo se una email esiste già */
 function signup_azienda($company_name, $address, $email, $phone, $password){
     $conn = db_connect();
     $company_name = mysqli_real_escape_string($conn, $company_name);
