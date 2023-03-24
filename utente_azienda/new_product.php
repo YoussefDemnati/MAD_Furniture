@@ -4,12 +4,12 @@ require('_header.php');
 require('../include/_db_dal.inc.php');
 $conn = db_connect();
     if(isset($_POST['titolo'])){
-		if ($_FILES["file"]["error"] == UPLOAD_ERR_OK) {
+		if ($_FILES["image"]["error"] == UPLOAD_ERR_OK) {
 			// Otteniamo il percorso del file temporaneo che PHP ha creato quando l'immagine è stata caricata
-			$tmp_name = $_FILES["file"]["tmp_name"];
+			$tmp_name = $_FILES["image"]["tmp_name"];
 		
 			// Otteniamo il nome originale del file caricato
-			$name = basename($_FILES["file"]["name"]);
+			$name = basename($_FILES["image"]["name"]);
 		
 			// Otteniamo l'estensione del file (ad esempio "png", "jpg", "gif", ecc.)
 			$ext = pathinfo($name, PATHINFO_EXTENSION);
@@ -50,12 +50,12 @@ $conn = db_connect();
     	new_product($conn,$_POST['titolo'],$_POST['descrizione'],$_POST['prezzo'],
 		$_POST['tipo_prodotto_finito'],$_POST['altezza'],$_POST['larghezza'],
 		$_POST['profondita'],$_POST['spessore'],$_POST['modello'],$_POST['casa_produttrice'],
-		$_POST['indirizzo_magazzino'],$_POST['forma'],$_POST['tipo'],$png,$_POST['categoria']);
+		$_POST['indirizzo_magazzino'],$_POST['forma'],$_POST['tipo'],$filename,$_POST['categoria']);
 	
 		unlink($filename); //boh,forse va fatto
 	} else {
     echo "errore immagine";
-  	}	}
+  	}	
 ?>
 <!DOCTYPE html>
 <html>

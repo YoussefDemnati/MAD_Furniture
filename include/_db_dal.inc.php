@@ -42,7 +42,7 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     $casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria);
     $stmt->execute();
 
-    $last_element_sql="SELECT * FROM nome_tabella ORDER BY nome_colonna DESC LIMIT 1;";
+    $last_element_sql="SELECT * FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
     $result = $conn->query($last_element_sql);
 
     $ultimo_record="pippo";
