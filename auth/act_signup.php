@@ -6,9 +6,10 @@ if (!empty($_GET["type"])) {
         $last_name = $_POST["last_name"];
         $email = $_POST["email"];
         $address = $_POST["address"];
-        $type = $_POST["type"];
+        $type = $_GET["type"];
         $password = $_POST["password"];
-        signup_privato($first_name, $last_name, $email, $address, $password, $_GET["type"]);
+        $res = signup_privato($first_name, $last_name, $email, $address, $password, $_GET["type"]);
+        header("Location: register_privato.php?status=$res");
     } 
     elseif ($_GET["type"] == "azienda") {
         $company_name = $_POST["company_name"];
@@ -16,7 +17,8 @@ if (!empty($_GET["type"])) {
         $email = $_POST["email"];
         $phone = $_POST["phone"];
         $password = $_POST["password"];
-        signup_azienda($company_name, $address, $email, $phone, $password);
+        $res = signup_azienda($company_name, $address, $email, $phone, $password);
+        header("Location: register_azienda.php?status=$res");
     } 
     else {
         header("Location: register_privato.php");
@@ -24,3 +26,4 @@ if (!empty($_GET["type"])) {
 } else {
     header("Location: register_privato.php");
 }
+?>
