@@ -71,17 +71,17 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
 }
 }
 
-function imagefromblob($conn,$id_p){
+function imagesfromblob($conn,$id_p){
 // Query per selezionare l'immagine dal database
-    $sql = "SELECT img FROM immagine WHERE id = ?";
+    $sql = "SELECT img FROM immagine WHERE id_p = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i",$id_p);
-    $stmt->execute();
+    // $stmt->execute();
     $stmt->close();
-    $result = $conn->query($sql);
-
+    // $result = $conn->query($sql);jkìì
+    echo "trovata";
     if ($result->num_rows > 0) {
-    // Leggi il contenuto del campo BLOB
+        echo " immagine trovata";
     $row = $result->fetch_assoc();
     $image_data = $row["image_blob"];
 
@@ -93,6 +93,7 @@ function imagefromblob($conn,$id_p){
     } else {
     echo "Nessuna immagine trovata";
     }
-
 }
+
+
 ?>
