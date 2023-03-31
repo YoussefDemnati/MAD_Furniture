@@ -6,62 +6,12 @@ $conn = db_connect();
 		$azienda = 2;
 		//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA
 		if(isset($_POST['titolo'])){
-			if ($_FILES["image"]["error"] == UPLOAD_ERR_OK) {
-				// Otteniamo il percorso del file temporaneo che PHP ha creato quando l'immagine è stata caricata
-				$tmp_name = $_FILES["image"]["tmp_name"];
-		
-				// Otteniamo il nome originale del file caricato
-				$name = basename($_FILES["image"]["name"]);
-		
-				// Otteniamo l'estensione del file (ad esempio "png", "jpg", "gif", ecc.)
-				$ext = pathinfo($name, PATHINFO_EXTENSION);
-		
-				// Creiamo un nuovo nome di file per la versione compressa dell'immagine
-				$filename = pathinfo($name, PATHINFO_FILENAME) . '_compressed.' . $ext;
-		// Se l'immagine è in formato PNG
-        if ($ext == 'png') {
-            // Creiamo una nuova immagine PNG dal file temporaneo utilizzando la funzione "imagecreatefrompng()"
-            $png = imagecreatefrompng($tmp_name);
-
-            // Disabilitiamo la miscelazione di colori per mantenere l'opacità dell'immagine utilizzando le funzioni "imagealphablending()" e "imagesavealpha()"
-            imagealphablending($png, false);
-            imagesavealpha($png, true);
-
-            // Impostiamo la qualità della compressione PNG (0 = migliore qualità, 9 = peggiore qualità)
-            $quality = 9;
-
-            // Salviamo la versione compressa dell'immagine PNG utilizzando la funzione "imagepng()"
-            imagepng($png, $filename, $quality);
-
-            // Liberiamo la memoria utilizzata dalla variabile $png utilizzando la funzione "imagedestroy()"
-            imagedestroy($png);
-        }
-		// Comprimiamo l'immagine finché non raggiunge una dimensione massima di 64 KB
-        $max_size = 64000;
-        while (filesize($filename) > $max_size) {
-            if ($ext == 'png') {
-                // Riduciamo gradualmente la qualità della compressione PNG finché l'immagine non raggiunge la dimensione massima
-                $quality--;
-                imagepng(imagecreatefrompng($filename), $filename, $quality);
-            } else {
-                // Riduciamo gradualmente la qualità della compressione JPEG finché l'immagine non raggiunge la dimensione massima
-                $quality -= 5;
-                if ($quality < 0) $quality = 0;
-                imagejpeg(imagecreatefromjpeg($filename), $filename, $quality);
-            }
-        }
-		// Carichiamo il contenuto dell'immagine compressa in una variabile
-        $image_content = file_get_contents($filename);
-
-        // Convertiamo l'immagine compressa in formato Blob
-        $blob = mysqli_real_escape_string($conn, $image_content);
-
 		new_product($conn,$_POST['titolo'],$_POST['descrizione'],$_POST['prezzo'],
 		$_POST['tipo_prodotto_finito'],$_POST['altezza'],$_POST['larghezza'],
 		$_POST['profondita'],$_POST['spessore'],$_POST['modello'],$_POST['casa_produttrice'],
-		$_POST['indirizzo_magazzino'],$_POST['forma'],$_POST['tipo'],$_POST['categoria'],$azienda,$blob);
+		$_POST['indirizzo_magazzino'],$_POST['forma'],$_POST['tipo'],$_POST['categoria'],$azienda,$_FILES['immagini']);
 }
-		}
+		
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,7 +20,7 @@ $conn = db_connect();
 </head>
 <body>
 	<h1>Inserimento prodotto</h1>
-	<form method="post" action="new_product.php" enctype="multipart/form-data">
+	<form method="post" action="new_product.php" enctype="multipart/form-data" >
 		<label for="titolo">Titolo:</label>
 		<input type="text" name="titolo" required><br>
 
@@ -122,10 +72,45 @@ $conn = db_connect();
 		<label for="tipo">Tipo:</label>
 		<input type="text" name="tipo" required><br>
 
-        <label for="tipo">Immagine:</label>
-        <input type="file" name="image" accept="image/png, image/jpg, image/jpeg" required>
+        <label for="tipo">Immagine(max 5):</label>
+		<input type="file" id="immagini" name="immagini[]" accept="image/*" multiple style="display: none;">
+		<button type="button" onclick="document.getElementById('immagini').click()">Aggiungi foto</button>
+		<br><br>
+		<div id="anteprima"></div>
+		<br><br>
 
 		<input type="submit" value="Inserisci">
 	</form>
 </body>
+
+<script>
+		function mostraAnteprima() {
+			console.log("MostraAnteprima");
+			var anteprimaDiv = document.getElementById('anteprima');
+			// anteprimaDiv.innerHTML = 'lalalend';
+			var files = document.getElementById('immagini').files;
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				if (!file.type.match('image.*')) {
+					continue;
+				}
+				var reader = new FileReader();
+				reader.onload = (function(immagine) {
+					return function(event) {
+						var img = document.createElement('img');
+						img.src = event.target.result;
+						img.setAttribute("width", "100");
+						img.setAttribute("height", "100");
+						//da aggiustare(comprimere bene)
+						anteprimaDiv.appendChild(img);
+						// anteprimaDiv.appendChild(crocetta); una X per eliminare immagine?
+					};
+				})(file);
+				reader.readAsDataURL(file);
+			}
+		}
+
+		document.getElementById('immagini').addEventListener('change', mostraAnteprima);
+		
+</script>
 </html>

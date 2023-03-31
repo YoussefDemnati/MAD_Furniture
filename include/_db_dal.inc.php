@@ -30,7 +30,7 @@ function signup_privato(){
     $conn = db_connect();
 }
 
-function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,$casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria,$azienda,$image){
+function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,$casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria,$azienda,$images){
     $oggi = date('Y-m-d H:i:s');
 
     $main_sql= "INSERT INTO `prodotto` (`id_p`, `titolo`, `descrizione`, `prezzo`,
@@ -46,7 +46,7 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     $stmt->execute();
     $stmt->close();
 
-    $last_element_sql="SELECT * FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
+    $last_element_sql="SELECT id_p FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
     $result = $conn->query($last_element_sql);
 
     $ultimo_record="pippo";
@@ -57,43 +57,26 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     } else {
         echo "La tabella è vuota.";
     }
-
-    try {
     $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
-    $stmt = $conn->prepare($image_sql);
-    $stmt->bind_param("si",$image,$ultimo_record);
-    $stmt->execute();
-    $stmt->close();
-} catch (PDOException $e) {
-    // handle the exception here
-    // echo "Error: " . $e->getMessage();
-    die("error .: " . $e->getMessage());
-}
-}
 
-function imagesfromblob($conn,$id_p){
-// Query per selezionare l'immagine dal database
-    $sql = "SELECT img FROM immagine WHERE id_p = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i",$id_p);
+  if (isset($images) && !empty($images)) {
+    mkdir("../assets/img/products/" . implode($ultimo_record));
+    for ($i = 0; $i < count($images['name']); $i++) {
+      $name = $images['name'][$i];
+      $tmp_name = $images['tmp_name'][$i];
+      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i);
+    }
+    echo count($images['name']) . " immagini caricate con successo!";
+  } else {
+    echo "Nessuna immagine selezionata!";
+  }
+
+    foreach ($images as $value) {
+        debug_to_console("a: " . $value);
+    // $stmt = $conn->prepare($image_sql);
+    // $stmt->bind_param("si",$value,$ultimo_record);
     // $stmt->execute();
-    $stmt->close();
-    // $result = $conn->query($sql);jkìì
-    echo "trovata";
-    if ($result->num_rows > 0) {
-        echo " immagine trovata";
-    $row = $result->fetch_assoc();
-    $image_data = $row["image_blob"];
-
-    // Imposta l'header della risposta come un'immagine
-    header("Content-Type: image/png");
-
-    // Stampa il contenuto del campo BLOB
-    echo $image_data;
-    } else {
-    echo "Nessuna immagine trovata";
+    // $stmt->close();
     }
 }
-
-
 ?>
