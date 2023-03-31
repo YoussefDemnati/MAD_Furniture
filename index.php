@@ -1,5 +1,10 @@
 <?php
+include("include/_db_dal.inc.php");
 include 'include\_header.inc.php';
+$conn = db_connect();
+
+$flyers = get_flyers($conn, 1);
+$categories = get_categories($conn);
 ?>
 <div class="big_mama">
     <div>
@@ -11,11 +16,11 @@ include 'include\_header.inc.php';
     <img src="./assets/img/minimal_chair.png" alt="">
 </div>
 <div class="home_volantino">
-    <?php for ($i=0; $i < 4; $i++) { ?>
+    <?php foreach ($flyers as $flyer) { ?>
         <div class="promo">
             <div>
-                <h2>TABLE LAMP</h2>
-                <span>- 30% On  New Minimal Table Lamp  </span>
+                <h2><?=$flyer["nome"]?></h2>
+                <span>-<?=$flyer["sconto"]?>% On  New <?=$flyer["descrizione"]?>  </span>
                 <a href="">View Product</a>
             </div>
             <img src="./assets/img/table_lamp.png" alt="">
@@ -43,11 +48,11 @@ include 'include\_header.inc.php';
     <button id="go-left">     </button>
     <div class="home_categories">
         <div class="carousell-wrapper">
-            <?php for ($i=0; $i < 7; $i++) { ?>
+            <?php foreach ($categories as $category) { ?>
                 <div class="home_category"> 
                     <div>
-                        <h2>Kitchen</h2>
-                        <span>products for the kitchen</span>
+                        <h2><?=$category["nome"]?></h2>
+                        <span><?=$category["descrizione"]?></span>
                         <a href="">View Category</a>
                     </div>
                     <img src="./assets/img/kitchen.png" alt="">
