@@ -4,30 +4,11 @@ require '../include/_db_dal.inc.php';
 session_start();
 $conn = db_connect();
 
-if(isset($_POST["submit"])){
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $result = mysqli_query($conn, "SELECT * FROM utente u, azienda a WHERE a.email = '$email' AND u.email = '$email'");
-    $row = mysqli_fetch_assoc($result);
-    $hash = $row['password'];
-    if(mysqli_num_rows($result) > 0){
-        if(password_verify($password,$hash)){
-          $_SESSION["login"] = true;
-          $_SESSION["type"] = $row['type'];//da sistemare (azienda vs privato)
-          $_SESSION["id"] = $row["id_utente"];
-          header("Location: ../index.php");
-        }
-        else{
-          echo
-          "<script> render('Wrong Password'); </script>";
-        }
-      }
-      else{
-        echo
-        "<script> render('Account Does not exist'); </script>";
-      }
-    }
+if(isset($_POST["email"])){
+    $response = login_user($_POST["email"], $_POST["password"]);
+}
 ?>
+
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +24,8 @@ if(isset($_POST["submit"])){
 
         <div class="signup-container">
             <h1>Welcome Back!</h1>
-            <form action="act_signup.php?type=privato" method="POST">
+            <form action="" method="POST">
+            <div class="error"><?php echo @$response; ?></div>
                 <div class="input_field">
                     <label for="email">Email</label>
                     <input type="email" id="tb_email" name="email" required maxlength="255">

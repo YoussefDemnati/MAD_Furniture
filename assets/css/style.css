@@ -648,3 +648,8 @@ h2{
   padding-right: 30px;
   margin-bottom: 30px;
 }
+.error{
+  text-align: left;
+  padding-bottom: 10px;
+  color: #ff0000;
+}
