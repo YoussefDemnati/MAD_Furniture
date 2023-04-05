@@ -17,6 +17,7 @@ $conn = db_connect();
 <html>
 <head>
 	<title>Inserimento prodotto</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<h1>Inserimento prodotto</h1>
@@ -83,7 +84,9 @@ $conn = db_connect();
 	</form>
 </body>
 
+
 <script>
+
 		function mostraAnteprima() {
 			console.log("MostraAnteprima");
 			var anteprimaDiv = document.getElementById('anteprima');
@@ -98,11 +101,14 @@ $conn = db_connect();
 				reader.onload = (function(immagine) {
 					return function(event) {
 						var img = document.createElement('img');
+						var delimg = document.createElement('img');
 						img.src = event.target.result;
+						// delimg.src = "..assets/img/ics.png";
 						img.setAttribute("width", "100");
 						img.setAttribute("height", "100");
 						//da aggiustare(comprimere bene)
 						anteprimaDiv.appendChild(img);
+						anteprimaDiv.appendChild(delimg);
 						// anteprimaDiv.appendChild(crocetta); una X per eliminare immagine?
 					};
 				})(file);
@@ -112,5 +118,6 @@ $conn = db_connect();
 
 		document.getElementById('immagini').addEventListener('change', mostraAnteprima);
 		
+});
 </script>
 </html>

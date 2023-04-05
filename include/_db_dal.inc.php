@@ -53,30 +53,30 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $ultimo_record = $row;
-        echo "La tabella non è vuota.";
+        // echo "La tabella non è vuota.";
     } else {
-        echo "La tabella è vuota.";
+        // echo "La tabella è vuota.";
     }
     $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
   if (isset($images) && !empty($images)) {
     mkdir("../assets/img/products/" . implode($ultimo_record));
     for ($i = 0; $i < count($images['name']); $i++) {
-      $name = $images['name'][$i];
+    $name = explode('.', $images['name'][$i]);
+      $extension = end($name);
       $tmp_name = $images['tmp_name'][$i];
-      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i);
+      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+      $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+      $stmt = $conn->prepare($image_sql);
+      $stmt->bind_param("si",$formedstring,$ultimo_record);
+      $stmt->execute();
+      $stmt->close();
     }
-    echo count($images['name']) . " immagini caricate con successo!";
+    // echo count($images['name']) . " immagini caricate con successo!";
+
   } else {
-    echo "Nessuna immagine selezionata!";
+    // echo "Nessuna immagine selezionata!";
   }
 
-    foreach ($images as $value) {
-        debug_to_console("a: " . $value);
-    // $stmt = $conn->prepare($image_sql);
-    // $stmt->bind_param("si",$value,$ultimo_record);
-    // $stmt->execute();
-    // $stmt->close();
-    }
 }
 ?>
