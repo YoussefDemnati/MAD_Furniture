@@ -4,7 +4,7 @@ require('_header.php');
 require('../include/_db_dal.inc.php');
 $conn = db_connect();
 		$azienda = 2;
-		//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA
+		//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA ciao
 		if(isset($_POST['titolo'])){
 		new_product($conn,$_POST['titolo'],$_POST['descrizione'],$_POST['prezzo'],
 		$_POST['tipo_prodotto_finito'],$_POST['altezza'],$_POST['larghezza'],
