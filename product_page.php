@@ -2,7 +2,22 @@
 <button class="back-button">Back</button>
 <div class="product-desc">
     <div class="product-image">
-        <img src="assets/img/Table.png" alt="">
+        <div id="image-slider" class="splide">
+            <div class="splide__track">
+                <ul class="splide__list">
+			        <li class="splide__slide">
+				        <img src="assets/img/Table.png">
+			        </li>
+                    <li class="splide__slide">
+                        <img src="assets/img/Table.png">
+                    </li>
+                    <li class="splide__slide">
+                        <img src="assets/img/Table.png">
+                    </li>
+		        </ul>
+            </div>
+        </div>
+        <!--<img src="assets/img/Table.png" alt="">-->
     </div>
     <div class="product-name">
         Tavolo da Pranzo TemaHome Nice, White & Oak
@@ -56,4 +71,10 @@
         <li>Made in France</li>
     </ul>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/js/splide.min.js"></script>
+<script>
+    document.addEventListener( 'DOMContentLoaded', function () {
+        new Splide( '#image-slider' ).mount();
+    });
+</script>
 <?php include("include/_footer.inc.php"); ?>
