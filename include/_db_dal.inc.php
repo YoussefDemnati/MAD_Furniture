@@ -267,3 +267,17 @@ function get_products($conn,$azienda){
     }
     return $data;
 }
+
+function delete_product($conn,$prodotto){
+    $sql = "DELETE FROM prodotti WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $prodotto);
+    $stmt->execute();
+
+    if($stmt->affected_rows > 0) {
+        header("products.php");
+    } else {
+        echo "Errore durante la cancellazione del prodotto.";
+    }
+    $stmt->close();
+}
