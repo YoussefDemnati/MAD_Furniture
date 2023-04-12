@@ -225,3 +225,12 @@ function get_user($conn, $table, $email)
     return $data;
 }
 
+function get_categories(){
+    $conn = db_connect();
+
+    $query = "SELECT id_cat, nome FROM categoria";
+    $result = mysqli_query($conn, $query);
+
+    return $result->fetch_all(MYSQLI_ASSOC); 
+}
+
