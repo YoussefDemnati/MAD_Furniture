@@ -331,6 +331,9 @@ body {
   font-weight: 500;
   color: #4f4f4f;
 }
+.align-left {
+  text-align: left;
+}
 
 /* --------------------- HEADER --------------------- */
 
@@ -436,108 +439,102 @@ nav {
   grid-area: support;
 }
 
-.footer_container {
-  position: relative;
-  /* bottom: 0; */
-  box-sizing: border-box;
-  width: calc(100% - 15px);
+.footer_container{
+    position: relative;
+    /* bottom: 0; */
+    box-sizing: border-box;
+    
 }
 
 .footer {
-  background-color: #f5f5f5;
-  display: grid;
-  grid-template-areas:
-    "logo logo account support"
-    "contacts about account support";
-  grid-gap: 10px;
-  padding: 50px;
+    background-color: #f5f5f5;
+    display: grid;
+    grid-template-areas:
+        'logo logo account support'
+        'contacts about account support';
+    grid-gap: 10px;
+    padding: 50px;
 }
-.footer img {
-  width: 400px;
+.footer img{
+    width: 400px;
 }
-.footer li {
-  list-style: none;
-  padding-bottom: 15px;
+.footer li{
+    list-style: none;
+    padding-bottom: 15px;
 }
-.footer li a {
-  text-decoration: none;
-  color: #4f4f4f;
+.footer li a{
+    text-decoration: none;
+    color: #4f4f4f;
 }
-.footer li a:hover {
-  color: #4f4f4f;
-  font-weight: bold;
+.footer li a:hover{
+    color: #4f4f4f;
+    font-weight: bold;
 }
-.footer_section {
-  display: inline-block;
-  margin-left: 30px;
+.footer_section{
+    display: inline-block;
+    margin-left: 30px;
 }
-.footer textarea {
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  resize: none; /* makes it not resizable */
-  color: #333; /* custom text color */
-  font-size: 15px;
+.footer textarea{
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none; /* makes it not resizable */
+    color: #333; /* custom text color */
+    font-size: 15px;
 }
 
-.footer textarea:focus {
-  border: 2px solid #4f4f4f; /* adds a border when focused */
+.footer  textarea:focus {
+    border: 2px solid #4f4f4f; /* adds a border when focused */
 }
-.footer form button {
-  width: 100px;
-  height: 30px;
-  font-size: 20px;
-  background-color: #c19e54;
-  border: 0;
-  color: #ffffff;
-  border-radius: 5px;
-  margin-top: 10px;
+.footer form button{
+    width: 100px;
+    height: 30px;
+    font-size: 20px;
+    background-color: #C19E54;
+    border: 0;
+    color: #ffffff;
+    border-radius: 5px;
+    margin-top: 10px;
 }
-.footer form button:hover {
-  background-color: #b88c2f;
+.footer form button:hover{
+    background-color: #b88c2f;
+    cursor: pointer;
 }
-.go_up img {
-  display: block;
-  width: 50px;
-  float: right;
-  margin-top: 10;
-  margin-right: 10;
+.go_up img{
+    display: block;
+    width: 50px;
+    float: right;
+    margin-top: 10;
+    margin-right: 10;
 }
-h2 {
-  color: #6d6d6d;
+h2{
+    color: #6D6D6D;
 }
-.copyright span {
-  margin-left: 100px;
+.copyright span{
+   margin-left: 100px;
 }
-#paypal {
-  width: 150px;
-  margin-top: 15px;
-  margin-left: 100px;
+#paypal{
+    width: 150px;
+    margin-top: 15px;
+    margin-left: 100px;
 }
-.copyright span,
-a,
-img {
-  display: block;
+.copyright span, a, img{
+    display: block;
 }
-#paypal {
-  grid-area: paypal;
+#paypal { grid-area: paypal; }
+#copyright { grid-area: copyright; }
+.go_up { grid-area: go_up; }
+.copyright{
+    background-color: #ffffff00;
+    height: 70px;
+    display: grid;
+    grid-template-areas:
+        'copyright copyight paypal go_up';
+    grid-gap: 10px;
 }
-#copyright {
-  grid-area: copyright;
-}
-.go_up {
-  grid-area: go_up;
-}
-.copyright {
-  background-color: #ffffff00;
-  height: 70px;
-  display: grid;
-  grid-template-areas: "copyright copyight paypal go_up";
-  grid-gap: 10px;
-}
-.copyright span {
-  color: #4f4f4f;
-  margin-top: 25px;
+.copyright span{
+    color: #4F4F4F;
+    margin-top: 25px;
 }
 
 /* --------------------- CONTENT --------------------- */
@@ -750,6 +747,7 @@ img {
 .carousell-wrapper {
   display: flex;
 }
+
 .home_categories_container {
   display: flex;
 }
@@ -768,4 +766,133 @@ img {
 #go-right:hover,
 #go-left:hover {
   cursor: pointer;
+}
+
+/* ---------------------- REGISTER ---------------------*/
+
+/* message */
+.msg {
+  position: fixed;
+  top: 40px;
+  left: 50%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: white;
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.05);
+}
+
+.msg-error {
+  text-align: center;
+  width: fit-content;
+
+  background-color: #b41121;
+}
+
+/*fade*/
+.animate {
+  opacity: 0;
+  transition: all 1s;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.animate.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-50%);
+}
+
+.slide-in-down {
+  transform: translateY(-100%) translateX(-50%);
+}
+
+.btn_signup{
+  width: 150px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #C19E54;
+  border: 0;
+  color: #ffffff;
+  border-radius: 5px;
+  margin-top: 15px;
+
+}
+.btn_signup:hover{
+  cursor: pointer;
+  background-color: #b88c2f;
+}
+
+.giga_logo img{
+  width: 25%;
+  margin-bottom: 20px;
+}
+/* .giga_logo{
+  background-color: #a72896;
+} */
+.signup-container{
+  width: 300px;
+  background-color: #F5F5F5;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 75px;
+  margin-top: 10px;
+  border-radius: 5px;
+  height: fit-content;
+  padding: 20px 40px;
+  text-align: center;
+  
+}
+
+.input_field input{
+  box-sizing: border-box;
+  width: 100%;
+  display:block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 30px;
+  border-color: #7a7a7a;
+  border-width: 0;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.input_field:hover{
+  border-width: 2;
+}
+.input_field label{
+  font-weight: 700;
+}
+.input_field{
+  text-align: left;
+}
+.signup-container span{
+  margin-top: 20px;
+  display: block;
+  font-size: 15px;
+}
+
+.btn_change_signup{
+  width: 250px;
+  height: 50px;
+  font-size: 20px;
+  background-color: #C19E54;
+  border: 0;
+  color: #ffffff;
+  border-radius: 5px;
+}
+.btn_change_signup:hover{
+  cursor: pointer;
+  background-color: #b88c2f;
+}
+.btn_change_signup_container{
+  text-align: right;
+  padding-right: 30px;
+  margin-bottom: 30px;
+}
+.error{
+  text-align: left;
+  padding-bottom: 10px;
+  color: #ff0000;
 }

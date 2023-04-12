@@ -1,0 +1,46 @@
+
+    <div class="footer_container">
+        <div class="footer">
+        <div class="footer_section logo_footer">
+            <img src="../assets/img/logo.png" alt="Logo">
+        </div>
+        <div class="footer_section contacts">
+            <h2>Contacts</h2>
+            <ul>
+                <li>Address: ----------------------</li>
+                <li>Phone: ----------------------</li>
+                <li>Email: ----------------------</li>
+            </ul>
+        </div>
+        <div class="footer_section about_us">
+            <h2>About Us</h2>
+            <ul> 
+                <li>Miner's Foreman: Youssef Demnati</li>
+                <li>Miner N°1: Nikita Macreniuc</li>
+                <li>Miner N°2: Azzalin Gabriele</li>
+            </ul>
+        </div>
+
+        <div class="footer_section support">
+            <h2>Support Center</h2>
+            <p>Ask us Something, Usually Answers in 24H.</p>
+            <form action="#">
+                <textarea name="message" id="message" cols="40" rows="7"></textarea>
+                <br>
+                <button type="submit">Send</button>
+            </form>
+        </div>
+
+    </div>
+    <div class="copyright">
+        <span id="copyright">Copiright © 2023 MAD Miners Co. All Right Reserved</span>
+        <img src="../assets/img/paypal.png" alt="paypal" id="paypal">
+        <a href="#" class="go_up">
+            <img src="../assets/img/go_up.png" alt="Torna Su">
+        </a>                        
+    </div>
+
+
+
+</body>
+</html>
