@@ -1,4 +1,16 @@
-
+<?php
+    require '../include/_db_dal.inc.php';
+    session_start();
+    
+    if(isset($_POST["email"])){
+        $response = signup_privato($_POST["first_name"], 
+                                    $_POST["last_name"], 
+                                    $_POST["email"], 
+                                    $_POST["address"], 
+                                    $_POST["password"],
+                                    "privato");
+    }
+?>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,14 +26,15 @@
 
         <div class="signup-container">
             <h1>Welcome!</h1>
-            <form action="act_signup.php" method="POST">
+            <form action="act_signup.php?type=privato" method="POST">
+                <div class="error"><?php echo @$response; ?></div>
                 <div class="input_field">
                     <label for="firstname">First name</label>
-                    <input type="text" id="tb_fname" name="name" required maxlength="255">
+                    <input type="text" id="tb_fname" name="first_name" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="">Last name</label>
-                    <input type="text" id="tb_lname" name="lastname" required maxlength="255">
+                    <input type="text" id="tb_lname" name="last_name" required maxlength="255">
                 </div>
                 <div class="input_field">
                     <label for="email">Email</label>
@@ -47,7 +60,7 @@
                     <span style="margin-top: 0; display: inline; ">show password</span>
                 </div>
                 <button class="btn_signup"  type="submit">Signup</button>
-                
+
                 <span>Already Have an Account? <a href="#">Login</a></span>
             </form>
         </div>

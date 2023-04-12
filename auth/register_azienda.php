@@ -1,4 +1,15 @@
-
+<?php
+    require '../include/_db_dal.inc.php';
+    session_start();
+    
+    if(isset($_POST["email"])){
+        $response = signup_azienda($_POST["company_name"], 
+        $_POST["address"], 
+        $_POST["email"], 
+        $_POST["phone"], 
+        $_POST["password"]);
+    }
+?>
 <html>
 <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +25,9 @@
 
         <div class="signup-container">
             <h1>Welcome!</h1>
-            <form action="act_signup.php" method="POST">
+            <form action="" method="POST">
+                <div class="error"><?php echo @$response; ?></div>
+
                 <div class="input_field">
                     <label for="company_name">Name</label>
                     <input type="text" name="company_name" id="tb_company_name" required maxlength="255">
@@ -47,7 +60,8 @@
                     <span style="margin-top: 0; display: inline; ">show password</span>
                 </div>
                 <button class="btn_signup" type="submit">Signup</button>
-                
+
+
                 <span>Already Have an Account? <a href="#">Login</a></span>
             </form>
         </div>

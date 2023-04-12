@@ -20,17 +20,7 @@
                 <li>Miner N°2: Azzalin Gabriele</li>
             </ul>
         </div>
-        <div class="footer_section account">
-            <h2>Account</h2>
-            <ul>
-                <li><a href="#">My Account</a></li>
-                <li><a href="#">Cart</a></li>
-                <li><a href="#">Wishlist</a></li>
-                <li><a href="#">My Orders</a></li>
-                <li><a href="#"">Logout</a></li>
-                <li><a href="#">Delete Account</a></li>
-            </ul>
-        </div>
+
         <div class="footer_section support">
             <h2>Support Center</h2>
             <p>Ask us Something, Usually Answers in 24H.</p>
