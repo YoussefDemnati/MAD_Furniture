@@ -11,6 +11,29 @@ function db_connect()
 
     // Verifica connessione
     if ($conn->connect_error) {
+        die("Connection : " . $conn->connect_error);
+    }
+    return $conn;
+}
+
+function get_flyers($conn, $id){
+    $id = intval($id);
+    $sql = "SELECT *
+            FROM promozione
+            WHERE id_v = $id";
+    $result = $conn->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+
+function get_categories($conn){
+    $sql = "SELECT *
+            FROM categoria";
+    $result = $conn->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+
         $error = $conn->connect_error;
         $error_date = date('Y-m-d H:i:s');
         $message = "{$error_date} | {$error} \r\n";

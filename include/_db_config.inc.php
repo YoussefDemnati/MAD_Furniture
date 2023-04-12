@@ -1,4 +1,5 @@
-<?php
+
+<?php 
 $servername = "localhost";
 $db_username = "my_madforniture";
 $db_password = "password.123";
