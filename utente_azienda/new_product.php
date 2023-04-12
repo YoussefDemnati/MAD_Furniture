@@ -1,6 +1,6 @@
 <?php
 require('_header.php');
-// require('./include/_db_dal.inc.php');
+require('_header.php');
 require('../include/_db_dal.inc.php');
 $conn = db_connect();
 		$azienda = 2;
@@ -13,13 +13,7 @@ $conn = db_connect();
 }
 		
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Inserimento prodotto</title>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-</head>
-<body>
+
 	<h1>Inserimento prodotto</h1>
 	<form method="post" action="new_product.php" enctype="multipart/form-data" >
 		<label for="titolo">Titolo:</label>
@@ -29,34 +23,58 @@ $conn = db_connect();
 		<textarea name="descrizione" required></textarea><br>
 
 		<label for="prezzo">Prezzo:</label>
-		<input type="number" name="prezzo" step="0.01" required><br>
+		<input type="number" name="prezzo" required><br>
 
 		<label for="categoria">Categoria:</label>
 		<select name="categoria" required>
-			<option value="1">Cucina</option>
-			<option value="2">Salotto</option>
-			<option value="3">Bagno</option>
-			<option value="4">Camera Da Letto</option>
+            <?php 
+            $categories = get_categories();
+            foreach($categories as $cat) {debug_to_console($cat); ?>
+                <option value="<?=$cat["id_cat"]?>"><?=$cat["nome"]?></option>
+            <?php } ?>
 		</select><br>
 
 		<label for="tipo_prodotto_finito">Tipo prodotto finito:</label>
 		<select name="tipo_prodotto_finito" required>
-			<option value="Mobili">Mobili</option>
-			<option value="Elettrodomestici">Elettrodomestici</option>
-			<option value="Illuminazione">Illuminazione</option>
+			<option value="Divani ">Divani</option>
+			<option value="Tavoli ">Tavoli</option>
+			<option value="Armadi">Armadi</option>
+            <option value="Librerie ">Librerie</option>
+			<option value="Cucine ">Cucine</option>
+			<option value="Materassi">Materassi</option>
+            <option value="Poltrone ">Poltrone</option>
+			<option value="Lampade ">Lampade</option>
+			<option value="Tappeti">Tappeti</option>
+            <option value="Specchi ">Specchi</option>
+			<option value="Scrivanie ">Scrivanie </option>
+			<option value="Letti">Letti</option>
+            <option value="Comò ">Comò</option>
+			<option value="Pouf ">Pouf</option>
+			<option value="Cassettiere">Cassettiere</option>
+            <option value="Consolle ">Consolle</option>
+			<option value="Panche ">Panche</option>
+			<option value="Credenze">Credenze</option>
+            <option value="Mensole ">Mensole</option>
+			<option value="Portaoggetti ">Portaoggetti</option>
+			<option value="Contenitori">Contenitori</option>
+            <option value="Mobili da giardino ">Mobili da giardino</option>
+			<option value="Attrezzi da cucina ">Attrezzi da cucina</option>
+			<option value="Accessori per la casa">Accessori per la casa</option>
+            <option value="Accessori per il bagno ">Accessori per il bagno</option>
+			<option value="Materiali per la decorazione ">Materiali per la decorazione</option>
 		</select><br>
 
 		<label for="altezza">Altezza:</label>
-		<input type="number" name="altezza" step="0.01" required><br>
+		<input type="number" name="altezza" required><br>
 
 		<label for="larghezza">Larghezza:</label>
-		<input type="number" name="larghezza" step="0.01" required><br>
+		<input type="number" name="larghezza" required><br>
 
 		<label for="profondita">Profondità:</label>
-		<input type="number" name="profondita" step="0.01" required><br>
+		<input type="number" name="profondita" required><br>
 
 		<label for="spessore">Spessore:</label>
-		<input type="number" name="spessore" step="0.01" required><br>
+		<input type="number" name="spessore" required><br>
 
 		<label for="modello">Modello:</label>
 		<input type="text" name="modello" required><br>
@@ -82,7 +100,6 @@ $conn = db_connect();
 
 		<input type="submit" value="Inserisci">
 	</form>
-</body>
 
 
 <script>
@@ -118,6 +135,10 @@ $conn = db_connect();
 
 		document.getElementById('immagini').addEventListener('change', mostraAnteprima);
 		
-});
+
 </script>
-</html>
+    </div>
+
+<?php
+require('_footer.php');
+?>
