@@ -4,7 +4,7 @@ require('_header.php');
 require('../include/_db_dal.inc.php');
 $conn = db_connect();
 		$azienda = 2;
-		//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA ciao
+		//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA
 		if(isset($_POST['titolo'])){
 		new_product($conn,$_POST['titolo'],$_POST['descrizione'],$_POST['prezzo'],
 		$_POST['tipo_prodotto_finito'],$_POST['altezza'],$_POST['larghezza'],
@@ -103,10 +103,14 @@ $conn = db_connect();
 						var img = document.createElement('img');
 						var delimg = document.createElement('img');
 						img.src = event.target.result;
-						// delimg.src = "..assets/img/ics.png";
+						delimg.src = "../assets/img/ics.png";
 						img.setAttribute("width", "100");
 						img.setAttribute("height", "100");
-						//da aggiustare(comprimere bene)
+						delimg.setAttribute("width", "20");
+						delimg.setAttribute("height", "20");
+						// delimg.setAttribute("position", "absolute");
+						delimg.setAttribute("top", "0");
+						//da aggiustare(comprimere bene come quadrato)
 						anteprimaDiv.appendChild(img);
 						anteprimaDiv.appendChild(delimg);
 						// anteprimaDiv.appendChild(crocetta); una X per eliminare immagine?
@@ -117,7 +121,6 @@ $conn = db_connect();
 		}
 
 		document.getElementById('immagini').addEventListener('change', mostraAnteprima);
-		
-});
+
 </script>
 </html>

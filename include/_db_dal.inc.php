@@ -16,7 +16,8 @@ function db_connect()
     return $conn;
 }
 
-function get_flyers($conn, $id){
+function get_flyers($conn, $id)
+{
     $id = intval($id);
     $sql = "SELECT *
             FROM promozione
@@ -26,22 +27,13 @@ function get_flyers($conn, $id){
     return $rows;
 }
 
-function get_categories($conn){
+function get_categories($conn)
+{
     $sql = "SELECT *
             FROM categoria";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
-}
-
-        $error = $conn->connect_error;
-        $error_date = date('Y-m-d H:i:s');
-        $message = "{$error_date} | {$error} \r\n";
-        file_put_contents("db_log.txt", $message, FILE_APPEND);
-        return false;
-    } else {
-        return $conn;
-    }
 }
 
 
@@ -73,7 +65,7 @@ function check_account_exists($conn, $table, $email)
 function signup_azienda($company_name, $address, $email, $phone, $password)
 {
     $conn = db_connect();
-    $data=[];
+    $data = [];
     $company_name = mysqli_real_escape_string($conn, $company_name);
     $address = mysqli_real_escape_string($conn, $address);
     $email = mysqli_real_escape_string($conn, $email);
@@ -89,7 +81,7 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO azienda (nome, indirizzo, email, telefono, password) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $company_name, $address, $email, $phone, $hashed_password);
-    
+
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_a'];
@@ -97,14 +89,14 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
         exit();
     } else {
         return "&#8226 Errore durante la registrazione";
-    }   
+    }
 }
 
 
 function signup_privato($first_name, $last_name, $email, $address, $password, $type)
 {
     $conn = db_connect();
-    $data=[];
+    $data = [];
 
     $first_name = mysqli_real_escape_string($conn, $first_name);
     $last_name = mysqli_real_escape_string($conn, $last_name);
@@ -122,7 +114,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
-    
+
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
@@ -130,7 +122,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
         exit();
     } else {
         return "&#8226 Errore durante la registrazione";
-    }  
+    }
 }
 
 function login_user($email, $password)
@@ -176,7 +168,6 @@ function login_user($email, $password)
     }
 
     return "&#8226 Email non esistente";
-
 }
 function is_password_correct($password, $hash)
 {
@@ -184,26 +175,43 @@ function is_password_correct($password, $hash)
 }
 
 
-function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,$casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria,$azienda,$images){
+function new_product($conn, $titolo, $descrizione, $prezzo, $tipo_prodotto, $altezza, $larghezza, $profondita, $spessore, $modello, $casa_produttrice, $indirizzo_magazzino, $forma, $tipo, $categoria, $azienda, $images)
+{
     $oggi = date('Y-m-d H:i:s');
 
-    $main_sql= "INSERT INTO `prodotto` (`id_p`, `titolo`, `descrizione`, `prezzo`,
+    $main_sql = "INSERT INTO `prodotto` (`id_p`, `titolo`, `descrizione`, `prezzo`,
     `data_inserimento`, `tipo_prodotto_finito`, `altezza`, `larghezza`,
     `profondita`, `spessore`, `modello`, `casa_produttrice`,
     `indirizzo_magazzino`, `forma`, `tipo`, `hidden`, `id_pc`, `id_cat`, `id_a`)
     VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, false, NULL, ?, ?)";
 
     $stmt = $conn->prepare($main_sql);
-    $stmt->bind_param("ssdssddddsssssii", $titolo, $descrizione, $prezzo, $oggi,
-    $tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,
-    $casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria, $azienda);
+    $stmt->bind_param(
+        "ssdssddddsssssii",
+        $titolo,
+        $descrizione,
+        $prezzo,
+        $oggi,
+        $tipo_prodotto,
+        $altezza,
+        $larghezza,
+        $profondita,
+        $spessore,
+        $modello,
+        $casa_produttrice,
+        $indirizzo_magazzino,
+        $forma,
+        $tipo,
+        $categoria,
+        $azienda
+    );
     $stmt->execute();
     $stmt->close();
 
-    $last_element_sql="SELECT id_p FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
+    $last_element_sql = "SELECT id_p FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
     $result = $conn->query($last_element_sql);
 
-    $ultimo_record="pippo";
+    $ultimo_record = "pippo";
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $ultimo_record = $row;
@@ -211,27 +219,26 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     } else {
         // echo "La tabella è vuota.";
     }
-    $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
+    $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
-  if (isset($images) && !empty($images)) {
-    mkdir("../assets/img/products/" . implode($ultimo_record));
-    for ($i = 0; $i < count($images['name']); $i++) {
-    $name = explode('.', $images['name'][$i]);
-      $extension = end($name);
-      $tmp_name = $images['tmp_name'][$i];
-      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
-      $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
-      $stmt = $conn->prepare($image_sql);
-      $stmt->bind_param("si",$formedstring,$ultimo_record);
-      $stmt->execute();
-      $stmt->close();
+    if (isset($images) && !empty($images)) {
+        mkdir("../assets/img/products/" . implode($ultimo_record));
+        for ($i = 0; $i < count($images['name']); $i++) {
+            $name = explode('.', $images['name'][$i]);
+            $extension = end($name);
+            $tmp_name = $images['tmp_name'][$i];
+            move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+            $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+            $stmt = $conn->prepare($image_sql);
+            $stmt->bind_param("si", $formedstring, $ultimo_record);
+            $stmt->execute();
+            $stmt->close();
+        }
+        // echo count($images['name']) . " immagini caricate con successo!";
+
+    } else {
+        // echo "Nessuna immagine selezionata!";
     }
-    // echo count($images['name']) . " immagini caricate con successo!";
-
-  } else {
-    // echo "Nessuna immagine selezionata!";
-  }
-
 }
 
 function get_user($conn, $table, $email)
@@ -242,9 +249,21 @@ function get_user($conn, $table, $email)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    if($data === NULL){
+    if ($data === NULL) {
         0;
     }
     return $data;
 }
 
+function get_products($conn,$azienda){
+    $sql = "SELECT * FROM prodotto WHERE id_a = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if ($data === NULL) {
+        0;
+    }
+    return $data;
+}
