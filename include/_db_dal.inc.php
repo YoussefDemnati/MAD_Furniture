@@ -26,24 +26,6 @@ function get_flyers($conn, $id){
     return $rows;
 }
 
-function get_categories($conn){
-    $sql = "SELECT *
-            FROM categoria";
-    $result = $conn->query($sql);
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
-    return $rows;
-}
-
-        $error = $conn->connect_error;
-        $error_date = date('Y-m-d H:i:s');
-        $message = "{$error_date} | {$error} \r\n";
-        file_put_contents("db_log.txt", $message, FILE_APPEND);
-        return false;
-    } else {
-        return $conn;
-    }
-}
-
 
 function debug_to_console($data)
 {
