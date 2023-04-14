@@ -250,12 +250,13 @@ function get_user($conn, $table, $email)
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
     if ($data === NULL) {
-        0;
+        return 0;
     }
     return $data;
 }
 
-function get_products($conn,$azienda){
+function get_products($conn, $azienda)
+{
     $sql = "SELECT * FROM prodotto WHERE id_a = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $azienda);
@@ -263,21 +264,60 @@ function get_products($conn,$azienda){
     $result = $stmt->get_result();
     $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
     if ($data === NULL) {
-        0;
+        return 0;
     }
     return $data;
 }
 
-function delete_product($conn,$prodotto){
+function delete_product($conn, $prodotto)
+{
     $sql = "DELETE FROM prodotti WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $prodotto);
     $stmt->execute();
 
-    if($stmt->affected_rows > 0) {
+    if ($stmt->affected_rows > 0) {
         header("products.php");
     } else {
         echo "Errore durante la cancellazione del prodotto.";
     }
     $stmt->close();
+}
+
+function total_sales($conn,$azienda)
+{
+    $sql = "SELECT SUM(p.prezzo)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    WHERE a.id_a=? and o.data_esecuzione=DATE(NOW());";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return implode($data);
+}
+
+function net_profit($conn,$azienda)
+{
+    $sql = "SELECT SUM(p.prezzo)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    WHERE a.id_a=? and DATEPART(month, o.data_esecuzione) = DATEPART(month,DATE(NOW()));";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return implode($data);
 }
