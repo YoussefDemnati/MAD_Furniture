@@ -34,17 +34,6 @@ function get_categories($conn){
     return $rows;
 }
 
-        $error = $conn->connect_error;
-        $error_date = date('Y-m-d H:i:s');
-        $message = "{$error_date} | {$error} \r\n";
-        file_put_contents("db_log.txt", $message, FILE_APPEND);
-        return false;
-    } else {
-        return $conn;
-    }
-}
-
-
 function debug_to_console($data)
 {
     $output = $data;
@@ -213,24 +202,24 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     }
     $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
-  if (isset($images) && !empty($images)) {
-    mkdir("../assets/img/products/" . implode($ultimo_record));
-    for ($i = 0; $i < count($images['name']); $i++) {
-    $name = explode('.', $images['name'][$i]);
-      $extension = end($name);
-      $tmp_name = $images['tmp_name'][$i];
-      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
-      $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
-      $stmt = $conn->prepare($image_sql);
-      $stmt->bind_param("si",$formedstring,$ultimo_record);
-      $stmt->execute();
-      $stmt->close();
+    if (isset($images) && !empty($images)) {
+        mkdir("../assets/img/products/" . implode($ultimo_record));
+        for ($i = 0; $i < count($images['name']); $i++) {
+        $name = explode('.', $images['name'][$i]);
+        $extension = end($name);
+        $tmp_name = $images['tmp_name'][$i];
+        move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+        $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+        $stmt = $conn->prepare($image_sql);
+        $stmt->bind_param("si",$formedstring,$ultimo_record);
+        $stmt->execute();
+        $stmt->close();
     }
     // echo count($images['name']) . " immagini caricate con successo!";
 
-  } else {
+    } else {
     // echo "Nessuna immagine selezionata!";
-  }
+    }
 
 }
 
@@ -243,17 +232,7 @@ function get_user($conn, $table, $email)
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
     if($data === NULL){
-        0;
+        return 0;
     }
     return $data;
 }
-
-function get_categories(){
-    $conn = db_connect();
-
-    $query = "SELECT id_cat, nome FROM categoria";
-    $result = mysqli_query($conn, $query);
-
-    return $result->fetch_all(MYSQLI_ASSOC); 
-}
-
