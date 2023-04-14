@@ -75,6 +75,7 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_a'];
+        $_SESSION["tipo"] = "azienda";
         header("Location: ../index.php");
         exit();
     } else {
@@ -108,6 +109,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
+        $_SESSION["tipo"] = "privato";
         header("Location: ../index.php");
         exit();
     } else {
@@ -225,7 +227,7 @@ function get_user($conn, $table, $email)
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
     if($data === NULL){
-        0;
+        return 0;
     }
     return $data;
 }
@@ -239,3 +241,6 @@ function get_categories(){
     return $result->fetch_all(MYSQLI_ASSOC); 
 }
 
+function check_user_type(){
+    if($_SESSION())
+}
