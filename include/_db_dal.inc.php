@@ -105,7 +105,6 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
-    
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
@@ -235,12 +234,8 @@ function get_user($conn, $table, $email)
 function get_categories(){
     $conn = db_connect();
 
-    $query = "SELECT id_cat, nome FROM categoria";
+    $query = "SELECT id_cat, nome, descrizione FROM categoria";
     $result = mysqli_query($conn, $query);
 
     return $result->fetch_all(MYSQLI_ASSOC); 
-}
-
-function check_user_type(){
-    if($_SESSION())
 }

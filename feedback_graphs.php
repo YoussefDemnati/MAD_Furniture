@@ -50,7 +50,7 @@ margin-bottom: 10px;
     <div class="card-4">
         <span class="class-text-1">Feedbacks</span> <br>
         <div class="stars">
-            <img src="./assets/img/stars/star_4.png" alt="">
+            <img src="./assets/img/stars/star_<?=$stars_num?>.png" alt="">
             </div>
             <div class="feedback_row">5 stars   <span class="feedback_row_white">   ‎<span class="feedback_row_coloured stars_5">‎</span></span>  56%</div>
             <div class="feedback_row">4 stars   <span class="feedback_row_white">   ‎<span class="feedback_row_coloured stars_4">‎</span></span>  36%</div>
@@ -58,7 +58,7 @@ margin-bottom: 10px;
             <div class="feedback_row">2 stars   <span class="feedback_row_white">   ‎<span class="feedback_row_coloured stars_2">‎</span></span>  6%</div>
             <div class="feedback_row">1 star   <span class="feedback_row_white">   ‎<span class="feedback_row_coloured stars_1">‎</span></span>  16%</div>
          <br>
-    <canvas id="myChart5" width="400px"></canvas>
     </div>
+    
 </body>
 </html>

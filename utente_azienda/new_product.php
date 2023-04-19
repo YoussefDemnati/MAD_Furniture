@@ -1,8 +1,17 @@
 <?php
 require('_header.php');
 require('../include/_db_dal.inc.php');
+
+session_start();
+debug_to_console($_SESSION["tipo"]);
+
+if($_SESSION["tipo"] != "azienda"){
+    header("Location: ../index.php");
+}
+
 $conn = db_connect();
-$azienda = 2;
+$id_azienda = $_SESSION["id"];
+
 //DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA ciao
 if (isset($_POST['titolo'])) {
     new_product(
@@ -21,7 +30,7 @@ if (isset($_POST['titolo'])) {
         $_POST['forma'],
         $_POST['tipo'],
         $_POST['categoria'],
-        $azienda,
+        $id_azienda,
         $_FILES['immagini']
     );
 }
@@ -156,8 +165,9 @@ if (isset($_POST['titolo'])) {
                     img.setAttribute("height", "100");
                     delimg.setAttribute("width", "20");
                     delimg.setAttribute("height", "20");
-                    // delimg.setAttribute("position", "absolute");
+                    delimg.setAttribute("position", "absolute");
                     delimg.setAttribute("top", "0");
+                    //non va in "top" sto scemo
                     //da aggiustare(comprimere bene come quadrato)
                     anteprimaDiv.appendChild(img);
                     anteprimaDiv.appendChild(delimg);
