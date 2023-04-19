@@ -9,7 +9,7 @@
     $year = $currentDate->format('Y');
     $array=sales_volume($conn,$azienda,$month,$year);
     $data=$array[1];
-    $giorni_mese= 30; DA FINIRE
+    $giorni_mese= 30;//DA FINIRE
     for ($i = 1; $i <= $giorni_mese; $i++) {
         echo $i;
     }
