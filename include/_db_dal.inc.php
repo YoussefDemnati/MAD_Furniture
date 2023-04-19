@@ -284,13 +284,31 @@ function delete_product($conn, $prodotto)
     $stmt->close();
 }
 
-function total_sales($conn,$azienda)
+function total_sales($conn, $azienda)
+{
+    $sql = "SELECT IFNULL(SUM(p.prezzo),0)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE a.id_a=? and o.data_esecuzione=DATE(NOW());";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return implode($data);
+}
+
+function net_profit($conn, $azienda)
 {
     $sql = "SELECT SUM(p.prezzo)
     FROM elemento_ordine eo 
     INNER JOIN prodotto p on eo.id_p=p.id_p
     INNER JOIN azienda a on p.id_a=a.id_a
-    WHERE a.id_a=? and o.data_esecuzione=DATE(NOW());";
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE a.id_a=? and MONTH(o.data_esecuzione) = MONTH(DATE(NOW()));";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $azienda);
@@ -303,21 +321,23 @@ function total_sales($conn,$azienda)
     return implode($data);
 }
 
-function net_profit($conn,$azienda)
+function sales_volume($conn, $azienda,$mese,$anno)
 {
-    $sql = "SELECT SUM(p.prezzo)
-    FROM elemento_ordine eo 
-    INNER JOIN prodotto p on eo.id_p=p.id_p
-    INNER JOIN azienda a on p.id_a=a.id_a
-    WHERE a.id_a=? and DATEPART(month, o.data_esecuzione) = DATEPART(month,DATE(NOW()));";
+    $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
+    FROM ordine o
+    INNER JOIN elemento_ordine eo ON eo.id_o=o.id_o
+    INNER JOIN prodotto p ON p.id_p=eo.id_p
+    WHERE 
+    MONTH(o.data_esecuzione) = ? AND
+    YEAR(o.data_esecuzione) = ? AND
+    p.id_a = ?
+    GROUP BY DAY(o.data_esecuzione), o.data_esecuzione
+    ORDER BY o.data_esecuzione;";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $azienda);
+    $stmt->bind_param('iii', $mese,$anno,$azienda);
     $stmt->execute();
     $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    if ($data === NULL) {
-        return 0;
-    }
-    return implode($data);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
 }
