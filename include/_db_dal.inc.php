@@ -26,6 +26,26 @@ function get_flyers($conn, $id){
     return $rows;
 }
 
+function get_products_by_user($conn, $uid){
+    $uid = intval($uid);
+    $sql = "SELECT *
+            FROM elemento_carrello AS ec
+            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+            WHERE id_u = $uid";
+    $result = $conn->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+
+function get_total_price($conn, $uid){
+    $products = get_products_by_user($conn, $uid);
+    $total_price = 0;
+    foreach($products as $product){
+        $total_price += $product["prezzo"]*$product["quantita"];
+    }
+    return $total_price;
+}
+
 function get_categories($conn){
     $sql = "SELECT *
             FROM categoria";
@@ -115,6 +135,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
+        $_SESSION["tipo"] = "privato";
         header("Location: ../index.php");
         exit();
     } else {
