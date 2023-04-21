@@ -23,7 +23,7 @@
       <div class="nav_buttons">
         <button class="btn_search"></button>
         <button class="btn_user"></button>
-        <button class="btn_cart"></button>
+        <button class="btn_cart"><a href="utente_registrato/cart.php">ds</a></button>
       </div>
     </nav>
     <div class="content">
