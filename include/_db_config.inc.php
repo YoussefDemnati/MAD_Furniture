@@ -1,5 +1,5 @@
-
-<?php 
+<?php
+session_start();
 $servername = "localhost";
 $db_username = "my_madfurniture";
 $db_password = "password.123";
