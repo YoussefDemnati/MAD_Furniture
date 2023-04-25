@@ -298,7 +298,7 @@ function total_sales($conn, $azienda)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return implode($data);
+    return number_format(implode($data),2);
 }
 
 function net_profit($conn, $azienda)
@@ -318,10 +318,10 @@ function net_profit($conn, $azienda)
     if ($data === NULL) {
         return 0;
     }
-    return implode($data);
+    return number_format(implode($data),2);
 }
 
-function sales_volume($conn, $azienda,$mese,$anno)
+function sales_volume($conn,$azienda,$mese,$anno)
 {
     $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
     FROM ordine o
@@ -336,6 +336,99 @@ function sales_volume($conn, $azienda,$mese,$anno)
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('iii', $mese,$anno,$azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+function get_sales_volume_per_5days($conn,$azienda,$mese,$anno){
+    if($mese==0){
+        $mese=12;
+        $year-=1;
+    }
+    $array=sales_volume($conn,$azienda,$mese,$anno);
+    $somma_mese=[0, 0, 0, 0, 0, 0];
+    $media_mese=[0, 0, 0, 0, 0, 0];
+    foreach($array as $a){
+        for ($i= 0; $i < 6; $i++) {
+            if(intval(substr($a["giorno"],8,10))>=($i*5) && intval(substr($a["giorno"],8,10))<=($i+1)*5){
+                $somma_mese[$i]+=intval($a["guadagno"]);
+            }
+        }
+    }
+
+    for ($i= 0; $i < count($somma_mese); $i++) {
+      $media_mese[$i]=$somma_mese[$i]/5;
+    }
+
+    return $media_mese;
+}
+
+function getMonthName($monthNum) {
+    $months = array(
+        1 => 'Gennaio',
+        2 => 'Febbraio',
+        3 => 'Marzo',
+        4 => 'Aprile',
+        5 => 'Maggio',
+        6 => 'Giugno',
+        7 => 'Luglio',
+        8 => 'Agosto',
+        9 => 'Settembre',
+        10 => 'Ottobre',
+        11 => 'Novembre',
+        12 => 'Dicembre'
+    );
+    return $months[$monthNum];
+}
+
+function get_avg_orders($conn,$azienda,$mese,$anno){
+    if($mese==0){
+        $mese=12;
+        $year-=1;
+    }
+    $sql = "SELECT AVG(p.prezzo)
+            FROM ordine o 
+            INNER JOIN elemento_ordine eo ON eo.id_o=o.id_o
+            INNER JOIN prodotto p ON p.id_p=eo.id_p
+            WHERE MONTH(o.data_esecuzione) = ?
+            AND YEAR(o.data_esecuzione) = ?
+            AND p.id_a = ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ssi', $mese,$anno,$azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return number_format(implode($data),2);
+}
+function get_most_sold($conn,$azienda){
+    $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
+    FROM ordine o 
+    INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
+    INNER JOIN prodotto p ON p.id_p=eo.id_p 
+    WHERE p.id_a = ?
+    GROUP BY p.id_p 
+    ORDER BY count(p.id_p) DESC 
+    LIMIT 1);";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
+}
+function get_image($conn,$prodotto){
+    $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
+    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $prodotto);
     $stmt->execute();
     $result = $stmt->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);

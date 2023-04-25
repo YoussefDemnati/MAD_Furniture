@@ -1,4 +1,3 @@
-
 <?php 
 $servername = "localhost";
 $db_username = "my_madforniture";
