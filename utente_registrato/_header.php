@@ -4,7 +4,9 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
+
   <body>
     <nav>
       <div class="logo">
@@ -24,4 +26,15 @@
         <button class="btn_cart"></button>
       </div>
     </nav>
+    <script>
+      $(".btn_cart").click(function(){
+          window.location.href="cart.php";
+      });
+      $(".btn_user").click(function(){
+          window.location.href="profile.php";
+      });
+      $(".btn_search").click(function(){
+          window.location.href="index.php";
+      });
+    </script>
     <div class="content">
