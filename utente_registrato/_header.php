@@ -24,4 +24,15 @@
         <button class="btn_cart"></button>
       </div>
     </nav>
+    <script>
+      $(".btn_cart").click(function(){
+          window.location.href="utente_registrato/cart.php";
+      });
+      $(".btn_user").click(function(){
+          window.location.href="utente_registrato/profile.php";
+      });
+      $(".btn_search").click(function(){
+          window.location.href="index.php";
+      });
+    </script>
     <div class="content">

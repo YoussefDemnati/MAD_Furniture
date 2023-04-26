@@ -46,14 +46,6 @@ function get_total_price($conn, $uid){
     return $total_price;
 }
 
-function get_categories($conn){
-    $sql = "SELECT *
-            FROM categoria";
-    $result = $conn->query($sql);
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
-    return $rows;
-}
-
 
 function debug_to_console($data)
 {
@@ -64,6 +56,10 @@ function debug_to_console($data)
     echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 }
 
+function debug_to_json($data){
+    $output = json_encode($data);
+    echo "<script>console.log(JSON.stringify(" . $output . "));</script>";
+}
 
 function check_account_exists($conn, $table, $email)
 {
@@ -269,3 +265,26 @@ function get_categories(){
     return $result->fetch_all(MYSQLI_ASSOC); 
 }
 
+function get_product($conn, $id){
+    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
+    INNER JOIN materiale m on m.id_m = p.id_m 
+    INNER JOIN categoria c on c.id_cat = p.id_cat 
+    INNER JOIN azienda a on a.id_a = p.id_a
+    WHERE p.id_p = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data;
+}
+
+function get_product_rating($conn, $id){
+    $sql = "SELECT * FROM feedback WHERE id_p = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_all(MYSQLI_ASSOC);
+    return $data;
+}
