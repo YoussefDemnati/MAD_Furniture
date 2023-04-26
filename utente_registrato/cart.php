@@ -43,7 +43,7 @@
                 <div class="quantity">
                     <input readonly id="<?=$cart_item["idEc"]?>" type="number" min="1" max="90" step="1" value="<?=$cart_item["quantita"]?>">
                 </div>
-                <div class="cart-item-price">
+                <div class="cart-item-price" data-price="<?=$cart_item["prezzo"]?>">
                     <h1><?=($cart_item["prezzo"]*$cart_item["quantita"])?>$</h1>
                 </div>
             </div>
@@ -63,6 +63,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        var subtotal = 0;
         jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
         jQuery('.quantity').each(function() {
             var spinner = jQuery(this),
@@ -73,9 +74,13 @@
                 max = input.attr('max'),
                 idEc = input.attr('id'),
                 oldValue = parseFloat(input.val());
+                //console.log(spinner.next().text());
+                //console.log($(".subtotal").find("h1").text());
+                subtotal += parseFloat(spinner.next().attr("data-price")) * oldValue;
+                console.log(subtotal);
 
             btnUp.click(function() {
-                //var oldValue = parseFloat(input.val());
+                oldValue = parseFloat(input.val());
                 if (oldValue >= max) {
                     var newVal = oldValue;
                 } else {
@@ -87,12 +92,16 @@
                 xhttp.onload = function() {
                     console.log(this.responseText);
                 }
-                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${oldValue}&qty=1`);
+                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${newVal-1}&qty=1`);
                 xhttp.send();
+                spinner.next().html(`<h1>${newVal*spinner.next().attr("data-price")}$</h1>`);
+                subtotal += parseFloat(spinner.next().attr("data-price"));
+                console.log(subtotal);
+                $(".subtotal").find("h1").html(`${subtotal}` + "$");
             });
 
             btnDown.click(function() {
-                //var oldValue = parseFloat(input.val());
+                oldValue = parseFloat(input.val());
                 if (oldValue <= min) {
                     var newVal = oldValue;
                 } else {
@@ -102,20 +111,42 @@
                 spinner.find("input").trigger("change");
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    //document.getElementById("txtHint").innerHTML = this.responseText;
+                    console.log(this.responseText);
                 }
-                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${oldValue}&qty=-1`, true);
+                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${newVal+1}&qty=-1`, true);
                 xhttp.send();
+                spinner.next().html(`<h1>${newVal*spinner.next().attr("data-price")}$</h1>`);
+                subtotal -= parseFloat(spinner.next().attr("data-price"));
+                $(".subtotal").find("h1").html(`${subtotal}` + "$");
             });
         });
 
         $("button.cart-delete-all").click(function() {
             $(".cart-left > .cart-item").remove();
         });
-
-        $(".cart-item-delete").click(function() {
-            
+        
+        $(".cart-item").each(function(){
+            var cartItem = jQuery(this),
+                input = cartItem.find('input[type="number"]'),
+                btnDelete = cartItem.find(".cart-item-delete"),
+                idEc = input.attr('id'),
+                oldValue = parseFloat(input.val());
+            console.log(idEc);
+            btnDelete.click(function() {
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    console.log(this.responseText);
+                }
+                xhttp.open("GET", `delete_item.php?idEc=${idEc}`);
+                xhttp.send();
+                subtotal = jQuery(".quantity").each(function(){
+                    subtotal += parseFloat(cartItem.next().attr("data-price")) * oldValue
+                });
+                $(".subtotal").find("h1").html(`${subtotal}` + "$"); //DA FARE
+                cartItem.remove();
+            });
         });
+        
     });
 </script>
 <?php include("_footer.php") ?>
