@@ -20,6 +20,7 @@
       </ul>
 
       <div class="nav_buttons">
+        <input class="input_search" placeholder="Ricerca prodotti"><button class="input_search_i">></button>
         <button class="btn_search"></button>
         <button class="btn_user"></button>
       </div>

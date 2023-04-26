@@ -344,7 +344,7 @@ function sales_volume($conn,$azienda,$mese,$anno)
 function get_sales_volume_per_5days($conn,$azienda,$mese,$anno){
     if($mese==0){
         $mese=12;
-        $year-=1;
+        $anno-=1;
     }
     $array=sales_volume($conn,$azienda,$mese,$anno);
     $somma_mese=[0, 0, 0, 0, 0, 0];
@@ -385,7 +385,7 @@ function getMonthName($monthNum) {
 function get_avg_orders($conn,$azienda,$mese,$anno){
     if($mese==0){
         $mese=12;
-        $year-=1;
+        $anno-=1;
     }
     $sql = "SELECT AVG(p.prezzo)
             FROM ordine o 
@@ -424,7 +424,7 @@ function get_most_sold($conn,$azienda){
     }
     return $data;
 }
-function get_image($conn,$prodotto){
+function get_images($conn,$prodotto){
     $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
     $stmt = $conn->prepare($sql);
     $stmt = $conn->prepare($sql);
@@ -433,4 +433,23 @@ function get_image($conn,$prodotto){
     $result = $stmt->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
+}
+function get_less_sold($conn,$azienda){
+    $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
+    FROM ordine o 
+    INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
+    INNER JOIN prodotto p ON p.id_p=eo.id_p 
+    WHERE p.id_a = ?
+    GROUP BY p.id_p 
+    ORDER BY count(p.id_p) ASC 
+    LIMIT 1);";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
 }

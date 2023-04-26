@@ -20,4 +20,7 @@ $year = $currentDate->format('Y');
     <?php require("grafico_avgorders.php"); ?>
     <br><br>
     <?php require("card_most_sold.php"); ?>
+    <br><br>
+    <?php require("card_less_sold.php"); ?>
 </div>
+<?php require('_footer.php'); ?>

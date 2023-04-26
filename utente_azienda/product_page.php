@@ -2,7 +2,8 @@
 require('_header.php');
 require('../include/_db_dal.inc.php');
 $conn = db_connect();
-
+$azienda = 1;
+// controlla sessione azienda
 
 if(isset($_POST['edit'])){
     debug_to_console("edit " . $_POST['prodotto']);
