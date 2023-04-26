@@ -41,7 +41,7 @@
             <div class="cart-item-info">
                 <h3><?=$cart_item["titolo"]?></h3>
                 <div class="quantity">
-                    <input type="number" min="1" max="90" step="1" value="<?=$cart_item["quantita"]?>">
+                    <input readonly id="<?=$cart_item["idEc"]?>" type="number" min="1" max="90" step="1" value="<?=$cart_item["quantita"]?>">
                 </div>
                 <div class="cart-item-price">
                     <h1><?=($cart_item["prezzo"]*$cart_item["quantita"])?>$</h1>
@@ -49,33 +49,7 @@
             </div>
             <button class="cart-item-delete">Delete</button>
         </div>
-        <?php } ?><!--
-        <div class="cart-item">
-            <img src="../assets/img/table_lamp.png" alt="">
-            <div class="cart-item-info">
-                <h3>Vintage Table Lamp in Wood and Metal</h3>
-                <div class="quantity">
-                    <input type="number" min="1" max="9" step="1" value="1">
-                </div>
-                <div class="cart-item-price">
-                    <h1>36,98$</h1>
-                </div>
-            </div>
-            <button class="cart-item-delete">Delete</button>
-        </div>
-        <div class="cart-item">
-            <img src="../assets/img/kitchen.png" alt="">
-            <div class="cart-item-info">
-                <h3>Vintage Table Lamp in Wood and Metal</h3>
-                <div class="quantity">
-                    <input type="number" min="1" max="9" step="1" value="1">
-                </div>
-                <div class="cart-item-price">
-                    <h1>56,90$</h1>
-                </div>
-            </div>
-            <button class="cart-item-delete">Delete</button>
-        </div>-->
+        <?php } ?>
     </div>
     <div class="cart-right">
         <div class="subtotal">
@@ -96,10 +70,12 @@
                 btnUp = spinner.find('.quantity-up'),
                 btnDown = spinner.find('.quantity-down'),
                 min = input.attr('min'),
-                max = input.attr('max');
+                max = input.attr('max'),
+                idEc = input.attr('id'),
+                oldValue = parseFloat(input.val());
 
             btnUp.click(function() {
-                var oldValue = parseFloat(input.val());
+                //var oldValue = parseFloat(input.val());
                 if (oldValue >= max) {
                     var newVal = oldValue;
                 } else {
@@ -107,10 +83,16 @@
                 }
                 spinner.find("input").val(newVal);
                 spinner.find("input").trigger("change");
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    console.log(this.responseText);
+                }
+                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${oldValue}&qty=1`);
+                xhttp.send();
             });
 
             btnDown.click(function() {
-                var oldValue = parseFloat(input.val());
+                //var oldValue = parseFloat(input.val());
                 if (oldValue <= min) {
                     var newVal = oldValue;
                 } else {
@@ -118,6 +100,12 @@
                 }
                 spinner.find("input").val(newVal);
                 spinner.find("input").trigger("change");
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function() {
+                    //document.getElementById("txtHint").innerHTML = this.responseText;
+                }
+                xhttp.open("GET", `update_prod_qty.php?idEc=${idEc}&curval=${oldValue}&qty=-1`, true);
+                xhttp.send();
             });
         });
 
@@ -127,7 +115,7 @@
 
         $(".cart-item-delete").click(function() {
             
-        })
+        });
     });
 </script>
 <?php include("_footer.php") ?>
