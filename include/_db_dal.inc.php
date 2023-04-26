@@ -46,15 +46,6 @@ function get_total_price($conn, $uid){
     return $total_price;
 }
 
-function get_categories($conn){
-    $sql = "SELECT *
-            FROM categoria";
-    $result = $conn->query($sql);
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
-    return $rows;
-}
-
-
 function debug_to_console($data)
 {
     $output = $data;
