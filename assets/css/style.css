@@ -217,11 +217,12 @@ input[type=number]::-webkit-outer-spin-button
   border: 0;
   font-weight: bold;
   font-family: "inter", sans-serif;
-  font-size: 40px;
+  font-size: 20pt;
 }
 
 .back-button:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .product-image {
@@ -258,6 +259,9 @@ input[type=number]::-webkit-outer-spin-button
 
 .product-price {
   grid-area: product-price;
+  font-size: 35pt;
+  font-weight: 700;
+  margin-top: 10px;
 }
 
 .product-specs {
@@ -267,8 +271,13 @@ input[type=number]::-webkit-outer-spin-button
 
 .product-specs-key {
   grid-area: product-specs-key;
-  width: 50%;
+  width: 35%;
   float: left;
+
+}
+
+.product-specs-key ul{
+  list-style: none;
 }
 
 .product-specs-value {
@@ -277,19 +286,51 @@ input[type=number]::-webkit-outer-spin-button
   float: left;
 }
 
+.product-specs-value ul{
+  list-style: none;
+}
+
 .product-buy {
   grid-area: product-buy;
+  background-color : #C19E54 !important; 
 }
 
 .product-add {
   grid-area: product-add;
+  background-color : #4F4F4F !important;
+}
+
+.product-add, .product-buy{
+  width: 250px;
+  height: auto;
+  padding: 10px 20px !important;
+  font-size: 20pt !important;
+  border: 0;
+  color: #ffffff !important;
+  border-radius: 5px !important;
 }
 
 .product-about {
   grid-area: product-about;
 }
+.product-about ul{
+  margin-left: 30px;
+}
+.product-about p{
+  font-weight: 700;
+  font-size: 17pt;
+  margin-bottom: 0px;
+  margin-top: 30px;
+}
+
+.product-about, 
+.product-specs-key,
+.product-specs-value{
+  font-size: 13pt;
+}
 
 .product-desc {
+  margin-top: 25px;
   display: grid;
   column-gap: 50px;
   grid-template-areas: 
@@ -297,8 +338,9 @@ input[type=number]::-webkit-outer-spin-button
     "product-image product-image product-image product-image product-rating product-rating . . "
     "product-image product-image product-image product-image product-price product-price . . "
     "product-image product-image product-image product-image product-specs product-specs product-specs product-specs"
-    "product-image product-image product-image product-image product-buy product-buy product-add product-add";
-}
+    "product-image product-image product-image product-image product-buy product-add . .";
+  justify-content: start;
+  }
 
 /* --------------------- PROFILE OPTIONS --------------------- */
 .profile {
@@ -1051,3 +1093,166 @@ h2{
 }
 
 /* ---------------------- NEW PRODUCT ---------------------*/
+
+/* .product-image {
+  grid-area: product-image;
+  background-color: #f5f5f5;
+  width: 500px;
+  aspect-ratio: 1.3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.product-image > img {
+  margin: 0 auto;
+  max-width: 90%;
+  max-height: 90%;
+  display: block;
+}
+
+.product-name {
+  grid-area: product-name;
+  font-weight: bold;
+  font-family: "inter", sans-serif;
+  font-size: 40px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.product-rating {
+  grid-area: product-rating;
+}
+
+.product-price {
+  grid-area: product-price;
+}
+
+.product-specs {
+  grid-area: product-specs;
+  width: 100%;
+}
+
+.product-specs-key {
+  grid-area: product-specs-key;
+  width: 50%;
+  float: left;
+}
+
+.product-specs-value {
+  grid-area: product-specs-value;
+  width: 50%;
+  float: left;
+}
+
+.product-buy {
+  grid-area: product-buy;
+}
+
+.product-add {
+  grid-area: product-add;
+}
+
+.product-about {
+  grid-area: product-about;
+}
+
+.product-desc {
+  display: grid;
+  column-gap: 50px;
+  grid-template-areas: 
+    "product-image product-image product-image product-image product-name product-name product-name product-name"
+    "product-image product-image product-image product-image product-rating product-rating . . "
+    "product-image product-image product-image product-image product-price product-price . . "
+    "product-image product-image product-image product-image product-specs product-specs product-specs product-specs"
+    "product-image product-image product-image product-image product-buy product-buy product-add product-add";
+} */
+
+.new_product_form input, .new_product_form textarea, .new_product_form select{
+  background-color: #F5F5F5;
+  color: #4F4F4F;
+  font-size: 16pt;
+  border-color: #BDBDBD;
+  border-style: solid;
+  border-radius: 3px;
+  margin-top: 10px;
+  padding: 5px;
+}
+.new_product_form select{
+  height: 35px;
+}
+.new_product_form label{
+  
+  font-size: 18pt;
+  color: #4F4F4F;
+}
+.new_element{
+  margin-top: 20px;
+}
+
+.new_button {
+  width: auto;
+  height: auto;
+  padding: 10px 20px !important;
+  font-size: 20pt !important;
+  background-color : #C19E54 !important; 
+  border: 0;
+  color: #ffffff !important;
+  border-radius: 5px !important;
+}
+
+/*fallo figo*/
+
+
+/* ---------------------- FEEDBACK ---------------------*/
+.card-4{
+  width: 450px;
+  height: 240px;
+  background-color: #FFFFFF ;
+  border-radius: 10px;
+  font-size: 16pt;
+  font-weight: 500;
+  margin-top: 30px;
+  /* mettere le shadow */
+}
+.stars{
+  margin:10px;
+}
+.feedback_row{
+margin-bottom: 10px;
+}
+.feedback_row_white{
+  display: inline-block;
+  width: 70%;
+  background-color: #F3F3F3;
+}
+.feedback_row_coloured{
+  display: inline-block;
+  background-color: #C19E54;
+}
+.stars_5{
+  width: 60%;
+}
+.stars_4{
+  width: 40%;
+}
+.stars_3{
+  width: 20%;
+}
+.stars_2{
+  width: 70%;
+}
+.stars_1{
+  width: 20%;
+}
+.card-4 span{
+  font-weight: 700;
+  font-size: 19pt;
+  border-radius: 5px;
+}
+
+/* .card-4 b{
+  font-weight: 16pt;
+} */
