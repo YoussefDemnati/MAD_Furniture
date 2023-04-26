@@ -4,6 +4,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css" rel="stylesheet">
+
   </head>
   <body>
     <nav>
@@ -21,7 +23,7 @@
       <div class="nav_buttons">
         <button class="btn_search"></button>
         <button class="btn_user"></button>
-        <button class="btn_cart"></button>
+        <button class="btn_cart"><a href="utente_registrato/cart.php">ds</a></button>
       </div>
     </nav>
     <div class="content">

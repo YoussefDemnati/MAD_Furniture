@@ -26,6 +26,34 @@ function get_flyers($conn, $id){
     return $rows;
 }
 
+function get_products_by_user($conn, $uid){
+    $uid = intval($uid);
+    $sql = "SELECT *
+            FROM elemento_carrello AS ec
+            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+            WHERE id_u = $uid";
+    $result = $conn->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+
+function get_total_price($conn, $uid){
+    $products = get_products_by_user($conn, $uid);
+    $total_price = 0;
+    foreach($products as $product){
+        $total_price += $product["prezzo"]*$product["quantita"];
+    }
+    return $total_price;
+}
+
+function get_categories($conn){
+    $sql = "SELECT *
+            FROM categoria";
+    $result = $conn->query($sql);
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+
 
 function debug_to_console($data)
 {
@@ -196,24 +224,24 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     }
     $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
-  if (isset($images) && !empty($images)) {
-    mkdir("../assets/img/products/" . implode($ultimo_record));
-    for ($i = 0; $i < count($images['name']); $i++) {
-    $name = explode('.', $images['name'][$i]);
-      $extension = end($name);
-      $tmp_name = $images['tmp_name'][$i];
-      move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
-      $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
-      $stmt = $conn->prepare($image_sql);
-      $stmt->bind_param("si",$formedstring,$ultimo_record);
-      $stmt->execute();
-      $stmt->close();
+    if (isset($images) && !empty($images)) {
+        mkdir("../assets/img/products/" . implode($ultimo_record));
+        for ($i = 0; $i < count($images['name']); $i++) {
+        $name = explode('.', $images['name'][$i]);
+        $extension = end($name);
+        $tmp_name = $images['tmp_name'][$i];
+        move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+        $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+        $stmt = $conn->prepare($image_sql);
+        $stmt->bind_param("si",$formedstring,$ultimo_record);
+        $stmt->execute();
+        $stmt->close();
     }
     // echo count($images['name']) . " immagini caricate con successo!";
 
-  } else {
+    } else {
     // echo "Nessuna immagine selezionata!";
-  }
+    }
 
 }
 
@@ -229,6 +257,7 @@ function get_user($conn, $table, $email)
         return 0;
     }
     return $data;
+
 }
 
 function get_categories(){
@@ -239,3 +268,4 @@ function get_categories(){
 
     return $result->fetch_all(MYSQLI_ASSOC); 
 }
+
