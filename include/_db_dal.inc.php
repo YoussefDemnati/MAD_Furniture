@@ -54,6 +54,7 @@ function get_categories($conn){
     return $rows;
 }
 
+
 function debug_to_console($data)
 {
     $output = $data;
@@ -102,6 +103,7 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_a'];
+        $_SESSION["tipo"] = "azienda";
         header("Location: ../index.php");
         exit();
     } else {
@@ -131,7 +133,6 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
-    
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
@@ -256,4 +257,15 @@ function get_user($conn, $table, $email)
         return 0;
     }
     return $data;
+
 }
+
+function get_categories(){
+    $conn = db_connect();
+
+    $query = "SELECT id_cat, nome, descrizione FROM categoria";
+    $result = mysqli_query($conn, $query);
+
+    return $result->fetch_all(MYSQLI_ASSOC); 
+}
+
