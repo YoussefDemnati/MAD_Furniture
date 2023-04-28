@@ -14,6 +14,7 @@
       </div>
 
       <ul class="links">
+
         <li><a href="#">DASHBOARD</a></li>
         <li><a href="#">MY PRODUCTS</a></li>
         <li><a href="#">NEW PRODUCT</a></li>
@@ -23,6 +24,7 @@
         <input class="input_search" placeholder="Ricerca prodotti"><button class="input_search_i">></button>
         <button class="btn_search"></button>
         <button class="btn_user"></button>
+
       </div>
     </nav>
     <div class="content">
