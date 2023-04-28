@@ -238,7 +238,6 @@ function new_product($conn, $titolo, $descrizione, $prezzo, $tipo_prodotto, $alt
     }
     $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
-
     if (isset($images) && !empty($images)) {
         mkdir("../assets/img/products/" . implode($ultimo_record));
         for ($i = 0; $i < count($images['name']); $i++) {
@@ -323,6 +322,7 @@ function get_product_rating($conn, $id){
     $data = $result->fetch_all(MYSQLI_ASSOC);
     return $data;
 }
+
 
 function delete_product($conn, $prodotto)
 {
