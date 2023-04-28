@@ -109,7 +109,7 @@ if (isset($_GET["prod_id"])) {
                 <li><b><?= $product["casa_produttrice"] ?></b></li>
                 <li><b><?= $product["tipo_prodotto_finito"] ?></b></li>
                 <li><b><?= $product["categoria"] ?></b></li>
-            <?php } else { ?>
+            <?php } else { ?> 
                 <li><b><?= $product["altezza"] ?></b></li>
                 <li><b><?= $product["larghezza"] ?></b></li>
                 <li><b><?= $product["spessore"] ?></b></li>
