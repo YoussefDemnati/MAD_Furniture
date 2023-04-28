@@ -3,11 +3,24 @@ include("../include/_db_dal.inc.php");
 $conn = db_connect();
 
 $idEc = $_GET["idEc"];
+$uId = $_GET["uId"];
+$action = $_GET["action"];
 
-$sql = "DELETE
-        FROM elemento_carrello
-        WHERE idEc = $idEc";
-debug_to_console("updated");
-$conn->query($sql);
-echo "updated";
-?>
+if($action == "delete_one"){
+        $sql = "DELETE
+                FROM elemento_carrello
+                WHERE idEc = $idEc";
+        $conn->query($sql);
+}
+if($action == "delete_all"){
+        $sql = "DELETE
+                FROM elemento_carrello
+                WHERE id_u = $uId";
+        $conn->query($sql);
+}
+
+$tot = "SELECT SUM(p.prezzo*ec.quantita) AS prezzo_tot
+        FROM elemento_carrello AS ec
+        INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+        WHERE ec.id_u = $uId";
+echo $conn->query($tot)->fetch_assoc()["prezzo_tot"];
