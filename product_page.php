@@ -19,12 +19,24 @@ if (isset($_GET["prod_id"])) {
         // Conta il numero di recensioni per ogni voto
         $stars_count = array_count_values(array_column($feedbacks, 'valutazione'));
         // Calcola la percentuale di ogni recensione
-        $total = count($feedback);
+        $total = count($feedbacks);
         $percentuali = array();
-        foreach ($stars_count as $voto => $num) {
+        // Inizializza un array con tutte le valutazioni possibili
+        $all_stars = array(1, 2, 3, 4, 5);
+
+        foreach ($all_stars as $voto) {
+            // Se l'array di conteggio delle valutazioni include questo voto, calcola la percentuale
+            if (isset($stars_count[$voto])) {
+                $num = $stars_count[$voto];
+                $percentuale = round(($num / $total) * 100, 2);
+            } else {
+                // Se l'array di conteggio delle valutazioni non include questo voto, imposta la percentuale a 0
+                $percentuale = 0;
+            }
+        
             $percentuali[] = array(
                 'titolo' => $voto,
-                'percentuale' => round(($num / $total) * 100, 2)
+                'percentuale' => $percentuale
             );
         }
         debug_to_json($percentuali);
@@ -133,11 +145,11 @@ if (isset($_GET["prod_id"])) {
     <div class="stars">
         <img src="./assets/img/stars/star_<?= $stars_num ?>.png" alt="">
     </div>
-    <div class="feedback_row">5 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_5" style="width: <?=0?>">‎</span></span> ‎ <b>56%</b></div>
-    <div class="feedback_row">4 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_4">‎</span></span> ‎ <b>36%</b></div>
-    <div class="feedback_row">3 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_3">‎</span></span> ‎ <b>16%</b></div>
-    <div class="feedback_row">2 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_2">‎</span></span> ‎ <b>6%</b></div>
-    <div class="feedback_row">1 star&nbsp&nbsp ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_1">‎</span></span> ‎ <b>16%</b></div>
+    <div class="feedback_row">5 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_5" style="width: <?=$percentuali[0]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[0]["percentuale"])?>%</b></div>
+    <div class="feedback_row">4 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_4" style="width: <?=$percentuali[1]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[1]["percentuale"])?>%</b></div>
+    <div class="feedback_row">3 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_3"style="width: <?=$percentuali[2]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[2]["percentuale"])?>%</b></div>
+    <div class="feedback_row">2 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_2"style="width: <?=$percentuali[3]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[3]["percentuale"])?>%</b></div>
+    <div class="feedback_row">1 star&nbsp&nbsp ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_1" style="width: <?=$percentuali[4]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[4]["percentuale"])?>%</b></div>
     <br>
 </div>
 

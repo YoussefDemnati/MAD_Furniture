@@ -288,3 +288,7 @@ function get_product_rating($conn, $id){
     $data = $result->fetch_all(MYSQLI_ASSOC);
     return $data;
 }
+
+function new_cart_element($conn, $id){
+    
+}
