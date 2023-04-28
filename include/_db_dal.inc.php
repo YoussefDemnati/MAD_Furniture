@@ -16,7 +16,8 @@ function db_connect()
     return $conn;
 }
 
-function get_flyers($conn, $id){
+function get_flyers($conn, $id)
+{
     $id = intval($id);
     $sql = "SELECT *
             FROM promozione
@@ -25,6 +26,7 @@ function get_flyers($conn, $id){
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
 }
+
 
 function get_products_by_user($conn, $uid){
     $uid = intval($uid);
@@ -45,7 +47,6 @@ function get_total_price($conn, $uid){
     }
     return $total_price;
 }
-
 
 function debug_to_console($data)
 {
@@ -79,7 +80,7 @@ function check_account_exists($conn, $table, $email)
 function signup_azienda($company_name, $address, $email, $phone, $password)
 {
     $conn = db_connect();
-    $data=[];
+    $data = [];
     $company_name = mysqli_real_escape_string($conn, $company_name);
     $address = mysqli_real_escape_string($conn, $address);
     $email = mysqli_real_escape_string($conn, $email);
@@ -95,7 +96,7 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO azienda (nome, indirizzo, email, telefono, password) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $company_name, $address, $email, $phone, $hashed_password);
-    
+
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_a'];
@@ -104,14 +105,14 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
         exit();
     } else {
         return "&#8226 Errore durante la registrazione";
-    }   
+    }
 }
 
 
 function signup_privato($first_name, $last_name, $email, $address, $password, $type)
 {
     $conn = db_connect();
-    $data=[];
+    $data = [];
 
     $first_name = mysqli_real_escape_string($conn, $first_name);
     $last_name = mysqli_real_escape_string($conn, $last_name);
@@ -129,6 +130,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
+    
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
@@ -137,7 +139,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
         exit();
     } else {
         return "&#8226 Errore durante la registrazione";
-    }  
+    }
 }
 
 function login_user($email, $password)
@@ -183,7 +185,6 @@ function login_user($email, $password)
     }
 
     return "&#8226 Email non esistente";
-
 }
 function is_password_correct($password, $hash)
 {
@@ -191,26 +192,43 @@ function is_password_correct($password, $hash)
 }
 
 
-function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,$casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria,$azienda,$images){
+function new_product($conn, $titolo, $descrizione, $prezzo, $tipo_prodotto, $altezza, $larghezza, $profondita, $spessore, $modello, $casa_produttrice, $indirizzo_magazzino, $forma, $tipo, $categoria, $azienda, $images)
+{
     $oggi = date('Y-m-d H:i:s');
 
-    $main_sql= "INSERT INTO `prodotto` (`id_p`, `titolo`, `descrizione`, `prezzo`,
+    $main_sql = "INSERT INTO `prodotto` (`id_p`, `titolo`, `descrizione`, `prezzo`,
     `data_inserimento`, `tipo_prodotto_finito`, `altezza`, `larghezza`,
     `profondita`, `spessore`, `modello`, `casa_produttrice`,
     `indirizzo_magazzino`, `forma`, `tipo`, `hidden`, `id_pc`, `id_cat`, `id_a`)
     VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, false, NULL, ?, ?)";
 
     $stmt = $conn->prepare($main_sql);
-    $stmt->bind_param("ssdssddddsssssii", $titolo, $descrizione, $prezzo, $oggi,
-    $tipo_prodotto,$altezza,$larghezza,$profondita,$spessore,$modello,
-    $casa_produttrice,$indirizzo_magazzino,$forma,$tipo,$categoria, $azienda);
+    $stmt->bind_param(
+        "ssdssddddsssssii",
+        $titolo,
+        $descrizione,
+        $prezzo,
+        $oggi,
+        $tipo_prodotto,
+        $altezza,
+        $larghezza,
+        $profondita,
+        $spessore,
+        $modello,
+        $casa_produttrice,
+        $indirizzo_magazzino,
+        $forma,
+        $tipo,
+        $categoria,
+        $azienda
+    );
     $stmt->execute();
     $stmt->close();
 
-    $last_element_sql="SELECT id_p FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
+    $last_element_sql = "SELECT id_p FROM `prodotto` ORDER BY id_p DESC LIMIT 1;";
     $result = $conn->query($last_element_sql);
 
-    $ultimo_record="pippo";
+    $ultimo_record = "pippo";
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $ultimo_record = $row;
@@ -218,7 +236,7 @@ function new_product($conn,$titolo,$descrizione,$prezzo,$tipo_prodotto,$altezza,
     } else {
         // echo "La tabella è vuota.";
     }
-    $image_sql= "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
+    $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
     if (isset($images) && !empty($images)) {
         mkdir("../assets/img/products/" . implode($ultimo_record));
@@ -249,7 +267,22 @@ function get_user($conn, $table, $email)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    if($data === NULL){
+
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
+}
+
+function get_products($conn, $azienda)
+{
+    $sql = "SELECT * FROM prodotto WHERE id_a = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if ($data === NULL) {
         return 0;
     }
     return $data;
@@ -264,6 +297,7 @@ function get_categories(){
 
     return $result->fetch_all(MYSQLI_ASSOC); 
 }
+
 
 function get_product($conn, $id){
     $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
@@ -289,6 +323,187 @@ function get_product_rating($conn, $id){
     return $data;
 }
 
-function new_cart_element($conn, $id){
-    
+
+function delete_product($conn, $prodotto)
+{
+    $sql = "DELETE FROM prodotti WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $prodotto);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        header("products.php");
+    } else {
+        echo "Errore durante la cancellazione del prodotto.";
+    }
+    $stmt->close();
 }
+
+function total_sales($conn, $azienda)
+{
+    $sql = "SELECT IFNULL(SUM(p.prezzo),0)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE a.id_a=? and o.data_esecuzione=DATE(NOW());";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return number_format(implode($data),2);
+}
+
+function net_profit($conn, $azienda)
+{
+    $sql = "SELECT SUM(p.prezzo)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE a.id_a=? and MONTH(o.data_esecuzione) = MONTH(DATE(NOW()));";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return number_format(implode($data),2);
+}
+
+function sales_volume($conn,$azienda,$mese,$anno)
+{
+    $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
+    FROM ordine o
+    INNER JOIN elemento_ordine eo ON eo.id_o=o.id_o
+    INNER JOIN prodotto p ON p.id_p=eo.id_p
+    WHERE 
+    MONTH(o.data_esecuzione) = ? AND
+    YEAR(o.data_esecuzione) = ? AND
+    p.id_a = ?
+    GROUP BY DAY(o.data_esecuzione), o.data_esecuzione
+    ORDER BY o.data_esecuzione;";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iii', $mese,$anno,$azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+function get_sales_volume_per_5days($conn,$azienda,$mese,$anno){
+    if($mese==0){
+        $mese=12;
+        $anno-=1;
+    }
+    $array=sales_volume($conn,$azienda,$mese,$anno);
+    $somma_mese=[0, 0, 0, 0, 0, 0];
+    $media_mese=[0, 0, 0, 0, 0, 0];
+    foreach($array as $a){
+        for ($i= 0; $i < 6; $i++) {
+            if(intval(substr($a["giorno"],8,10))>=($i*5) && intval(substr($a["giorno"],8,10))<=($i+1)*5){
+                $somma_mese[$i]+=intval($a["guadagno"]);
+            }
+        }
+    }
+    for ($i= 0; $i < count($somma_mese); $i++) {
+      $media_mese[$i]=$somma_mese[$i]/5;
+    }
+    return $media_mese;
+}
+
+function getMonthName($monthNum) {
+    $months = array(
+        1 => 'Gennaio',
+        2 => 'Febbraio',
+        3 => 'Marzo',
+        4 => 'Aprile',
+        5 => 'Maggio',
+        6 => 'Giugno',
+        7 => 'Luglio',
+        8 => 'Agosto',
+        9 => 'Settembre',
+        10 => 'Ottobre',
+        11 => 'Novembre',
+        12 => 'Dicembre'
+    );
+    return $months[$monthNum];
+}
+
+function get_avg_orders($conn,$azienda,$mese,$anno){
+    if($mese==0){
+        $mese=12;
+        $anno-=1;
+    }
+    $sql = "SELECT AVG(p.prezzo)
+            FROM ordine o 
+            INNER JOIN elemento_ordine eo ON eo.id_o=o.id_o
+            INNER JOIN prodotto p ON p.id_p=eo.id_p
+            WHERE MONTH(o.data_esecuzione) = ?
+            AND YEAR(o.data_esecuzione) = ?
+            AND p.id_a = ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ssi', $mese,$anno,$azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return number_format(implode($data),2);
+}
+function get_most_sold($conn,$azienda){
+    $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
+    FROM ordine o 
+    INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
+    INNER JOIN prodotto p ON p.id_p=eo.id_p 
+    WHERE p.id_a = ?
+    GROUP BY p.id_p 
+    ORDER BY count(p.id_p) DESC 
+    LIMIT 1);";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
+}
+function get_images($conn,$prodotto){
+    $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
+    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $prodotto);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
+function get_less_sold($conn,$azienda){
+    $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
+    FROM ordine o 
+    INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
+    INNER JOIN prodotto p ON p.id_p=eo.id_p 
+    WHERE p.id_a = ?
+    GROUP BY p.id_p 
+    ORDER BY count(p.id_p) ASC 
+    LIMIT 1);";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
+}
+?>

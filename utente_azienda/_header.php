@@ -4,6 +4,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/stylegraph.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   </head>
   <body>
     <nav>
@@ -12,15 +14,17 @@
       </div>
 
       <ul class="links">
-        <li><a href="./dashboard.php">DASHBOARD</a></li>
-        <li><a href="./products.php">PRODUCTS</a></li>
-        <li><a href="./new_product.php">NEW PRODUCTS</a></li>
+
+        <li><a href="#">DASHBOARD</a></li>
+        <li><a href="#">MY PRODUCTS</a></li>
+        <li><a href="#">NEW PRODUCT</a></li>
       </ul>
 
       <div class="nav_buttons">
+        <input class="input_search" placeholder="Ricerca prodotti"><button class="input_search_i">></button>
         <button class="btn_search"></button>
         <button class="btn_user"></button>
-        <button class="btn_cart"></button>
+
       </div>
     </nav>
     <div class="content">
