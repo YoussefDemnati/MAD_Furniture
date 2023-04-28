@@ -27,15 +27,26 @@ function get_flyers($conn, $id)
     return $rows;
 }
 
-function get_categories($conn)
-{
+
+function get_products_by_user($conn, $uid){
+    $uid = intval($uid);
     $sql = "SELECT *
-            FROM categoria";
+            FROM elemento_carrello AS ec
+            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+            WHERE id_u = $uid";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
 }
 
+function get_total_price($conn, $uid){
+    $products = get_products_by_user($conn, $uid);
+    $total_price = 0;
+    foreach($products as $product){
+        $total_price += $product["prezzo"]*$product["quantita"];
+    }
+    return $total_price;
+}
 
 function debug_to_console($data)
 {
@@ -46,6 +57,10 @@ function debug_to_console($data)
     echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 }
 
+function debug_to_json($data){
+    $output = json_encode($data);
+    echo "<script>console.log(JSON.stringify(" . $output . "));</script>";
+}
 
 function check_account_exists($conn, $table, $email)
 {
@@ -85,6 +100,7 @@ function signup_azienda($company_name, $address, $email, $phone, $password)
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_a'];
+        $_SESSION["tipo"] = "azienda";
         header("Location: ../index.php");
         exit();
     } else {
@@ -114,10 +130,11 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
-
+    
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
+        $_SESSION["tipo"] = "privato";
         header("Location: ../index.php");
         exit();
     } else {
@@ -236,9 +253,26 @@ function new_product($conn, $titolo, $descrizione, $prezzo, $tipo_prodotto, $alt
         }
         // echo count($images['name']) . " immagini caricate con successo!";
 
-    } else {
-        // echo "Nessuna immagine selezionata!";
+
+    if (isset($images) && !empty($images)) {
+        mkdir("../assets/img/products/" . implode($ultimo_record));
+        for ($i = 0; $i < count($images['name']); $i++) {
+        $name = explode('.', $images['name'][$i]);
+        $extension = end($name);
+        $tmp_name = $images['tmp_name'][$i];
+        move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+        $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+        $stmt = $conn->prepare($image_sql);
+        $stmt->bind_param("si",$formedstring,$ultimo_record);
+        $stmt->execute();
+        $stmt->close();
     }
+    // echo count($images['name']) . " immagini caricate con successo!";
+
+    } else {
+    // echo "Nessuna immagine selezionata!";
+    }
+
 }
 
 function get_user($conn, $table, $email)
@@ -249,6 +283,7 @@ function get_user($conn, $table, $email)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
+
     if ($data === NULL) {
         return 0;
     }
@@ -266,6 +301,41 @@ function get_products($conn, $azienda)
     if ($data === NULL) {
         return 0;
     }
+    return $data;
+
+}
+
+function get_categories(){
+    $conn = db_connect();
+
+    $query = "SELECT id_cat, nome, descrizione FROM categoria";
+    $result = mysqli_query($conn, $query);
+
+    return $result->fetch_all(MYSQLI_ASSOC); 
+}
+
+
+function get_product($conn, $id){
+    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
+    INNER JOIN materiale m on m.id_m = p.id_m 
+    INNER JOIN categoria c on c.id_cat = p.id_cat 
+    INNER JOIN azienda a on a.id_a = p.id_a
+    WHERE p.id_p = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data;
+}
+
+function get_product_rating($conn, $id){
+    $sql = "SELECT * FROM feedback WHERE id_p = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_all(MYSQLI_ASSOC);
     return $data;
 }
 
