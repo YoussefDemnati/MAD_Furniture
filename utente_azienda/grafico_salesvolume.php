@@ -5,7 +5,7 @@
     </div>
     <script>
 var chartData = {
-    labels: ['5 Mar', '10 Mar', '15 Mar', '20 Mar', '25 Mar', '30 Mar'],
+    // labels: ['5 Mar', '10 Mar', '15 Mar', '20 Mar', '25 Mar', '30 Mar'],
     labels: ['5', '10', '15', '20', '25', '30'],
     datasets: [{
     label: 'Guadagni Mese di <? echo getMonthName(intval($month));?>',
@@ -21,7 +21,6 @@ var chartData = {
     fill: false
   }]
 };
-
 new Chart("myChart4", {
   type: "line",
   data: chartData,
