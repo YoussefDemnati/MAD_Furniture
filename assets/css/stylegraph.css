@@ -1,3 +1,4 @@
+pippo{}
 .card-1 {
     padding: 5px;
     padding-left: 10px;
@@ -118,10 +119,10 @@ border: 1px solid black;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background-color: red;
+  /* background-color: red; */
 }
 .quadratino2{
-  background-color: rebeccapurple;
+  /* background-color: rebeccapurple; */
   float:left;
   width: 60%;
   height: 100%;
