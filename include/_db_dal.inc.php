@@ -359,6 +359,7 @@ function get_sales_volume_per_5days($conn,$azienda,$mese,$anno){
     for ($i= 0; $i < count($somma_mese); $i++) {
       $media_mese[$i]=$somma_mese[$i]/5;
     }
+    
     return $media_mese;
 }
 
