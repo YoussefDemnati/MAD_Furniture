@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@3.6.12/dist/css/splide.min.css" rel="stylesheet">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   </head>
+
   <body>
     <nav>
       <div class="logo">
@@ -23,7 +24,7 @@
       <div class="nav_buttons">
         <button class="btn_search"></button>
         <button class="btn_user"></button>
-        <button class="btn_cart"></a></button>
+        <button class="btn_cart"></button>
       </div>
     </nav>
     <script>
