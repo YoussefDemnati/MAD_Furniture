@@ -34,7 +34,7 @@
           window.location.href="profile.php";
       });
       $(".btn_search").click(function(){
-          window.location.href="index.php";
+          window.location.href="../index.php";
       });
     </script>
     <div class="content">

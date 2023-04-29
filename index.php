@@ -1,6 +1,6 @@
 <?php
 include("include/_db_dal.inc.php");
-include 'include\_header.inc.php';
+include 'include/_header.inc.php';
 $conn = db_connect();
 
 $flyers = get_flyers($conn, 1);
@@ -91,5 +91,5 @@ $categories = get_categories($conn);
     }
 </script>
 <?php
-include 'include\_footer.inc.php';
+include 'include/_footer.inc.php';
 ?>
