@@ -2,17 +2,22 @@
     include("_header.php");
     include("../include/_db_dal.inc.php");
     $conn = db_connect();
-    if(!empty($_SESSION["id"])) {
-        $id = $_SESSION["id"];
-        $cart_list = get_products_by_user($conn, $id);
-        $result = mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id");
-        $user = $row = mysqli_fetch_assoc($result);
-        //echo print_r($cart_list);
-    } else {
-        $_SESSION["login"] = false;
-        $_SESSION["id"] = 0;
+    
+    if(isset($_SESSION["id"]) && isset($_SESSION["tipo"])){
+        if($_SESSION["tipo"] != "privato"){
+            header("Location: ../index.php");
+        }
+        else{
+            $id = $_SESSION["id"];
+            $cart_list = get_products_by_user($conn, $id);
+            $result = mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id");
+            $user = $row = mysqli_fetch_assoc($result);    
+        }
+    }
+    else{
         header("Location: ../auth/login.php");
     }
+
     /*
     $action = isset($_GET["action"]) ? $_GET["action"] : "none";
     $id = isset($_GET["code"]) ? $_GET["code"] : "none";

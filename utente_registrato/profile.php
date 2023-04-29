@@ -1,4 +1,16 @@
-<?php include("_header.php") ?>
+<?php 
+include("_header.php");
+if(isset($_SESSION["id"]) && isset($_SESSION["tipo"])){
+    if($_SESSION["tipo"] != "privato"){
+        header("Location: ../index.php");
+    }
+}
+else{
+    header("Location: ../auth/login.php");
+}
+
+
+?>
         <div class="profile">
             <div class="profile-desc-container">
                 <div><img class="profile-image" src="../assets/img/profile-image.png" alt="profile image"></div>
