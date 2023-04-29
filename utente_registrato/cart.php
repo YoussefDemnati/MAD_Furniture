@@ -141,8 +141,11 @@ if (!empty($_SESSION["id"])) {
                 //prepare AJAX request
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    subtotal = this.responseText;
+                    var result = JSON.parse(this.responseText);
+                    subtotal = result.prezzo_tot;
+                    num_items = result.num_items;
                     $(".subtotal").find("h1").text(`${subtotal}$`);
+                    $(".subtotal").find("h2").text(`Subtotal - ${num_items} item(s):`);
                 }
                 xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?=$id?>}&action=delete_all`);
                 xhttp.send();
@@ -163,8 +166,11 @@ if (!empty($_SESSION["id"])) {
                 //prepare AJAX request
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
-                    subtotal = this.responseText;
+                    var result = JSON.parse(this.responseText);
+                    subtotal = result.prezzo_tot;
+                    num_items = result.num_items;
                     $(".subtotal").find("h1").text(`${subtotal}$`);
+                    $(".subtotal").find("h2").text(`Subtotal - ${num_items} item(s):`);
                 }
                 xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?=$id?>}&action=delete_one`);
                 xhttp.send();

@@ -19,8 +19,8 @@ if($action == "delete_all"){
         $conn->query($sql);
 }
 
-$tot = "SELECT SUM(p.prezzo*ec.quantita) AS prezzo_tot
+$tot = "SELECT SUM(p.prezzo*ec.quantita) AS prezzo_tot, COUNT(*) AS num_items
         FROM elemento_carrello AS ec
         INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
         WHERE ec.id_u = $uId";
-echo $conn->query($tot)->fetch_assoc()["prezzo_tot"];
+echo json_encode($conn->query($tot)->fetch_assoc());
