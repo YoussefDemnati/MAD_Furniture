@@ -23,6 +23,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
     header("Location: ../auth/login.php");
 }
 ?>
+<button class="back-button">Back</button>
 <div class="checkout-row">
     <div class="checkout-col-75">
         <div class="checkout-container">
@@ -82,10 +83,10 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
                 </label>
                 <div class="checkout-row">
                     <div class="checkout-col-50">
-                        <input type="submit" value="Continue to checkout" class="checkout-btn">
+                        <input type="submit" value="Continue to checkout" class="checkout-btn-submit">
                     </div>
                     <div class="checkout-col-50">
-                        <input type="reset" value="Reset form" class="checkout-btn">
+                        <input type="reset" value="Reset form" class="checkout-btn-reset">
                     </div>
                 </div>
             </form>
@@ -93,10 +94,10 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
     </div>
     <div class="checkout-col-25">
         <div class="checkout-container">
-            <h2>Order summary <span class="checkout-price" style="color:black"><i class="fa fa-shopping-cart"></i> <b>4</b></span></h2>
+            <h2>Order summary <span class="checkout-price" style="color:black"><i class="fa fa-shopping-cart"></i> <b><?=count($cart_list)?></b></span></h2>
             <?php
             foreach ($cart_list as $cart_item) {
-                $total_price += $cart_item["prezzo"];
+                $total_price += $cart_item["prezzo"]*$cart_item["quantita"];
             ?>
                 <p>(x<?= $cart_item["quantita"] ?>) <a class="checkout-a" href="../product_page.php?prod_id=<?= $cart_item["id_pr"] ?>"><?= $cart_item["titolo"] ?></a> <span class="checkout-price">$<?= $cart_item["prezzo"] ?></span></p>
             <?php } ?>
@@ -107,7 +108,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
 </div>
 <script>
     $(document).ready(function() {
-        $(".checkout-btn").click(function() {
+        $(".checkout-btn-submit").click(function() {
             // Get the values entered by the user
             var name = $("#fname").val();
             var email = $("#email").val();

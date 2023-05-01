@@ -3,31 +3,29 @@ include("_header.php");
 include("../include/_db_dal.inc.php");
 $conn = db_connect();
 
-if(isset($_SESSION["id"]) && isset($_SESSION["tipo"])){
-    if($_SESSION["tipo"] != "privato"){
+if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
+    if ($_SESSION["tipo"] != "privato") {
         header("Location: ../index.php");
-    }
-    else{
+    } else {
         $id = intval($_SESSION["id"]);
         $cart_list = get_products_by_user($conn, $id);
         $result = mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id");
         $user = mysqli_fetch_assoc($result);
-        if(isset($_GET["action"]) && isset($_GET["prodId"])){
-            if($_GET["action"] == "add_item"){
+        if (isset($_GET["action"]) && isset($_GET["prodId"])) {
+            if ($_GET["action"] == "add_item") {
                 $prodId = intval($_GET["prodId"]);
                 $user_items = mysqli_query($conn, "SELECT * FROM elemento_carrello WHERE id_u=$id")->fetch_all(MYSQLI_ASSOC);
-                if(item_in_cart($user_items, $prodId)){
+                if (item_in_cart($user_items, $prodId)) {
                     mysqli_query($conn, "UPDATE elemento_carrello SET quantita=quantita+1 WHERE id_u=$id AND id_pr=$prodId");
                     header("Location: cart.php");
-                }else{
+                } else {
                     mysqli_query($conn, "INSERT INTO elemento_carrello(quantita, id_pc, id_u, id_pr) VALUES (1, NULL, $id, $prodId)");
                     header("Location: cart.php");
                 }
             }
-        }    
+        }
     }
-}
-else{
+} else {
     header("Location: ../auth/login.php");
 }
 ?>
@@ -36,41 +34,55 @@ else{
         <div>
             <h1><?= $user["nome"] ?>'s Shopping Cart</h1>
         </div>
-        <?php 
-        if(count($cart_list) > 0) {
-            foreach ($cart_list as $cart_item) { 
+        <?php
+        if (count($cart_list) > 0) {
+            foreach ($cart_list as $cart_item) {
         ?>
-            <div class="cart-item">
-                <img src="../assets/img/table_lamp.png" alt="">
-                <div class="cart-item-info">
-                    <h3><?= $cart_item["titolo"] ?></h3>
-                    <div class="quantity">
-                        <input readonly id="<?= $cart_item["idEc"] ?>" type="number" min="1" max="90" step="1" value="<?= $cart_item["quantita"] ?>">
+                <div class="cart-item">
+                    <img src="../assets/img/table_lamp.png" alt="">
+                    <div class="cart-item-info">
+                        <h3><?= $cart_item["titolo"] ?></h3>
+                        <div class="quantity">
+                            <input readonly id="<?= $cart_item["idEc"] ?>" type="number" min="1" max="90" step="1" value="<?= $cart_item["quantita"] ?>">
+                        </div>
+                        <div class="cart-item-price" data-price="<?= $cart_item["prezzo"] ?>">
+                            <h1><?= str_replace(',', '', number_format($cart_item["prezzo"] * $cart_item["quantita"], 2)) ?>$</h1>
+                        </div>
                     </div>
-                    <div class="cart-item-price" data-price="<?= $cart_item["prezzo"] ?>">
-                        <h1><?= str_replace(',', '', number_format($cart_item["prezzo"] * $cart_item["quantita"], 2)) ?>$</h1>
-                    </div>
+                    <button class="cart-item-delete">Delete</button>
                 </div>
-                <button class="cart-item-delete">Delete</button>
-            </div>
-        <?php } }else{ ?>
+            <?php }
+        } else { ?>
             <h1>You've got no items in your cart <a style="display: inline;" href="../index.php">Shop now!</a></h1>
-        <?php }?>
+        <?php } ?>
     </div>
     <div class="cart-right">
-        <?php if(count($cart_list) > 0) { ?>
-        <div class="subtotal">
-            <h2>Subtotal - <?= count($cart_list) ?> item(s):</h2>
-            <h1><?php echo str_replace(',', '', number_format(get_total_price($conn, $id), 2)) ."$" ?></h1>
-            <button class="cart-buy-button">Buy Now</button>
-            <button class="cart-delete-all">Delete Cart</button>
-        </div>
+        <?php if (count($cart_list) > 0) { ?>
+            <div class="subtotal">
+                <h2>Subtotal - <?= count($cart_list) ?> item(s):</h2>
+                <h1><?php echo str_replace(',', '', number_format(get_total_price($conn, $id), 2)) . "$" ?></h1>
+                <button class="cart-buy-button">Buy Now</button>
+                <button class="cart-delete-all">Delete Cart</button>
+            </div>
         <?php } ?>
+    </div>
+</div>
+<div class="confirm">
+    <div></div>
+    <div>
+        <div id="confirmMessage">Confirm text</div>
+        <div>
+            <input id="confirmYes" type="button" value="Yes" />
+            <input id="confirmNo" type="button" value="No" />
+        </div>
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
+        $(".cart-buy-button").click(function() {
+            window.location.href = "checkout.php";
+        });
         var subtotal = 0;
         //create counter and initialize variables
         jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
@@ -87,7 +99,7 @@ else{
             subtotal += parseFloat(spinner.next().attr("data-price")) * oldValue;
             //increment qty
             btnUp.click(function() {
-                if(btnUp.attr("disabled") != "disabled"){
+                if (btnUp.attr("disabled") != "disabled") {
                     $(".quantity-button").css("cursor", "not-allowed");
                     btnUp.attr("disabled", true);
                     btnDown.attr("disabled", true);
@@ -117,7 +129,7 @@ else{
             });
             //decrement qty
             btnDown.click(function() {
-                if(btnDown.attr("disabled") != "disabled"){
+                if (btnDown.attr("disabled") != "disabled") {
                     $(".quantity-button").css("cursor", "not-allowed");
                     btnUp.attr("disabled", true);
                     btnDown.attr("disabled", true);
@@ -157,7 +169,7 @@ else{
             var cartItem = jQuery(this),
                 input = cartItem.find('input[type="number"]'),
                 idEc = input.attr('id');
-            if(confirm("Do you want to remove all items?")){
+            if (confirm("Do you want to remove all items?")) {
                 //prepare AJAX request
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
@@ -168,10 +180,10 @@ else{
                     $(".subtotal").find("h2").text(`Subtotal - ${num_items} item(s):`);
                     window.location.reload();
                 }
-                xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?=$id?>}&action=delete_all`);
+                xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?= $id ?>}&action=delete_all`);
                 xhttp.send();
                 $(".cart-left > .cart-item").remove();
-            }else{
+            } else {
                 console.log("cancelled");
             }
         });
@@ -192,13 +204,13 @@ else{
                     var result = JSON.parse(this.responseText);
                     subtotal = result.prezzo_tot;
                     num_items = result.num_items;
-                    if(num_items == 0){
+                    if (num_items == 0) {
                         window.location.reload();
                     }
                     $(".subtotal").find("h1").text(`${subtotal}$`);
                     $(".subtotal").find("h2").text(`Subtotal - ${num_items} item(s):`);
                 }
-                xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?=$id?>}&action=delete_one`);
+                xhttp.open("GET", `delete_item.php?idEc=${idEc}&uId=${<?= $id ?>}&action=delete_one`);
                 xhttp.send();
                 cartItem.remove();
             });
