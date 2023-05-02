@@ -138,6 +138,9 @@ if (isset($_GET["prod_id"])) {
     document.addEventListener('DOMContentLoaded', function() {
         new Splide('#image-slider').mount();
     });
+    $("button.product-add").click(function(){
+        window.location.href="utente_registrato/cart.php?action=add_item&prodId=<?=$_GET["prod_id"]?>";
+    });
 </script>
 
 <div class="card-4">

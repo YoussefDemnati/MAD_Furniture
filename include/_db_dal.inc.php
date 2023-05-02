@@ -43,7 +43,7 @@ function get_total_price($conn, $uid){
     $products = get_products_by_user($conn, $uid);
     $total_price = 0;
     foreach($products as $product){
-        $total_price += $product["prezzo"]*$product["quantita"];
+        $total_price += $product["prezzo"]*(float)$product["quantita"];
     }
     return $total_price;
 }
@@ -508,6 +508,16 @@ function get_less_sold($conn,$azienda){
     return $data;
 }
 
+
+function item_in_cart($array, $targetId){
+    foreach($array as $element){
+        if($element["id_pr"] == $targetId){
+            return true;
+        }
+    }
+    return false;
+}
+
 function search_products($conn, $page, $search_query, $type, $category_id){
     $search_query = $search_query !== NULL ? '%' . $search_query . '%' : '';
     debug_to_console($search_query);
@@ -545,5 +555,6 @@ function search_products($conn, $page, $search_query, $type, $category_id){
     $stmt->execute();
     $res = $stmt->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
+
 }
 ?>
