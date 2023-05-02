@@ -11,7 +11,7 @@ $categories = get_categories($conn);
         <span id="big_mama_sub">NEW ARRIVAL</span>
         <span id="big_mama_title">MINIMAL CHAIR</span>
         <span id="big_mama_desc">Take a look to some new minimal products.</span>
-        <button>SHOP NOW</button>
+        <button id="btn_shopnow">SHOP NOW</button>
     </div>
     <img src="./assets/img/minimal_chair.png" alt="">
 </div>
@@ -19,8 +19,8 @@ $categories = get_categories($conn);
     <?php foreach ($flyers as $flyer) { ?>
         <div class="promo">
             <div>
-                <h2><?=$flyer["nome"]?></h2>
-                <span>-<?=$flyer["sconto"]?>% On  New <?=$flyer["descrizione"]?>  </span>
+                <h2><?= $flyer["nome"] ?></h2>
+                <span>-<?= $flyer["sconto"] ?>% On New <?= $flyer["descrizione"] ?> </span>
                 <a href="">View Product</a>
             </div>
             <img src="./assets/img/table_lamp.png" alt="">
@@ -30,30 +30,30 @@ $categories = get_categories($conn);
 <p class="subtitle">Most Bought Products of The Week</p>
 <h1 class="title">TRENDING PRODUCTS</h1>
 <div class="home_trending">
-    <?php for ($i=0; $i < 6; $i++) { ?>
+    <?php for ($i = 0; $i < 6; $i++) { ?>
         <div class="home_trending_product">
-        <div>
-            <img src="./assets/img/lampada.png" alt="">
+            <div>
+                <img src="./assets/img/lampada.png" alt="">
+            </div>
+            <img src="./assets/img/stars/star_4.png" alt="">
+            <p>Vintage Table Lamp in Wood and Metal</p>
+            <span>36.98 $</span>
         </div>
-        <img src="./assets/img/stars/star_4.png" alt="">
-        <p>Vintage Table Lamp in Wood and Metal</p>
-        <span>36.98 $</span>
-    </div>
     <?php } ?>
 </div>
-<a id="home_see_more_trending" href="#">See More...</a>
+<a id="home_see_more_trending" href="products.php?type=trending">See More...</a>
 <p class="subtitle">Take a look to all the available categories</p>
-<h1 class="title">CATEGORIES</h1>
+<h1 class="title" id="categories">CATEGORIES</h1>
 <div class="home_categories_container">
-    <button id="go-left">     </button>
+    <button id="go-left"> </button>
     <div class="home_categories">
         <div class="carousell-wrapper">
             <?php foreach ($categories as $category) { ?>
-                <div class="home_category"> 
+                <div class="home_category">
                     <div>
-                        <h2><?=$category["nome"]?></h2>
-                        <span><?=$category["descrizione"]?></span>
-                        <a href="">View Category</a>
+                        <h2><?= $category["nome"] ?></h2>
+                        <span><?= $category["descrizione"] ?></span>
+                        <a href="products.php?category=<?=$category["id_cat"]?>">View Category</a>
                     </div>
                     <img src="./assets/img/kitchen.png" alt="">
                 </div>
@@ -68,27 +68,32 @@ $categories = get_categories($conn);
     var buttonRight = document.querySelector('#go-right');
 
     buttonLeft.addEventListener('click', function() {
-        sideScroll(container,'left',25,200,20);
+        sideScroll(container, 'left', 25, 200, 20);
     });
 
     buttonRight.addEventListener('click', function() {
-        sideScroll(container,'right',25,200,20);
+        sideScroll(container, 'right', 25, 200, 20);
     });
 
-    function sideScroll(element,direction,speed,distance,step){
+    function sideScroll(element, direction, speed, distance, step) {
         var scrollAmount = 0;
-        var slideTimer = setInterval(function(){
-            if(direction == 'left'){
+        var slideTimer = setInterval(function() {
+            if (direction == 'left') {
                 element.scrollLeft -= step;
             } else {
                 element.scrollLeft += step;
             }
             scrollAmount += step;
-            if(scrollAmount >= distance){
+            if (scrollAmount >= distance) {
                 window.clearInterval(slideTimer);
             }
         }, speed);
     }
+
+    $("#btn_shopnow").click(function() {
+      window.location.href = "products.php?type=new";
+    });
+    
 </script>
 <?php
 include 'include/_footer.inc.php';
