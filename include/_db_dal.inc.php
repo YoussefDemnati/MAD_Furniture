@@ -353,7 +353,7 @@ function total_sales($conn, $azienda)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return number_format(implode($data),2);
+    return number_format(floatval(implode($data)),2);
 }
 
 function net_profit($conn, $azienda)
@@ -373,7 +373,7 @@ function net_profit($conn, $azienda)
     if ($data === NULL) {
         return 0;
     }
-    return number_format(implode($data),2);
+    return number_format(floatval(implode($data)),2);
 }
 
 function sales_volume($conn,$azienda,$mese,$anno)
@@ -457,7 +457,17 @@ function get_avg_orders($conn,$azienda,$mese,$anno){
     if ($data === NULL) {
         return 0;
     }
-    return number_format(implode($data),2);
+    return number_format(floatval(implode($data)),2);
+}
+function get_images($conn,$prodotto){
+    $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
+    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $prodotto);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
 }
 function get_most_sold($conn,$azienda){
     $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
@@ -478,16 +488,6 @@ function get_most_sold($conn,$azienda){
     }
     return $data;
 }
-function get_images($conn,$prodotto){
-    $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
-    $stmt = $conn->prepare($sql);
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $prodotto);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $rows = $result->fetch_all(MYSQLI_ASSOC);
-    return $rows;
-}
 function get_less_sold($conn,$azienda){
     $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
     FROM ordine o 
@@ -506,5 +506,90 @@ function get_less_sold($conn,$azienda){
         return 0;
     }
     return $data;
+}
+function get_tot_rating_prodotto($conn,$prodotto){
+    $feedbacks = get_product_rating($conn, $prodotto);
+    $sum = 0;
+    debug_to_json($feedbacks);
+    $count = count($feedbacks);
+    if ($count != 0) {
+        foreach ($feedbacks as $feedback) {
+            $sum += intval($feedback["valutazione"]);
+        }
+        $stars = intdiv($sum, $count);
+        $stars_count = array_count_values(array_column($feedbacks, 'valutazione'));
+        $total = count($feedbacks);
+        $percentuali = array();
+        $all_stars = array(1, 2, 3, 4, 5);
+
+        foreach ($all_stars as $voto) {
+            if (isset($stars_count[$voto])) {
+                $num = $stars_count[$voto];
+                $percentuale = round(($num / $total) * 100, 2);
+            } else {
+                $percentuale = 0;
+            }
+        
+            $percentuali[] = array(
+                'titolo' => $voto,
+                'percentuale' => $percentuale
+            );
+        }
+        debug_to_json($percentuali);
+
+    }
+    else{
+        $stars = 0;
+        $percentuali = 0;
+    }
+    debug_to_console($stars);
+    return array($stars,$percentuali);
+}
+function get_tot_rating_azienda($conn,$azienda){
+    $albero=1;
+    $sql = 'SELECT *
+    FROM feedback d
+    INNER JOIN prodotto p ON d.id_p=p.id_p 
+    WHERE p.id_a = ?;';
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $albero);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $feedbacks = $result->fetch_all(MYSQLI_ASSOC);
+    $sum = 0;
+    debug_to_console("get_tot_rating_azienda");
+    // debug_to_console($feedbacks);
+    $count = count($feedbacks);
+    if ($count != 0) {
+        foreach ($feedbacks as $feedback) {
+            $sum += intval($feedback["valutazione"]);
+        }
+        $stars = intdiv($sum, $count);
+        $stars_count = array_count_values(array_column($feedbacks, 'valutazione'));
+        $total = count($feedbacks);
+        $percentuali = array();
+        $all_stars = array(1, 2, 3, 4, 5);
+
+        foreach ($all_stars as $voto) {
+            if (isset($stars_count[$voto])) {
+                $num = $stars_count[$voto];
+                $percentuale = round(($num / $total) * 100, 2);
+            } else {
+                $percentuale = 0;
+            }
+        
+            $percentuali[] = array(
+                'titolo' => $voto,
+                'percentuale' => $percentuale
+            );
+        }
+        // debug_to_json($percentuali);
+
+    }
+    else{
+        $stars = 0;
+    }
+    // debug_to_console($stars);
+    return array($stars,$percentuali);
 }
 ?>

@@ -4,10 +4,10 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../assets/css/stylegraph.css" />
+    <link rel="stylesheet" type="text/css" href="../assets/css/stylegraph.scss" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   </head>
-  <body>
+  <body class="azienda">
     <nav>
       <div class="logo">
         <img src="../assets/img/logo.png" alt="Logo">
@@ -21,7 +21,7 @@
       </ul>
 
       <div class="nav_buttons">
-        <input class="input_search" placeholder="Ricerca prodotti"><button class="input_search_i">></button>
+        <!-- <input class="input_search" placeholder="Ricerca prodotti"><button class="input_search_i">></button> -->
         <button class="btn_search"></button>
         <button class="btn_user"></button>
 

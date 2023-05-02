@@ -10,6 +10,7 @@ $month = $currentDate->format('m');
 $year = $currentDate->format('Y');
 
 ?>
+<br>
     <div class="quadrato1">
         <span class="titlee">Earings</span>
         <div class="quadratino1">
@@ -20,22 +21,17 @@ $year = $currentDate->format('Y');
         <?php require("grafico_salesvolume.php"); ?>
         </div>
     </div>
+    <br>
     <div class="quadrato1">
     <div class="quadratino1">
         <?php require("grafico_avgorders.php"); ?>
         <?php require("grafico_totalsales.php"); ?>
-        <?php require("grafico_totalsales.php"); ?>
+        <?php require("grafico_feedback.php"); ?>
     </div>
     <div class="quadratino2">
         <?php require("card_most_sold.php"); ?>
         <?php require("card_less_sold.php"); ?>
     </div>
     </div>
-    <br><br>
-    <?php require("grafico_avgorders.php"); ?>
-    <br><br>
-    <?php require("card_most_sold.php"); ?>
-    <br><br>
-    <?php require("card_less_sold.php"); ?>
 </div>
 <?php require('_footer.php'); ?>

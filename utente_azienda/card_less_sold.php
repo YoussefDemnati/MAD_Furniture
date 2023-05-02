@@ -2,8 +2,12 @@
     <span class="card-4-header">Less Sold Product</span>
     <?php $ls_product=get_less_sold($conn,$azienda);?>
     <div class="card-4-description">
-        <img class="card-4-image" src="../assets/img/products/<?=get_images($conn,$ms_product['id_p'])[1]['img']?>">
-        <span class="card-4-feedback">stelle</span>
-        <span class="card-4-title"><?=$ms_product['titolo']?></span>
+        <?php if(get_images($conn,$ls_product['id_p'])) {?>
+        <img class="card-4-image" src="../assets/img/products/<?=$ls_product['id_p']?>/<?php echo get_images($conn,$ls_product['id_p'])[0]['img']?>">
+        <?php } else{ ?> 
+        <div class="mp_img">Nessuna immagine inserita</div>
+        <?php } list($pippo,$coca) = get_tot_rating_prodotto($conn,$ls_product['id_p']);?>
+        <img class="card-4-feedback" src="../assets/img/stars/star_<?=$pippo?>.png" alt="">
+        <span class="card-4-title"><?=$ls_product['titolo']?></span>
     </div>
 </div>

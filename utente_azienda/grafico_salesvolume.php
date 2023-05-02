@@ -55,4 +55,3 @@ new Chart("myChart4", {
   
 });
     </script>
-    <?php print_r(json_encode(get_sales_volume_per_5days($conn,$azienda,$month-1,$year)));?>
