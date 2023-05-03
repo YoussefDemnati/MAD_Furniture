@@ -28,7 +28,8 @@ function get_flyers($conn, $id)
 }
 
 
-function get_products_by_user($conn, $uid){
+function get_products_by_user($conn, $uid)
+{
     $uid = intval($uid);
     $sql = "SELECT *
             FROM elemento_carrello AS ec
@@ -39,11 +40,12 @@ function get_products_by_user($conn, $uid){
     return $rows;
 }
 
-function get_total_price($conn, $uid){
+function get_total_price($conn, $uid)
+{
     $products = get_products_by_user($conn, $uid);
     $total_price = 0;
-    foreach($products as $product){
-        $total_price += $product["prezzo"]*(float)$product["quantita"];
+    foreach ($products as $product) {
+        $total_price += $product["prezzo"] * (float)$product["quantita"];
     }
     return $total_price;
 }
@@ -57,7 +59,8 @@ function debug_to_console($data)
     echo "<script>console.log('Debug Objects: " . $output . "' );</script>";
 }
 
-function debug_to_json($data){
+function debug_to_json($data)
+{
     $output = json_encode($data);
     echo "<script>console.log(JSON.stringify(" . $output . "));</script>";
 }
@@ -130,7 +133,7 @@ function signup_privato($first_name, $last_name, $email, $address, $password, $t
     // Inserimento dei dati nel database con prepared statements
     $stmt = $conn->prepare("INSERT INTO utente (nome, cognome, email, indirizzo, password, tipo) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param("ssssss", $first_name, $last_name, $email, $address, $hashed_password, $type);
-    
+
     // Esecuzione della query
     if ($stmt->execute()) {
         $_SESSION["id"] = $data['id_u'];
@@ -241,22 +244,21 @@ function new_product($conn, $titolo, $descrizione, $prezzo, $tipo_prodotto, $alt
     if (isset($images) && !empty($images)) {
         mkdir("../assets/img/products/" . implode($ultimo_record));
         for ($i = 0; $i < count($images['name']); $i++) {
-        $name = explode('.', $images['name'][$i]);
-        $extension = end($name);
-        $tmp_name = $images['tmp_name'][$i];
-        move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
-        $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
-        $stmt = $conn->prepare($image_sql);
-        $stmt->bind_param("si",$formedstring,$ultimo_record);
-        $stmt->execute();
-        $stmt->close();
-    }
-    // echo count($images['name']) . " immagini caricate con successo!";
+            $name = explode('.', $images['name'][$i]);
+            $extension = end($name);
+            $tmp_name = $images['tmp_name'][$i];
+            move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+            $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
+            $stmt = $conn->prepare($image_sql);
+            $stmt->bind_param("si", $formedstring, $ultimo_record);
+            $stmt->execute();
+            $stmt->close();
+        }
+        // echo count($images['name']) . " immagini caricate con successo!";
 
     } else {
-    // echo "Nessuna immagine selezionata!";
+        // echo "Nessuna immagine selezionata!";
     }
-
 }
 
 function get_user($conn, $table, $email)
@@ -286,20 +288,21 @@ function get_products($conn, $azienda)
         return 0;
     }
     return $data;
-
 }
 
-function get_categories(){
+function get_categories()
+{
     $conn = db_connect();
 
     $query = "SELECT id_cat, nome, descrizione FROM categoria";
     $result = mysqli_query($conn, $query);
 
-    return $result->fetch_all(MYSQLI_ASSOC); 
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 
-function get_product($conn, $id){
+function get_product($conn, $id)
+{
     $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
     INNER JOIN materiale m on m.id_m = p.id_m 
     INNER JOIN categoria c on c.id_cat = p.id_cat 
@@ -313,7 +316,8 @@ function get_product($conn, $id){
     return $data;
 }
 
-function get_product_rating($conn, $id){
+function get_product_rating($conn, $id)
+{
     $sql = "SELECT * FROM feedback WHERE id_p = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
@@ -353,7 +357,7 @@ function total_sales($conn, $azienda)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return number_format(implode($data),2);
+    return number_format(implode($data), 2);
 }
 
 function net_profit($conn, $azienda)
@@ -373,10 +377,10 @@ function net_profit($conn, $azienda)
     if ($data === NULL) {
         return 0;
     }
-    return number_format(implode($data),2);
+    return number_format(implode($data), 2);
 }
 
-function sales_volume($conn,$azienda,$mese,$anno)
+function sales_volume($conn, $azienda, $mese, $anno)
 {
     $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
     FROM ordine o
@@ -390,35 +394,37 @@ function sales_volume($conn,$azienda,$mese,$anno)
     ORDER BY o.data_esecuzione;";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('iii', $mese,$anno,$azienda);
+    $stmt->bind_param('iii', $mese, $anno, $azienda);
     $stmt->execute();
     $result = $stmt->get_result();
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
 }
-function get_sales_volume_per_5days($conn,$azienda,$mese,$anno){
-    if($mese==0){
-        $mese=12;
-        $anno-=1;
+function get_sales_volume_per_5days($conn, $azienda, $mese, $anno)
+{
+    if ($mese == 0) {
+        $mese = 12;
+        $anno -= 1;
     }
-    $array=sales_volume($conn,$azienda,$mese,$anno);
-    $somma_mese=[0, 0, 0, 0, 0, 0];
-    $media_mese=[0, 0, 0, 0, 0, 0];
-    foreach($array as $a){
-        for ($i= 0; $i < 6; $i++) {
-            if(intval(substr($a["giorno"],8,10))>=($i*5) && intval(substr($a["giorno"],8,10))<=($i+1)*5){
-                $somma_mese[$i]+=intval($a["guadagno"]);
+    $array = sales_volume($conn, $azienda, $mese, $anno);
+    $somma_mese = [0, 0, 0, 0, 0, 0];
+    $media_mese = [0, 0, 0, 0, 0, 0];
+    foreach ($array as $a) {
+        for ($i = 0; $i < 6; $i++) {
+            if (intval(substr($a["giorno"], 8, 10)) >= ($i * 5) && intval(substr($a["giorno"], 8, 10)) <= ($i + 1) * 5) {
+                $somma_mese[$i] += intval($a["guadagno"]);
             }
         }
     }
-    for ($i= 0; $i < count($somma_mese); $i++) {
-      $media_mese[$i]=$somma_mese[$i]/5;
+    for ($i = 0; $i < count($somma_mese); $i++) {
+        $media_mese[$i] = $somma_mese[$i] / 5;
     }
-    
+
     return $media_mese;
 }
 
-function getMonthName($monthNum) {
+function getMonthName($monthNum)
+{
     $months = array(
         1 => 'Gennaio',
         2 => 'Febbraio',
@@ -436,10 +442,11 @@ function getMonthName($monthNum) {
     return $months[$monthNum];
 }
 
-function get_avg_orders($conn,$azienda,$mese,$anno){
-    if($mese==0){
-        $mese=12;
-        $anno-=1;
+function get_avg_orders($conn, $azienda, $mese, $anno)
+{
+    if ($mese == 0) {
+        $mese = 12;
+        $anno -= 1;
     }
     $sql = "SELECT AVG(p.prezzo)
             FROM ordine o 
@@ -448,18 +455,19 @@ function get_avg_orders($conn,$azienda,$mese,$anno){
             WHERE MONTH(o.data_esecuzione) = ?
             AND YEAR(o.data_esecuzione) = ?
             AND p.id_a = ?";
-    
+
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('ssi', $mese,$anno,$azienda);
+    $stmt->bind_param('ssi', $mese, $anno, $azienda);
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
     if ($data === NULL) {
         return 0;
     }
-    return number_format(implode($data),2);
+    return number_format(implode($data), 2);
 }
-function get_most_sold($conn,$azienda){
+function get_most_sold($conn, $azienda)
+{
     $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
     FROM ordine o 
     INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
@@ -478,7 +486,8 @@ function get_most_sold($conn,$azienda){
     }
     return $data;
 }
-function get_images($conn,$prodotto){
+function get_images($conn, $prodotto)
+{
     $sql = "SELECT * FROM immagine i WHERE i.id_p = ?;";
     $stmt = $conn->prepare($sql);
     $stmt = $conn->prepare($sql);
@@ -488,7 +497,8 @@ function get_images($conn,$prodotto){
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
 }
-function get_less_sold($conn,$azienda){
+function get_less_sold($conn, $azienda)
+{
     $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
     FROM ordine o 
     INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
@@ -509,97 +519,97 @@ function get_less_sold($conn,$azienda){
 }
 
 
-function item_in_cart($array, $targetId){
-    foreach($array as $element){
-        if($element["id_pr"] == $targetId){
+function item_in_cart($array, $targetId)
+{
+    foreach ($array as $element) {
+        if ($element["id_pr"] == $targetId) {
             return true;
         }
     }
     return false;
 }
 
-function get_user_history($conn, $uId, $state, $id_o){
+function get_user_history($conn, $uId, $id_o)
+{
     $uId = intval($uId);
-    $sql = "";
-    if($state == "all"){
-        $sql = "SELECT *
-                FROM ordine AS o
-                INNER JOIN elemento_ordine AS eo ON o.id_o=eo.id_o
-                INNER JOIN prodotto AS p ON eo.id_p=p.id_p
-                WHERE o.id_u = $uId AND o.id_o = $id_o";
-    }else{
-        $sql = "SELECT *
-                FROM ordine AS o
-                INNER JOIN elemento_ordine AS eo ON o.id_o=eo.id_o
-                INNER JOIN prodotto AS p ON eo.id_p=p.id_p
-                WHERE o.id_u = $uId AND o.stato='$state' AND o.id_o = $id_o";
-    }
+    $sql = "SELECT *
+            FROM ordine AS o
+            INNER JOIN elemento_ordine AS eo ON o.id_o=eo.id_o
+            INNER JOIN prodotto AS p ON eo.id_p=p.id_p
+            WHERE o.id_u = $uId AND o.id_o = $id_o";
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function get_transport_company($conn){
+function get_transport_company($conn)
+{
     $sql = "SELECT *
             FROM azienda_di_trasporto";
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function add_order($conn, $shipment_date, $id_at, $id_u){
+function add_order($conn, $shipment_date, $id_at, $id_u)
+{
     $sql = "INSERT INTO ordine(data_esecuzione, data_spedizione, stato, id_at, id_u)
             VALUES (NOW(), DATE_ADD(NOW(), INTERVAL $shipment_date DAY), 'In attesa', $id_at, $id_u)";
     $conn->query($sql);
     return $conn->insert_id;
 }
 
-function add_order_element($conn, $id_o, $id_p){
+function add_order_element($conn, $id_o, $id_p)
+{
     $sql = "INSERT INTO elemento_ordine(id_o, id_p)
             VALUES ($id_o, $id_p)";
     $conn->query($sql);
 }
 
-function get_orders_by_user($conn, $id_u){
-    $sql = "SELECT *
+function get_orders_by_user($conn, $id_u, $state)
+{
+    $sql = "";
+    if ($state == "all") {
+        $sql = "SELECT *
             FROM ordine
-            WHERE id_u = $id_u";
+            WHERE id_u = $id_u AND stato IN ('In attesa', 'consegnato', 'annullato')
+            ORDER BY id_o DESC";
+    } else {
+        $sql = "SELECT *
+            FROM ordine
+            WHERE id_u = $id_u AND stato='$state'
+            ORDER BY id_o DESC";
+    }
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
-function search_products($conn, $page, $search_query, $type, $category_id){
+function search_products($conn, $page, $search_query, $type, $category_id)
+{
     $search_query = $search_query !== NULL ? '%' . $search_query . '%' : '';
     debug_to_console($search_query);
     $page = intval($page);
     debug_to_console($type);
-    if($type == "new"){
-        $sql = 'SELECT * FROM prodotto ORDER BY data_inserimento DESC LIMIT ' . $page*100 . ', 100';
-            debug_to_console($sql);
+    if ($type == "new") {
+        $sql = 'SELECT * FROM prodotto ORDER BY data_inserimento DESC LIMIT ' . $page * 100 . ', 100';
+        debug_to_console($sql);
 
         $stmt = $conn->prepare($sql);
-
-    }
-    else if($type == "trending"){
-        $sql = 'SELECT p.* , COUNT(*) AS num_ordini FROM elemento_ordine eo INNER JOIN prodotto p ON p.id_p = eo.id_p GROUP BY eo.id_p ORDER BY num_ordini DESC LIMIT ' . $page*100 . ', 100';
-                    debug_to_console($sql);
+    } else if ($type == "trending") {
+        $sql = 'SELECT p.* , COUNT(*) AS num_ordini FROM elemento_ordine eo INNER JOIN prodotto p ON p.id_p = eo.id_p GROUP BY eo.id_p ORDER BY num_ordini DESC LIMIT ' . $page * 100 . ', 100';
+        debug_to_console($sql);
 
         $stmt = $conn->prepare($sql);
-
-    }
-    else if($category_id !== NULL){
+    } else if ($category_id !== NULL) {
         $sql = 'SELECT * FROM prodotto 
         WHERE id_cat = ? 
         ORDER BY RAND()
-        LIMIT ' . $page*100 . ', 100';
+        LIMIT ' . $page * 100 . ', 100';
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $category_id);
-    }
-    else if($search_query !== NULL){
-        $sql = 'SELECT * FROM prodotto WHERE titolo LIKE ? ORDER BY RAND() LIMIT ' . $page*100 . ', 100';
+    } else if ($search_query !== NULL) {
+        $sql = 'SELECT * FROM prodotto WHERE titolo LIKE ? ORDER BY RAND() LIMIT ' . $page * 100 . ', 100';
         debug_to_console($sql);
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $search_query);
     }
-    
+
     $stmt->execute();
     $res = $stmt->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
-
 }
-?>

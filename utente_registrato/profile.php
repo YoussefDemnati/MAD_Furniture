@@ -133,7 +133,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
         window.location.href="wishlist.php";
     });
     $("button.orders").click(function(){
-        window.location.href="orders.php";
+        window.location.href="history.php?state=waiting";
     });
     $("button.history").click(function(){
         window.location.href="history.php";

@@ -33,34 +33,45 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
         }else{
             header("Location: history.php?state=all");
         }
-        //$history_list = get_user_history($conn, $id, $state);
-
+        
         //orders
-        $order_list = get_orders_by_user($conn, $id);
+        $order_list = get_orders_by_user($conn, $id, $state);
     }
 } else {
     header("Location: ../auth/login.php");
 }
 ?>
 
-<?php foreach ($order_list as $order) {
-    $history_list = get_user_history($conn, $id, $state, $order["id_o"]); ?>
-<div class="profile-row">
+<?php
+if(count($order_list) > 0){ 
+    foreach ($order_list as $order) {
+        $history_list = get_user_history($conn, $id, $order["id_o"]); 
+        $shipment_date = ($order["stato"] == "In attesa" || $order["stato"] == "In attesa" ? "----/--/--" : $order["data_spedizione"]);
+        $order_state = "";
+        switch ($order["stato"]){
+            case "In attesa":
+                $order_state = "Waiting";
+                break;
+            case "consegnato":
+                $order_state = "Delivered";
+                break;
+            case "annullato":
+                $order_state = "Cancelled";
+            default:
+                $order_state = "all";
+        }
+?>
+<div class="profile-row order">
     <div class="profile-container">
+        <h2>Order #<?=$order["id_o"]?></h2>
+        <ul>
 <?php foreach ($history_list as $product) { ?>
-        <?php
-            //print_r($product);
-        ?>
-        div
-    <?php } ?>
-    </div>
-</div>
+            <li><a href="../product_page.php?prod_id=<?= $product["id_p"] ?>"><?=$product["titolo"]?></a></li><hr>
 <?php } ?>
-
-<div class="profile-row">
-    <div class="profile container">
-        
+        </ul>
+        Purchase date - <?=$order["data_esecuzione"]?> | Shipment date: <?=$shipment_date?> | State: <?=$order_state?>
     </div>
 </div>
+<?php } }?>
 
 <?php include("_footer.php"); ?>
