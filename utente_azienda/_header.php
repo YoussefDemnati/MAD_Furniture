@@ -18,7 +18,7 @@
 
         <li><a href="#">DASHBOARD</a></li>
         <li><a href="#">MY PRODUCTS</a></li>
-        <li><a href="#">NEW PRODUCT</a></li>
+        <li><a href="./new_product.php">NEW PRODUCT</a></li>
       </ul>
 
       <div class="nav_buttons">

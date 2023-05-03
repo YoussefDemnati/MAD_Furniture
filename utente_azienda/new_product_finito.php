@@ -1,41 +1,6 @@
-<?php
-require('_header.php');
-require('../include/_db_dal.inc.php');
-
-debug_to_console($_SESSION["tipo"]);
-
-if($_SESSION["tipo"] != "azienda"){
-    header("Location: ../index.php");
-}
-
-$conn = db_connect();
-$id_azienda = $_SESSION["id"];
-
-debug_to_console($_SESSION["id"]);
-
-if (isset($_POST['titolo'])) {
-    $response = new_product_finito(
-        $conn,
-        $_POST['titolo'],
-        $_POST['descrizione'],
-        $_POST['prezzo'],
-        $_POST['tipo_prodotto_finito'],
-        $_POST['altezza'],
-        $_POST['larghezza'],
-        $_POST['profondita'],
-        $_POST['modello'],
-        $_POST['casa_produttrice'],
-        $_POST['indirizzo_magazzino'],
-        $_POST['categoria'],
-        $id_azienda,
-        $_FILES['immagini']
-    );
-}
-
-?>
-
 <button class="back-button" onclick="location.href='./dashboard.php'">Back</button>
 <form method="post" action="#" enctype="multipart/form-data" class="new_product_form">
+    <input type="hidden" id="finito" name="finito">
     <div class="error"><?php echo @$response; ?></div>
     <div class="new_element">
         <label for="titolo">Titolo:</label><br>
@@ -60,7 +25,7 @@ if (isset($_POST['titolo'])) {
         </select><br>
     </div>
     <div class="new_element">
-        <label for="tipo_prodotto_finito">Tipo prodotto finito::</label><br>
+        <label for="tipo_prodotto_finito">Tipo prodotto finito:</label><br>
         <select name="tipo_prodotto_finito" required>
             <?php
             $tipi = get_tipi_prodotto_finito();
@@ -98,53 +63,9 @@ if (isset($_POST['titolo'])) {
         <input type="file" id="immagini" name="immagini[]" accept="image/*" multiple style="display: none;">
         <button type="button" onclick="document.getElementById('immagini').click()">Aggiungi foto</button>
         <br><br>
-        <div id="anteprima"></div>
+        <div id="anteprima1"></div>
         <br><br>
     </div>
 
     <input type="submit" value="Inserisci" class="new_button">
 </form>
-
-
-<script>
-    function mostraAnteprima() {
-        console.log("MostraAnteprima");
-        var anteprimaDiv = document.getElementById('anteprima');
-        // anteprimaDiv.innerHTML = 'lalalend';
-        var files = document.getElementById('immagini').files;
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            if (!file.type.match('image.*')) {
-                continue;
-            }
-            var reader = new FileReader();
-            reader.onload = (function(immagine) {
-                return function(event) {
-                    var img = document.createElement('img');
-                    var delimg = document.createElement('img');
-                    img.src = event.target.result;
-                    delimg.src = "../assets/img/ics.png";
-                    img.setAttribute("width", "100");
-                    img.setAttribute("height", "100");
-                    delimg.setAttribute("width", "20");
-                    delimg.setAttribute("height", "20");
-                    delimg.setAttribute("position", "absolute");
-                    delimg.setAttribute("top", "0");
-                    //non va in "top" sto scemo
-                    //da aggiustare(comprimere bene come quadrato)
-                    anteprimaDiv.appendChild(img);
-                    anteprimaDiv.appendChild(delimg);
-                    // anteprimaDiv.appendChild(crocetta); una X per eliminare immagine?
-                };
-            })(file);
-            reader.readAsDataURL(file);
-        }
-    }
-
-    document.getElementById('immagini').addEventListener('change', mostraAnteprima);
-</script>
-</div>
-
-<?php
-require('_footer.php');
-?>

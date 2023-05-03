@@ -268,18 +268,21 @@ function new_product_semilavorato(
         $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
 
+
         mkdir("../assets/img/products/" . implode($ultimo_record));
         for ($i = 0; $i < count($images['name']); $i++) {
             // $name = explode('.', $images['name'][$i]);
             $extension = 'png'; //end($name);
             $tmp_name = $images['tmp_name'][$i];
-            move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+            move_uploaded_file($tmp_name, "../assets/img/products/" . $ultimo_record['id_p'] . "/" . $i . "." . $extension);
             $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
             $stmt = $conn->prepare($image_sql);
-            $stmt->bind_param("si", $formedstring, $ultimo_record);
+            $stmt->bind_param("si", $formedstring, $ultimo_record['id_p']);
             $stmt->execute();
             $stmt->close();
-            Header('Location: ../utente_azienda/dashboard.php');
+            debug_to_console("formedstring: " . $formedstring);
+            debug_to_console("ultimo_record: " . $ultimo_record['id_p']);
+            // Header('Location: ../utente_azienda/dashboard.php');
         }
         // echo count($images['name']) . " immagini caricate con successo!";
 
@@ -436,17 +439,19 @@ function get_categories_perc($conn){
 
 function get_product($conn, $id)
 {
-    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
-    INNER JOIN materiale m on m.id_m = p.id_m 
-    INNER JOIN categoria c on c.id_cat = p.id_cat 
-    INNER JOIN azienda a on a.id_a = p.id_a
-    WHERE p.id_p = ?";
+    // NON SI PUO' FARE COSI RAGA DAI... yousso??
+    // $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
+    // INNER JOIN materiale m on m.id_m = p.id_m 
+    // INNER JOIN categoria c on c.id_cat = p.id_cat 
+    // INNER JOIN azienda a on a.id_a = p.id_a
+    // WHERE p.id_p = ?";
+    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, p.id_cat as 'categoria', p.id_m as 'materiale', p.id_a as 'azienda' FROM prodotto p WHERE p.id_p = ?;"
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    debug_to_console($data);
 }
 
 function get_product_rating($conn, $id)
