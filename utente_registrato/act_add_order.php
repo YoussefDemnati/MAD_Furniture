@@ -11,5 +11,10 @@
     foreach ($product_list as $product) {
         add_order_element($conn, $order_id, $product["id_p"]);
     }
+
+    $sql = "DELETE
+            FROM elemento_carrello
+            WHERE id_u = $id";
+    $conn->query($sql);
     header("Location: history.php?state=waiting");
 ?>
