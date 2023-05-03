@@ -508,6 +508,7 @@ function get_less_sold($conn,$azienda){
     return $data;
 }
 
+
 function item_in_cart($array, $targetId){
     foreach($array as $element){
         if($element["id_pr"] == $targetId){
@@ -560,5 +561,45 @@ function get_orders_by_user($conn, $id_u){
             FROM ordine
             WHERE id_u = $id_u";
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function search_products($conn, $page, $search_query, $type, $category_id){
+    $search_query = $search_query !== NULL ? '%' . $search_query . '%' : '';
+    debug_to_console($search_query);
+    $page = intval($page);
+    debug_to_console($type);
+    if($type == "new"){
+        $sql = 'SELECT * FROM prodotto ORDER BY data_inserimento DESC LIMIT ' . $page*100 . ', 100';
+            debug_to_console($sql);
+
+        $stmt = $conn->prepare($sql);
+
+    }
+    else if($type == "trending"){
+        $sql = 'SELECT p.* , COUNT(*) AS num_ordini FROM elemento_ordine eo INNER JOIN prodotto p ON p.id_p = eo.id_p GROUP BY eo.id_p ORDER BY num_ordini DESC LIMIT ' . $page*100 . ', 100';
+                    debug_to_console($sql);
+
+        $stmt = $conn->prepare($sql);
+
+    }
+    else if($category_id !== NULL){
+        $sql = 'SELECT * FROM prodotto 
+        WHERE id_cat = ? 
+        ORDER BY RAND()
+        LIMIT ' . $page*100 . ', 100';
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $category_id);
+    }
+    else if($search_query !== NULL){
+        $sql = 'SELECT * FROM prodotto WHERE titolo LIKE ? ORDER BY RAND() LIMIT ' . $page*100 . ', 100';
+        debug_to_console($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $search_query);
+    }
+    
+    $stmt->execute();
+    $res = $stmt->get_result();
+    return $res->fetch_all(MYSQLI_ASSOC);
+
 }
 ?>
