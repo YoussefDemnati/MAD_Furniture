@@ -2,7 +2,6 @@
 require('_header.php');
 require('../include/_db_dal.inc.php');
 
-session_start();
 debug_to_console($_SESSION["tipo"]);
 
 if($_SESSION["tipo"] != "azienda"){
@@ -12,25 +11,20 @@ if($_SESSION["tipo"] != "azienda"){
 $conn = db_connect();
 $id_azienda = $_SESSION["id"];
 
-//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA ciao
 if (isset($_POST['titolo'])) {
-    new_product(
+    $result = new_product_semilavorato(
         $conn,
         $_POST['titolo'],
         $_POST['descrizione'],
         $_POST['prezzo'],
-        $_POST['tipo_prodotto_finito'],
         $_POST['altezza'],
         $_POST['larghezza'],
-        $_POST['profondita'],
         $_POST['spessore'],
-        $_POST['modello'],
         $_POST['casa_produttrice'],
         $_POST['indirizzo_magazzino'],
         $_POST['forma'],
-        $_POST['tipo'],
-        $_POST['categoria'],
         $id_azienda,
+        $_POST['materiale'],
         $_FILES['immagini']
     );
 }
@@ -38,8 +32,8 @@ if (isset($_POST['titolo'])) {
 ?>
 
 <button class="back-button" onclick="location.href='./dashboard.php'">Back</button>
-<form method="post" action="new_product.php" enctype="multipart/form-data" class="new_product_form">
-
+<form method="post" action="#" enctype="multipart/form-data" class="new_product_form">
+    <div class="error"><?php echo @$response; ?></div>
     <div class="new_element">
         <label for="titolo">Titolo:</label><br>
         <input type="text" name="titolo" required style="font-size: 19pt;"><br>
@@ -53,47 +47,16 @@ if (isset($_POST['titolo'])) {
         <input type="number" name="prezzo" required><br>
     </div>
     <div class="new_element">
-        <label for="categoria">Categoria:</label><br>
-        <select name="categoria" required>
+        <label for="categoria">Materiale:</label><br>
+        <select name="materiale" required>
             <?php
-            $categories = get_categories();
-            foreach ($categories as $cat) {
-                debug_to_console($cat); ?>
-                <option value="<?= $cat["id_cat"] ?>"><?= $cat["nome"] ?></option>
+            $materials = get_materials();
+            foreach ($materials as $m) {?>
+                <option value="<?= $m["id_m"] ?>"><?= $m["nome"] ?></option>
             <?php } ?>
         </select><br>
     </div>
-    <div class="new_element">
-        <label for="tipo_prodotto_finito">Tipo prodotto finito:</label><br>
-        <select name="tipo_prodotto_finito" required>
-            <option value="Divani ">Divani</option>
-            <option value="Tavoli ">Tavoli</option>
-            <option value="Armadi">Armadi</option>
-            <option value="Librerie ">Librerie</option>
-            <option value="Cucine ">Cucine</option>
-            <option value="Materassi">Materassi</option>
-            <option value="Poltrone ">Poltrone</option>
-            <option value="Lampade ">Lampade</option>
-            <option value="Tappeti">Tappeti</option>
-            <option value="Specchi ">Specchi</option>
-            <option value="Scrivanie ">Scrivanie </option>
-            <option value="Letti">Letti</option>
-            <option value="Comò ">Comò</option>
-            <option value="Pouf ">Pouf</option>
-            <option value="Cassettiere">Cassettiere</option>
-            <option value="Consolle ">Consolle</option>
-            <option value="Panche ">Panche</option>
-            <option value="Credenze">Credenze</option>
-            <option value="Mensole ">Mensole</option>
-            <option value="Portaoggetti ">Portaoggetti</option>
-            <option value="Contenitori">Contenitori</option>
-            <option value="Mobili da giardino ">Mobili da giardino</option>
-            <option value="Attrezzi da cucina ">Attrezzi da cucina</option>
-            <option value="Accessori per la casa">Accessori per la casa</option>
-            <option value="Accessori per il bagno ">Accessori per il bagno</option>
-            <option value="Materiali per la decorazione ">Materiali per la decorazione</option>
-        </select><br>
-    </div>
+    
     <div class="new_element">
         <label for="altezza">Altezza:</label><br>
         <input type="number" name="altezza" required><br>
@@ -103,16 +66,8 @@ if (isset($_POST['titolo'])) {
         <input type="number" name="larghezza" required><br>
     </div>
     <div class="new_element">
-        <label for="profondita">Profondità:</label><br>
-        <input type="number" name="profondita" required><br>
-    </div>
-    <div class="new_element">
         <label for="spessore">Spessore:</label><br>
         <input type="number" name="spessore" required><br>
-    </div>
-    <div class="new_element">
-        <label for="modello">Modello:</label><br>
-        <input type="text" name="modello" required><br>
     </div>
     <div class="new_element">
         <label for="casa_produttrice">Casa produttrice:</label><br>
@@ -125,10 +80,6 @@ if (isset($_POST['titolo'])) {
     <div class="new_element">
         <label for="forma">Forma:</label><br>
         <input type="text" name="forma" required><br>
-    </div>
-    <div class="new_element">
-        <label for="tipo">Tipo:</label><br>
-        <input type="text" name="tipo" required><br>
     </div>
     <div class="new_element">
         <label for="tipo">Immagine(max 5):</label><br>

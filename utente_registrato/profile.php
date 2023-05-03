@@ -17,7 +17,6 @@
 
             //province
             $province_list = $conn->query("SELECT * FROM provincia")->fetch_all(MYSQLI_ASSOC);
-            print_r($province_list);
         }
     } else {
         header("Location: ../auth/login.php");
