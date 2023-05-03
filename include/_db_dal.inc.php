@@ -298,6 +298,18 @@ function get_categories(){
     return $result->fetch_all(MYSQLI_ASSOC); 
 }
 
+function get_categories_perc($conn){
+    $sql = "SELECT c.nome,COUNT(*) as conteggio
+    FROM prodotto p 
+    INNER JOIN categoria c ON p.id_cat=c.id_cat
+    GROUP BY c.nome";
+
+    $result = mysqli_query($conn, $sql);
+    $data = $result->fetch_all(MYSQLI_ASSOC); 
+    debug_to_json($data);
+    return $data;
+}
+
 
 function get_product($conn, $id){
     $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
@@ -339,23 +351,37 @@ function delete_product($conn, $prodotto)
     $stmt->close();
 }
 
-function total_sales($conn, $azienda)
+function total_sales($conn, $azienda,$day,$month,$year)
 {
     $sql = "SELECT IFNULL(SUM(p.prezzo),0)
     FROM elemento_ordine eo 
     INNER JOIN prodotto p on eo.id_p=p.id_p
     INNER JOIN azienda a on p.id_a=a.id_a
     INNER JOIN ordine o ON eo.id_o=o.id_o 
-    WHERE a.id_a=? and o.data_esecuzione=DATE(NOW());";
+    WHERE a.id_a=? and DAY(o.data_esecuzione) = ? AND MONTH(o.data_esecuzione) = ? AND YEAR(o.data_esecuzione) = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('i', $azienda);
+    $stmt->bind_param('iiii', $azienda,$day,$month,$year);
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
     return number_format(floatval(implode($data)),2);
 }
+function total_sales_ever($conn,$day,$month,$year){
+    $sql = "SELECT IFNULL(SUM(p.prezzo),0)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE DAY(o.data_esecuzione) = ? AND MONTH(o.data_esecuzione) = ? AND YEAR(o.data_esecuzione) = ?";
 
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iii',$day,$month,$year);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return number_format(floatval(implode($data)),2);
+}
 function net_profit($conn, $azienda)
 {
     $sql = "SELECT SUM(p.prezzo)
@@ -375,7 +401,22 @@ function net_profit($conn, $azienda)
     }
     return number_format(floatval(implode($data)),2);
 }
+function net_profit_ever($conn, $day,$month,$year)
+{
+    $sql = "SELECT IFNULL(SUM(p.prezzo),0)
+    FROM elemento_ordine eo 
+    INNER JOIN prodotto p on eo.id_p=p.id_p
+    INNER JOIN azienda a on p.id_a=a.id_a
+    INNER JOIN ordine o ON eo.id_o=o.id_o 
+    WHERE DAY(o.data_esecuzione) = ? AND MONTH(o.data_esecuzione) = ? AND YEAR(o.data_esecuzione) = ?";
 
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('iii',$day,$month,$year);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return number_format(floatval(implode($data))/100*85,2);
+}
 function sales_volume($conn,$azienda,$mese,$anno)
 {
     $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
@@ -499,6 +540,23 @@ function get_less_sold($conn,$azienda){
     LIMIT 1);";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $azienda);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    if ($data === NULL) {
+        return 0;
+    }
+    return $data;
+}
+function get_less_sold_ever($conn){
+    $sql = "SELECT * FROM prodotto p WHERE p.id_p =(SELECT p.id_p 
+    FROM ordine o 
+    INNER JOIN elemento_ordine eo on eo.id_o=o.id_o 
+    INNER JOIN prodotto p ON p.id_p=eo.id_p 
+    GROUP BY p.id_p 
+    ORDER BY count(p.id_p) ASC 
+    LIMIT 1);";
+    $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
