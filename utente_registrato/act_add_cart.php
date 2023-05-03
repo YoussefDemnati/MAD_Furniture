@@ -19,15 +19,15 @@
     </head>
     <body>
         <?php foreach($rows as $key=>$value){ ?>
-	    <div class="product-item">
-		    <form method="post" action="cart.php?action=add&code=<?php echo $rows[$key]["id_p"]; ?>">
+        <div class="product-item">
+            <form method="post" action="cart.php?action=add&code=<?php echo $rows[$key]["id_p"]; ?>">
                 <div class="product-tile-footer">
-                <div class="product-title"><?php echo $rows[$key]["titolo"]; ?></div>
-                <div class="product-price"><?php echo "$".$rows[$key]["prezzo"]; ?></div>
-                <div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
-            </div>
-		    </form>
-	    </div>
+                    <div class="product-title"><?php echo $rows[$key]["titolo"]; ?></div>
+                    <div class="product-price"><?php echo "$".$rows[$key]["prezzo"]; ?></div>
+                    <div class="cart-action"><input type="text" class="product-quantity" name="quantity" value="1" size="2" /><input type="submit" value="Add to Cart" class="btnAddAction" /></div>
+                </div>
+            </form>
+        </div>
         <?php } ?>
     </body>
 </html>

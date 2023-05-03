@@ -27,7 +27,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
 <div class="checkout-row">
     <div class="checkout-col-75">
         <div class="checkout-container">
-            <form action="/action_page.php">
+            <form action="act_add_order.php" method="POST">
 
                 <div class="checkout-row">
                     <div class="checkout-col-50">
