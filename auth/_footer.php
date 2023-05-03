@@ -22,14 +22,27 @@
         </div>
 
         <div class="footer_section support">
-            <h2>Support Center</h2>
-            <p>Ask us Something, Usually Answers in 24H.</p>
-            <form action="#">
-                <textarea name="message" id="message" cols="40" rows="7"></textarea>
-                <br>
-                <button type="submit">Send</button>
-            </form>
+                <h2>Support Center</h2>
+                <p>Ask us Something, Usually Answers in 24H.</p>
+                <form action="#">
+                    <textarea name="message" id="message" cols="40" rows="7"></textarea>
+                    <br>
+                    <button onclick="sendEmail(); return false;">Invia
+                    </button>
+                </form>
         </div>
+
+        <script>
+            function sendEmail() {
+                var message = document.getElementById('message').value;
+                var email = 'youssef.demnati.studenti@isii.it';
+                var subject = 'Domanda di supporto';
+                var body = encodeURIComponent(message);
+                var link = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+                window.location.href = link;
+                console.log(link);
+            }
+        </script>
 
     </div>
     <div class="copyright">

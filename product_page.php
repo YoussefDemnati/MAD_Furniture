@@ -51,7 +51,7 @@ if (isset($_GET["prod_id"])) {
     header("Location: ./index.php");
 }
 ?>
-<button class="back-button">Back</button>
+<button onclick="window.history.back();" class="back-button">Back</button>
 <div class="product-desc">
     <div class="product-image">
         <div id="image-slider" class="splide">
@@ -123,7 +123,7 @@ if (isset($_GET["prod_id"])) {
     <button class="product-buy">
         Buy Now
     </button>
-    <button class="product-add">
+    <button class="product-add" >
         Add to Cart
     </button>
 </div>
@@ -139,6 +139,9 @@ if (isset($_GET["prod_id"])) {
     document.addEventListener('DOMContentLoaded', function() {
         new Splide('#image-slider').mount();
     });
+    $("button.product-add").click(function(){
+        window.location.href="utente_registrato/cart.php?action=add_item&prodId=<?=$_GET["prod_id"]?>";
+    });
 </script>
 
 <div class="card-4">
@@ -146,11 +149,12 @@ if (isset($_GET["prod_id"])) {
     <div class="stars">
         <img src="./assets/img/stars/star_<?= $stars_num ?>.png" alt="">
     </div>
-    <div class="feedback_row">5 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_5" style="width: <?=$percentuali[4]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[4]["percentuale"])?>%</b></div>
-    <div class="feedback_row">4 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_4" style="width: <?=$percentuali[3]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[3]["percentuale"])?>%</b></div>
-    <div class="feedback_row">3 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_3"style="width: <?=$percentuali[2]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[2]["percentuale"])?>%</b></div>
-    <div class="feedback_row">2 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_2"style="width: <?=$percentuali[1]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[1]["percentuale"])?>%</b></div>
-    <div class="feedback_row">1 star&nbsp&nbsp ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_1" style="width: <?=$percentuali[0]["percentuale"]?>%">‎</span></span> ‎ <b><?=round($percentuali[0]["percentuale"])?>%</b></div>
+
+    <div class="feedback_row">5 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_5" style="width: <?php echo @$percentuali[4]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[4]["percentuale"])?>%</b></div>
+    <div class="feedback_row">4 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_4" style="width: <?php echo @$percentuali[3]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[3]["percentuale"])?>%</b></div>
+    <div class="feedback_row">3 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_3"style="width: <?php echo @$percentuali[2]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[2]["percentuale"])?>%</b></div>
+    <div class="feedback_row">2 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_2"style="width: <?php echo @$percentuali[1]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[1]["percentuale"])?>%</b></div>
+    <div class="feedback_row">1 star&nbsp&nbsp ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_1" style="width: <?php echo @$percentuali[0]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[0]["percentuale"])?>%</b></div>
     <br>
 </div>
 
