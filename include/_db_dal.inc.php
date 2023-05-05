@@ -30,11 +30,10 @@ function db_connect()
 
 function get_products_by_user($conn, $uid)
 {
-    $uid = intval($uid);
+    $id = intval($id);
     $sql = "SELECT *
-            FROM elemento_carrello AS ec
-            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
-            WHERE id_u = $uid";
+            FROM promozione
+            WHERE id_v = $id";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
@@ -636,6 +635,7 @@ function get_avg_orders($conn, $azienda, $mese, $anno)
         return 0;
     }
 
+
     return number_format(floatval(implode($data)),2);
 }
 
@@ -806,6 +806,57 @@ function item_in_cart($array, $targetId)
     return false;
 }
 
+
+function get_user_history($conn, $uId, $id_o)
+{
+    $uId = intval($uId);
+    $sql = "SELECT *
+            FROM ordine AS o
+            INNER JOIN elemento_ordine AS eo ON o.id_o=eo.id_o
+            INNER JOIN prodotto AS p ON eo.id_p=p.id_p
+            WHERE o.id_u = $uId AND o.id_o = $id_o";
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_transport_company($conn)
+{
+    $sql = "SELECT *
+            FROM azienda_di_trasporto";
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function add_order($conn, $shipment_date, $id_at, $id_u)
+{
+    $sql = "INSERT INTO ordine(data_esecuzione, data_spedizione, stato, id_at, id_u)
+            VALUES (NOW(), DATE_ADD(NOW(), INTERVAL $shipment_date DAY), 'In attesa', $id_at, $id_u)";
+    $conn->query($sql);
+    return $conn->insert_id;
+}
+
+function add_order_element($conn, $id_o, $id_p)
+{
+    $sql = "INSERT INTO elemento_ordine(id_o, id_p)
+            VALUES ($id_o, $id_p)";
+    $conn->query($sql);
+}
+
+function get_orders_by_user($conn, $id_u, $state)
+{
+    $sql = "";
+    if ($state == "all") {
+        $sql = "SELECT *
+            FROM ordine
+            WHERE id_u = $id_u AND stato IN ('In attesa', 'consegnato', 'annullato')
+            ORDER BY id_o DESC";
+    } else {
+        $sql = "SELECT *
+            FROM ordine
+            WHERE id_u = $id_u AND stato='$state'
+            ORDER BY id_o DESC";
+    }
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
 function search_products($conn, $page, $search_query, $type, $category_id)
 {
     $search_query = $search_query !== NULL ? '%' . $search_query . '%' : '';
@@ -839,6 +890,7 @@ function search_products($conn, $page, $search_query, $type, $category_id)
     $stmt->execute();
     $res = $stmt->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
+
 }
 
 function get_hompeage_trending($conn)
@@ -856,4 +908,3 @@ function get_flyers($conn)
     LIMIT 4;";
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
-
