@@ -268,18 +268,21 @@ function new_product_semilavorato(
         $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
 
+
         mkdir("../assets/img/products/" . implode($ultimo_record));
         for ($i = 0; $i < count($images['name']); $i++) {
             // $name = explode('.', $images['name'][$i]);
             $extension = 'png'; //end($name);
             $tmp_name = $images['tmp_name'][$i];
-            move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+            move_uploaded_file($tmp_name, "../assets/img/products/" . $ultimo_record['id_p'] . "/" . $i . "." . $extension);
             $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
             $stmt = $conn->prepare($image_sql);
-            $stmt->bind_param("si", $formedstring, $ultimo_record);
+            $stmt->bind_param("si", $formedstring, $ultimo_record['id_p']);
             $stmt->execute();
             $stmt->close();
-            Header('Location: ../utente_azienda/dashboard.php');
+            debug_to_console("formedstring: " . $formedstring);
+            debug_to_console("ultimo_record: " . $ultimo_record['id_p']);
+            // Header('Location: ../utente_azienda/dashboard.php');
         }
         // echo count($images['name']) . " immagini caricate con successo!";
 
@@ -447,7 +450,7 @@ function get_product($conn, $id)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    debug_to_console($data);
 }
 
 function get_product_rating($conn, $id)

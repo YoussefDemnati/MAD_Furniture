@@ -1601,7 +1601,41 @@ img {
 }
 
 /*fallo figo*/
+/* chi scrive sti commenti?? youssef? io non l'ho scritto e non lo eliminerò */
 
+.choose_product_type{
+  width: 90%;
+  height: 70px;
+  margin:auto;  
+  text-align: center;
+}
+.button_div{
+  width: 60%;
+  margin:auto;
+  height: 100%;
+}
+.choose_product_type button{
+  height: 100%;
+  width: 47%;
+  font-size: 1.1em;
+  border: 0;
+  border-radius: 20px;
+  background-color: #c19e54;
+  color: #4F4F4F;
+  position: relative;
+  top:0;
+}
+.choose_product_type button:hover{
+  border: 3px solid #4F4F4F;
+}
+.semilavorato{
+  visibility: hidden;
+  display: none;
+}
+.finito{
+  visibility: hidden;
+  display: none;
+}
 
 /* ---------------------- FEEDBACK ---------------------*/
 .card-4 {
