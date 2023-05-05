@@ -32,6 +32,15 @@
                 <li><a href="#">Delete Account</a></li>
             </ul>
         </div>
+        <div class="footer_section other">
+            <h2>Other</h2>
+            <ul>
+                <li><a href="./auth/login.php">Login</a></li>
+                <li><a href="./auth/register_privato.php">Signup</a></li>
+                <li><a href="./utente_amministratore/dashboard.php">Dashboard Admin</a></li>
+                <li><a href="./utente_azienda/dashboard.php">Dashboard Azienda</a></li>
+            </ul>
+        </div>
         <div class="footer_section support">
                 <h2>Support Center</h2>
                 <p>Ask us Something, Usually Answers in 24H.</p>

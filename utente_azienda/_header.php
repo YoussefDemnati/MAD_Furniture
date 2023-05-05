@@ -16,8 +16,8 @@
 
       <ul class="links">
 
-        <li><a href="#">DASHBOARD</a></li>
-        <li><a href="#">MY PRODUCTS</a></li>
+        <li><a href="./dashboard.php">DASHBOARD</a></li>
+        <li><a href="./my_products.php">MY PRODUCTS</a></li>
         <li><a href="./new_product.php">NEW PRODUCT</a></li>
       </ul>
 
