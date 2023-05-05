@@ -439,13 +439,12 @@ function get_categories_perc($conn){
 
 function get_product($conn, $id)
 {
-    // NON SI PUO' FARE COSI RAGA DAI... yousso??
-    // $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
-    // INNER JOIN materiale m on m.id_m = p.id_m 
-    // INNER JOIN categoria c on c.id_cat = p.id_cat 
-    // INNER JOIN azienda a on a.id_a = p.id_a
-    // WHERE p.id_p = ?";
-    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, p.id_cat as 'categoria', p.id_m as 'materiale', p.id_a as 'azienda' FROM prodotto p WHERE p.id_p = ?;"
+    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, t.nome, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
+    INNER JOIN materiale m on m.id_m = p.id_m 
+    INNER JOIN categoria c on c.id_cat = p.id_cat 
+    INNER JOIN azienda a on a.id_a = p.id_a
+    INNER JOIN tipo_prodotto_finito t on t.id_tipo = p.tipo_prodotto_finito
+    WHERE p.id_p = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
     $stmt->execute();
@@ -572,6 +571,25 @@ function sales_volume($conn, $azienda, $mese, $anno)
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
 }
+function sales_volume_ever($conn, $mese, $anno)
+{
+    $sql = "SELECT DATE_FORMAT(o.data_esecuzione, '%Y-%m-%d') AS giorno,SUM(p.prezzo) AS guadagno
+    FROM ordine o
+    INNER JOIN elemento_ordine eo ON eo.id_o=o.id_o
+    INNER JOIN prodotto p ON p.id_p=eo.id_p
+    WHERE 
+    MONTH(o.data_esecuzione) = ? AND
+    YEAR(o.data_esecuzione) = ?
+    GROUP BY DAY(o.data_esecuzione), o.data_esecuzione
+    ORDER BY o.data_esecuzione;";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ii', $mese, $anno);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    return $rows;
+}
 function get_sales_volume_per_5days($conn, $azienda, $mese, $anno)
 {
     if ($mese == 0) {
@@ -579,6 +597,28 @@ function get_sales_volume_per_5days($conn, $azienda, $mese, $anno)
         $anno -= 1;
     }
     $array = sales_volume($conn, $azienda, $mese, $anno);
+    $somma_mese = [0, 0, 0, 0, 0, 0];
+    $media_mese = [0, 0, 0, 0, 0, 0];
+    foreach ($array as $a) {
+        for ($i = 0; $i < 6; $i++) {
+            if (intval(substr($a["giorno"], 8, 10)) >= ($i * 5) && intval(substr($a["giorno"], 8, 10)) <= ($i + 1) * 5) {
+                $somma_mese[$i] += intval($a["guadagno"]);
+            }
+        }
+    }
+    for ($i = 0; $i < count($somma_mese); $i++) {
+        $media_mese[$i] = $somma_mese[$i] / 5;
+    }
+
+    return $media_mese;
+}
+
+function get_sales_volume_per_5days_ever($conn, $mese, $anno){
+    if ($mese == 0) {
+        $mese = 12;
+        $anno -= 1;
+    }
+    $array = sales_volume_ever($conn, $mese, $anno);
     $somma_mese = [0, 0, 0, 0, 0, 0];
     $media_mese = [0, 0, 0, 0, 0, 0];
     foreach ($array as $a) {
