@@ -1,6 +1,5 @@
 <?php
     require '../include/_db_dal.inc.php';
-    //session_start();
     
     if(isset($_POST["email"])){
         $response = signup_azienda($_POST["company_name"], 

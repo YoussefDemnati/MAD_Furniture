@@ -1,7 +1,6 @@
 <?php
 require '../include/_db_dal.inc.php';
 
-//session_start();
 $conn = db_connect();
 
 if(isset($_POST["email"])){

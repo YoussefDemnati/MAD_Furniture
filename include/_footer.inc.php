@@ -32,15 +32,37 @@
                 <li><a href="#">Delete Account</a></li>
             </ul>
         </div>
-        <div class="footer_section support">
-            <h2>Support Center</h2>
-            <p>Ask us Something, Usually Answers in 24H.</p>
-            <form action="#">
-                <textarea name="message" id="message" cols="40" rows="7"></textarea>
-                <br>
-                <button type="submit">Send</button>
-            </form>
+        <div class="footer_section other">
+            <h2>Other</h2>
+            <ul>
+                <li><a href="./auth/login.php">Login</a></li>
+                <li><a href="./auth/register_privato.php">Signup</a></li>
+                <li><a href="./utente_amministratore/dashboard.php">Dashboard Admin</a></li>
+                <li><a href="./utente_azienda/dashboard.php">Dashboard Azienda</a></li>
+            </ul>
         </div>
+        <div class="footer_section support">
+                <h2>Support Center</h2>
+                <p>Ask us Something, Usually Answers in 24H.</p>
+                <form action="#">
+                    <textarea name="message" id="message" cols="40" rows="7"></textarea>
+                    <br>
+                    <button onclick="sendEmail(); return false;">Invia
+                    </button>
+                </form>
+        </div>
+
+        <script>
+            function sendEmail() {
+                var message = document.getElementById('message').value;
+                var email = 'youssef.demnati.studenti@isii.it';
+                var subject = 'Domanda di supporto';
+                var body = encodeURIComponent(message);
+                var link = 'mailto:' + email + '?subject=' + subject + '&body=' + body;
+                window.location.href = link;
+                console.log(link);
+            }
+        </script>
 
     </div>
     <div class="copyright">
