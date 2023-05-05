@@ -1,3 +1,4 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <?php
 include("include/_header.inc.php");
 include("include/_db_dal.inc.php");
@@ -148,6 +149,7 @@ if (isset($_GET["prod_id"])) {
     <div class="stars">
         <img src="./assets/img/stars/star_<?= $stars_num ?>.png" alt="">
     </div>
+
     <div class="feedback_row">5 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_5" style="width: <?php echo @$percentuali[4]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[4]["percentuale"])?>%</b></div>
     <div class="feedback_row">4 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_4" style="width: <?php echo @$percentuali[3]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[3]["percentuale"])?>%</b></div>
     <div class="feedback_row">3 stars ‎ <span class="feedback_row_white"> ‎<span class="feedback_row_coloured stars_3"style="width: <?php echo @$percentuali[2]["percentuale"]?>%">‎</span></span> ‎ <b><?php echo @round($percentuali[2]["percentuale"])?>%</b></div>

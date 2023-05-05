@@ -1,6 +1,6 @@
 <div class="card-4">
     <span class="card-4-header">Less Sold Product</span>
-    <?php $ls_product=get_less_sold($conn,$azienda);?>
+    <?php $ls_product=get_less_sold_ever($conn);?>
     <div class="card-4-description">
         <?php if(get_images($conn,$ls_product['id_p'])) {?>
         <img class="card-4-image" src="../assets/img/products/<?=$ls_product['id_p']?>/<?php echo get_images($conn,$ls_product['id_p'])[0]['img']?>">
