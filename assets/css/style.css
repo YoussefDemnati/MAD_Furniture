@@ -823,6 +823,11 @@ body {
   text-align: left;
 }
 
+button:hover{
+  cursor: pointer;
+}
+input[type=submit] {cursor: pointer;}
+
 /* --------------------- HEADER --------------------- */
 
 ul {
@@ -949,6 +954,10 @@ nav {
   grid-area: account;
 }
 
+.other {
+  grid-area: other;
+}
+
 .support {
   grid-area: support;
 }
@@ -964,8 +973,8 @@ nav {
   background-color: #f5f5f5;
   display: grid;
   grid-template-areas:
-    'logo logo account support'
-    'contacts about account support';
+    'logo logo account other support'
+    'contacts about account other support';
   grid-gap: 10px;
   padding: 50px;
 }
