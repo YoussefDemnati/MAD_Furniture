@@ -439,13 +439,12 @@ function get_categories_perc($conn){
 
 function get_product($conn, $id)
 {
-    // NON SI PUO' FARE COSI RAGA DAI... yousso??
-    // $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
-    // INNER JOIN materiale m on m.id_m = p.id_m 
-    // INNER JOIN categoria c on c.id_cat = p.id_cat 
-    // INNER JOIN azienda a on a.id_a = p.id_a
-    // WHERE p.id_p = ?";
-    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, p.tipo_prodotto_finito, p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, p.id_cat as 'categoria', p.id_m as 'materiale', p.id_a as 'azienda' FROM prodotto p WHERE p.id_p = ?;"
+    $sql = "SELECT p.titolo, p.descrizione, p.prezzo, p.tipo, t.nome as 'tipo_prodotto_finito', p.altezza, p.larghezza, p.profondita, p.modello, p.casa_produttrice, c.nome as 'categoria', m.nome as 'materiale', a.nome as 'azienda' FROM prodotto p 
+    INNER JOIN materiale m on m.id_m = p.id_m 
+    INNER JOIN categoria c on c.id_cat = p.id_cat 
+    INNER JOIN azienda a on a.id_a = p.id_a
+    INNER JOIN tipo_prodotto_finito t on t.id_tipo = P.tipo_prodotto_finito
+    WHERE p.id_p = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('i', $id);
     $stmt->execute();
