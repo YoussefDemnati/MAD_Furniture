@@ -3,8 +3,9 @@ include("include/_db_dal.inc.php");
 include 'include/_header.inc.php';
 $conn = db_connect();
 
-$flyers = get_flyers($conn, 1);
+$flyers = get_flyers($conn);
 $categories = get_categories($conn);
+$trending = get_hompeage_trending($conn);
 ?>
 <div class="big_mama">
     <div>
@@ -21,23 +22,33 @@ $categories = get_categories($conn);
             <div>
                 <h2><?= $flyer["nome"] ?></h2>
                 <span>-<?= $flyer["sconto"] ?>% On New <?= $flyer["descrizione"] ?> </span>
-                <a href="">View Product</a>
+                <a href="./product_page.php?prod_id=<?=$flyer["id_p"]?>">View Product</a>
             </div>
-            <img src="./assets/img/table_lamp.png" alt="">
+            <img src="./assets/img/products/<?=$flyer["id_p"]?>/0.png" alt="">
         </div>
     <?php } ?>
 </div>
 <p class="subtitle">Most Bought Products of The Week</p>
 <h1 class="title">TRENDING PRODUCTS</h1>
 <div class="home_trending">
-    <?php for ($i = 0; $i < 6; $i++) { ?>
-        <div class="home_trending_product">
+    <?php foreach($trending as $tp) { 
+        $feedbacks = get_product_rating($conn, $tp["id_p"]);
+        $sum = 0;
+        $count = count($feedbacks);
+        if ($count != 0) {
+            foreach ($feedbacks as $feedback) {
+                $sum += intval($feedback["valutazione"]);
+            }
+            $stars = intdiv($sum, $count);
+        }
+        ?>
+        <div class="home_trending_product" id="<?=$tp["id_p"]?>">
             <div>
-                <img src="./assets/img/lampada.png" alt="">
+                <img src="./assets/img/products/<?=$tp["id_p"]?>/0.png" alt="">
             </div>
-            <img src="./assets/img/stars/star_4.png" alt="">
-            <p>Vintage Table Lamp in Wood and Metal</p>
-            <span>36.98 $</span>
+            <img src="./assets/img/stars/star_<?=$stars?>.png" alt="">
+            <p><?=$tp["titolo"]?></p>
+            <span><?=$tp["prezzo"]?> $</span>
         </div>
     <?php } ?>
 </div>
@@ -90,10 +101,14 @@ $categories = get_categories($conn);
         }, speed);
     }
 
-    $("#btn_shopnow").click(function() {
+    $(".btn_shopnow").click(function() {
       window.location.href = "products.php?type=new";
     });
     
+    $(".home_trending_product").click(function() {
+        var idP = $(this).attr("id");
+      window.location.href = `./product_page.php?prod_id=${idP}`;
+    });
 </script>
 <?php
 include 'include/_footer.inc.php';
