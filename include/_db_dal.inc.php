@@ -613,3 +613,12 @@ function search_products($conn, $page, $search_query, $type, $category_id)
     $res = $stmt->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
 }
+
+function get_user_profile($conn, $id_u){
+    $id_u = intval($id_u);
+    $sql = "SELECT u.id_u, u.nome AS user_name, u.cognome ,u.password, u.email, u.indirizzo, u.tipo, u.id_p, u.hidden, p.id_pv, p.nome AS province_name, p.latitudine, p.longitudine
+            FROM utente AS u 
+            LEFT JOIN provincia AS p ON u.id_p = p.id_pv 
+            WHERE u.id_u = $id_u AND u.hidden = 0";
+    return mysqli_fetch_assoc(mysqli_query($conn, $sql));
+}

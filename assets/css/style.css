@@ -678,12 +678,16 @@ input[type=number]::-webkit-outer-spin-button {
   font-family: "Inter", sans-serif;
 }
 
+.profile-input[type=text]+i {
+  font-size: 30px;
+}
+
 .profile-input[type=text]:focus {
   background-color: white;
   outline: none;
 }
 
-.profile-name {
+.profile-name, .profile-surname {
   font-size: 55px;
 }
 
@@ -733,6 +737,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .profile-save-button:hover {
   background-color: #b88c2f;
+  cursor: pointer;
 }
 
 /*.profile-image {
