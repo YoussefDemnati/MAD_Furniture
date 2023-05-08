@@ -45,7 +45,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
                 </div>
                 <div class="profile-row">
                     <div class="profile-col-100">
-                        <label class="profile-label" for="surname">Surname</label>
+                        <label class="profile-label" for="surname">Email</label>
                         <input class="profile-input profile-email" type="text" id="surname" value="<?= $email ?>">
                         <i class="fa-solid fa-pen"></i>
                     </div>
@@ -210,6 +210,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
                 console.log(this.responseText);
             }
             xhttp.open("POST", url);
+            xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhttp.send(`id_u=${<?=$id?>}&name=${name}&surname=${surname}&email=${email}&address=${address}&province=${province}`);
         });
     });
