@@ -30,10 +30,11 @@ function db_connect()
 
 function get_products_by_user($conn, $uid)
 {
-    $id = intval($id);
+    $uid = intval($uid);
     $sql = "SELECT *
-            FROM promozione
-            WHERE id_v = $id";
+            FROM elemento_carrello AS ec
+            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+            WHERE id_u = $uid";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;

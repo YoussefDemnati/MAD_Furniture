@@ -163,13 +163,13 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
         });
         //removes all items
         $("button.cart-delete-all").click(function() {
-            $(".subtotal").find("h1").text(`Updating...`);
-            $(".subtotal").find("h2").text(`Subtotal - Updating...`);
             //initialize variables
             var cartItem = jQuery(this),
                 input = cartItem.find('input[type="number"]'),
                 idEc = input.attr('id');
             if (confirm("Do you want to remove all items?")) {
+                $(".subtotal").find("h1").text(`Updating...`);
+                $(".subtotal").find("h2").text(`Subtotal - Updating...`);
                 //prepare AJAX request
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {
