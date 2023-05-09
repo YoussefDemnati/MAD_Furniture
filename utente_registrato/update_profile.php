@@ -27,3 +27,4 @@ $stmt->execute();
 $stmt->close();
 
 echo $name;
+?>

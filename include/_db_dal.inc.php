@@ -366,7 +366,7 @@ function new_product_finito(
 
 function get_user($conn, $table, $email)
 {
-    $sql = "SELECT * FROM $table WHERE email = ?";
+    $sql = "SELECT * FROM $table WHERE email = ? AND hidden = 0";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $email);
     $stmt->execute();

@@ -150,7 +150,17 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
             window.location.href = "../auth/logout.php";
         });
         $("button.delAcc").click(function() {
-            window.location.href = "delete_account.php";
+            if (confirm("Are you sure you want to delete your account?")) {
+                const xhttp = new XMLHttpRequest();
+                const url = "delete_account.php";
+                xhttp.onload = function() {
+                    console.log(this.responseText);
+                }
+                xhttp.open("POST", url);
+                xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhttp.send(`id_u=${<?= $id ?>}`);
+                window.location.href = "../auth/logout.php";
+            }
         });
 
         // profile validation
@@ -195,14 +205,6 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
             // prepare AJAX request
             const xhttp = new XMLHttpRequest();
             const url = "update_profile.php";
-            const data = JSON.stringify({
-                id_u:<?=$id?>,
-                name:name,
-                surname:surname,
-                email:email,
-                address:address,
-                province:province
-            });
             xhttp.onload = function() {
                 // btnUp.attr("disabled", false);
                 // btnDown.attr("disabled", false);
@@ -211,7 +213,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
             }
             xhttp.open("POST", url);
             xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhttp.send(`id_u=${<?=$id?>}&name=${name}&surname=${surname}&email=${email}&address=${address}&province=${province}`);
+            xhttp.send(`id_u=${<?= $id ?>}&name=${name}&surname=${surname}&email=${email}&address=${address}&province=${province}`);
         });
     });
 </script>

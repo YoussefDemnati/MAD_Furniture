@@ -9,7 +9,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
     } else {
         //user data
         $id = intval($_SESSION["id"]);
-        $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id"));
+        $user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id AND `hidden` = 0"));
         $name = $user["nome"];
         $surname = $user["cognome"];
         $email = $user["email"];
