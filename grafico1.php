@@ -6,7 +6,7 @@
     height: 270px;
     background-color: #DABE83 ;
     border-radius: 10px;
-    /* mettere le shadow */
+    filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
 }
 </style>
 <head>

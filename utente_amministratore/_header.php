@@ -17,9 +17,8 @@
       <ul class="links">
 
         <li><a href="#">DASHBOARD</a></li>
-        <li><a href="#">REVENUE</a></li>
-        <li><a href="#">CUSTOMERS</a></li>
-        <li><a href="#">SELLERS</a></li>
+        <li><a href="./customers_info.php">CUSTOMERS</a></li>
+        <li><a href="./sellers_info.php">SELLERS</a></li>
       </ul>
 
       <div class="nav_buttons">

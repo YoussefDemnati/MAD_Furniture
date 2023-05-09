@@ -76,6 +76,12 @@
     font-size: 1.7em;
     color: #545351;
   }
+  .class-text-info{
+    padding-top: 10px;
+    font-weight: bold;
+    // font-size: 2.3em;
+    color: #545351;
+  }
 
   .class-text-versus{
     font-weight: bold;
@@ -111,6 +117,7 @@ height: 40vh;
 background-color: #F5F5F5;
 padding: 30px;
 border: 1px solid black;
+margin:auto;
 }
 .quadratino1{
   float:left;
@@ -156,7 +163,7 @@ border: 1px solid black;
   height: 240px;
   background-color: #FFFFFF ;
   border-radius: 10px;
-  /* mettere le shadow */
+  filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
 }
 .stars{
   margin:10px;
@@ -234,6 +241,7 @@ margin-bottom: 10px;
   background-color: #F5F5F5;
   padding: 30px;
   border: 1px solid black;
+  margin: auto;
   }
   .quadrato1 .titlee{
     font-size: 2em;
@@ -308,5 +316,85 @@ margin-bottom: 10px;
   }
   .triangolo_versus{
     float:left; width:20px; height:20px;
+  }
+  .card-3{
+    width: 50%;
+    height: 240px;
+    background-color: #DABE83 ;
+    border-radius: 10px;
+    filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
+  }
+  .card-34{
+    width: 500px;
+    height: 240px;
+    background-color: #DABE83 ;
+    border-radius: 10px;
+    padding: 15px;
+    filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
+  }
+  .button-div{
+    width: 90%;
+    margin:auto;
+    text-align: center;
+    height: 70px;
+  }
+  .button-div button{
+    width: calc(50% - 43px);
+    height: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: #f5f5f5;
+    color: #4f4f4f;
+    border: 1px solid #4f4f4f;
+    border-radius: 8px;
+    font-weight: bold;
+    font-family: "inter", sans-serif;
+    font-size: 2em;
+  }
+  .button-div button:hover {
+    background-color: #4f4f4f;
+    color: #f5f5f5;
+    cursor: pointer;
+  }
+  .rettangolo1{
+  // background-color: red;
+  float:left;
+  width: 40%;
+  height: 100%;
+    }
+  .rettangolo2{
+    // background-color: yellow;
+    float:left;
+    width: 60%;
+    height: 100%;
+  }
+  .card-5{
+    width: 450px;
+    height: 240px;
+    background-color: #FFFFFF ;
+    border-radius: 10px;
+    filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
+  }
+  .class-text-title {
+    font-size: 1.2em;
+  }
+
+  .class-text-subtitle {
+    padding-left: 2px;
+    font-size: 0.7em;
+    color: #607D8B;
+  }
+
+  .class-text-money {
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: 1.7em;
+    color: #545351;
+  }
+  .class-text-info{
+    padding-top: 10px;
+    font-weight: bold;
+    // font-size: 2.3em;
+    color: #545351;
   }
 }

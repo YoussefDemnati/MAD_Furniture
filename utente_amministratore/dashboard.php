@@ -2,8 +2,6 @@
 require('../include/_db_dal.inc.php');
 require('_header.php');
 $conn = db_connect();
-$azienda = 1;
-//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA
 
 $currentDate = new DateTime();
 $day = $currentDate->format('d');
@@ -32,10 +30,14 @@ $year = $currentDate->format('Y');
             <?php require("grafico_totalsales_ever.php"); ?>
             <?php require("grafico_netprofit_ever.php"); ?>
         </div>
-    <div class="quadratino1">
+    <div class="quadratino2">
+    <?php require("grafico_salesvolume_ever.php"); ?>
     </div>
-    <div class="quadratino3">
     </div>
+    <div style="height:20px;"></div>
+    <div class="button-div">
+    <button class="orders option-button" onclick="window.location.href = 'customers_info.php';">Customers</button>
+    <button class="orders option-button" onclick="window.location.href = 'sellers_info.php';">Sellers</button>
     </div>
 </div>
 <?php require('_footer.php'); ?>
