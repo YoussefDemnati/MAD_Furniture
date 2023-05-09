@@ -1,3 +1,4 @@
+
 <?php
 require('_header.php');
 require('../include/_db_dal.inc.php');
@@ -47,6 +48,7 @@ if (isset($_POST['titolo'])) {
                 <textarea name="descrizione" required></textarea><br>
             </div>
         </div>
+
     </div>
     <div class="profile-row">
         <div class="profile-col-50">
@@ -126,47 +128,3 @@ if (isset($_POST['titolo'])) {
 
     <input type="submit" value="Inserisci" class="new_button">
 </form>
-
-
-<script>
-    function mostraAnteprima() {
-        console.log("MostraAnteprima");
-        var anteprimaDiv = document.getElementById('anteprima');
-        // anteprimaDiv.innerHTML = 'lalalend';
-        var files = document.getElementById('immagini').files;
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            if (!file.type.match('image.*')) {
-                continue;
-            }
-            var reader = new FileReader();
-            reader.onload = (function(immagine) {
-                return function(event) {
-                    var img = document.createElement('img');
-                    var delimg = document.createElement('img');
-                    img.src = event.target.result;
-                    delimg.src = "../assets/img/ics.png";
-                    img.setAttribute("width", "100");
-                    img.setAttribute("height", "100");
-                    delimg.setAttribute("width", "20");
-                    delimg.setAttribute("height", "20");
-                    delimg.setAttribute("position", "absolute");
-                    delimg.setAttribute("top", "0");
-                    //non va in "top" sto scemo
-                    //da aggiustare(comprimere bene come quadrato)
-                    anteprimaDiv.appendChild(img);
-                    anteprimaDiv.appendChild(delimg);
-                    // anteprimaDiv.appendChild(crocetta); una X per eliminare immagine?
-                };
-            })(file);
-            reader.readAsDataURL(file);
-        }
-    }
-
-    document.getElementById('immagini').addEventListener('change', mostraAnteprima);
-</script>
-</div>
-
-<?php
-require('_footer.php');
-?>

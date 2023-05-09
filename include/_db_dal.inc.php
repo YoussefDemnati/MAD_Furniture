@@ -30,11 +30,10 @@ function db_connect()
 
 function get_products_by_user($conn, $uid)
 {
-    $uid = intval($uid);
+    $id = intval($id);
     $sql = "SELECT *
-            FROM elemento_carrello AS ec
-            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
-            WHERE id_u = $uid";
+            FROM promozione
+            WHERE id_v = $id";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
@@ -268,18 +267,21 @@ function new_product_semilavorato(
         $image_sql = "INSERT INTO `immagine` (`id_img`,`img`, `id_p`) VALUES (NULL, ?, ?)";
 
 
+
         mkdir("../assets/img/products/" . implode($ultimo_record));
         for ($i = 0; $i < count($images['name']); $i++) {
             // $name = explode('.', $images['name'][$i]);
             $extension = 'png'; //end($name);
             $tmp_name = $images['tmp_name'][$i];
-            move_uploaded_file($tmp_name, "../assets/img/products/" . implode($ultimo_record) . "/" . $i . "." . $extension);
+            move_uploaded_file($tmp_name, "../assets/img/products/" . $ultimo_record['id_p'] . "/" . $i . "." . $extension);
             $formedstring = implode($ultimo_record) . "/" . $i . "." . $extension;
             $stmt = $conn->prepare($image_sql);
-            $stmt->bind_param("si", $formedstring, $ultimo_record);
+            $stmt->bind_param("si", $formedstring, $ultimo_record['id_p']);
             $stmt->execute();
             $stmt->close();
-            Header('Location: ../utente_azienda/dashboard.php');
+            debug_to_console("formedstring: " . $formedstring);
+            debug_to_console("ultimo_record: " . $ultimo_record['id_p']);
+            // Header('Location: ../utente_azienda/dashboard.php');
         }
         // echo count($images['name']) . " immagini caricate con successo!";
 
@@ -447,7 +449,7 @@ function get_product($conn, $id)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
-    return $data;
+    debug_to_console($data);
 }
 
 function get_product_rating($conn, $id)
@@ -633,6 +635,7 @@ function get_avg_orders($conn, $azienda, $mese, $anno)
         return 0;
     }
 
+
     return number_format(floatval(implode($data)),2);
 }
 
@@ -803,6 +806,57 @@ function item_in_cart($array, $targetId)
     return false;
 }
 
+
+function get_user_history($conn, $uId, $id_o)
+{
+    $uId = intval($uId);
+    $sql = "SELECT *
+            FROM ordine AS o
+            INNER JOIN elemento_ordine AS eo ON o.id_o=eo.id_o
+            INNER JOIN prodotto AS p ON eo.id_p=p.id_p
+            WHERE o.id_u = $uId AND o.id_o = $id_o";
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function get_transport_company($conn)
+{
+    $sql = "SELECT *
+            FROM azienda_di_trasporto";
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+function add_order($conn, $shipment_date, $id_at, $id_u)
+{
+    $sql = "INSERT INTO ordine(data_esecuzione, data_spedizione, stato, id_at, id_u)
+            VALUES (NOW(), DATE_ADD(NOW(), INTERVAL $shipment_date DAY), 'In attesa', $id_at, $id_u)";
+    $conn->query($sql);
+    return $conn->insert_id;
+}
+
+function add_order_element($conn, $id_o, $id_p)
+{
+    $sql = "INSERT INTO elemento_ordine(id_o, id_p)
+            VALUES ($id_o, $id_p)";
+    $conn->query($sql);
+}
+
+function get_orders_by_user($conn, $id_u, $state)
+{
+    $sql = "";
+    if ($state == "all") {
+        $sql = "SELECT *
+            FROM ordine
+            WHERE id_u = $id_u AND stato IN ('In attesa', 'consegnato', 'annullato')
+            ORDER BY id_o DESC";
+    } else {
+        $sql = "SELECT *
+            FROM ordine
+            WHERE id_u = $id_u AND stato='$state'
+            ORDER BY id_o DESC";
+    }
+    return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
 function search_products($conn, $page, $search_query, $type, $category_id)
 {
     $search_query = $search_query !== NULL ? '%' . $search_query . '%' : '';
@@ -836,6 +890,7 @@ function search_products($conn, $page, $search_query, $type, $category_id)
     $stmt->execute();
     $res = $stmt->get_result();
     return $res->fetch_all(MYSQLI_ASSOC);
+
 }
 
 function get_hompeage_trending($conn)
@@ -862,3 +917,4 @@ function add_searched_word($conn, $parola){
     $stmt->execute();
     $stmt->close();
 }
+
