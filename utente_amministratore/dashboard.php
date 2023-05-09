@@ -2,8 +2,6 @@
 require('../include/_db_dal.inc.php');
 require('_header.php');
 $conn = db_connect();
-$azienda = 1;
-//DA SISTEMARE, PRENDERE ID DELL' AZIENDA LOGGATA
 
 $currentDate = new DateTime();
 $day = $currentDate->format('d');
@@ -38,8 +36,8 @@ $year = $currentDate->format('Y');
     </div>
     <div style="height:20px;"></div>
     <div class="button-div">
-    <button class="orders option-button" onclick="window.location.href = 'customer_info.php';">Customers</button>
-    <button class="orders option-button" onclick="window.location.href = 'customer_info.php';">Sellers</button>
+    <button class="orders option-button" onclick="window.location.href = 'customers_info.php';">Customers</button>
+    <button class="orders option-button" onclick="window.location.href = 'sellers_info.php';">Sellers</button>
     </div>
 </div>
 <?php require('_footer.php'); ?>
