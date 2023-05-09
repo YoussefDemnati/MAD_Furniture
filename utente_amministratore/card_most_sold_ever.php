@@ -1,6 +1,6 @@
 <div class="card-4">
     <span class="card-4-header">Most Sold Product</span>
-    <?php $ms_product=get_most_sold($conn,$azienda);
+    <?php $ms_product=get_most_sold_ever($conn);
     // print_r(get_images($conn,$ms_product['id_p'])[0]['img']);?>
     <div class="card-4-description">
         <?php if(get_images($conn,$ms_product['id_p'])) {?>

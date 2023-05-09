@@ -1711,7 +1711,7 @@ img {
   font-size: 16pt;
   font-weight: 500;
   margin-top: 30px;
-  /* mettere le shadow */
+  filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
 }
 
 .stars {
@@ -1758,11 +1758,14 @@ img {
   font-weight: 16pt;
 } */
 
-.mp_contenitore_prodotti {
+.mp_contenitore_prodotti, .si_contenitore_prodotti {
   background-color: #F5F5F5;
   margin-top: 20px;
   height: 60vh;
   overflow-y: auto;
+}
+.si_contenitore_prodotti{
+  width: 90vw;
 }
 
 .mp_img {
@@ -1823,7 +1826,62 @@ img {
   position: relative;
   /* right: -50px; */
 }
-
+.si_azienda{
+  width: 90vw;
+  /* overflow: -moz-scrollbars-vertical;  */
+  overflow-y: scroll;
+  /* background-color: rebeccapurple; */
+}
+.si_azienda a{
+  /* width: 100%; */
+  margin-top: 10px;
+  color: #4f4f4f;
+  text-decoration: none;
+  text-decoration: underline;
+  border: none;
+  background: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-end;
+  /* position:static; */
+  /* margin-right: 10px; */
+  /* margin-left: auto; */
+}
+.si_contenitore_prodotti{
+  padding: 10px;
+}
+.si_sellers_name{
+  width: 100%;
+  display: inline-block;
+  font-size: 1.3em;
+  font-weight: 400;
+  margin-bottom: 7px;
+  /* background-color: red; */
+}
+.si_sellers_info img{
+  /* background-color: rebeccapurple; */
+  width: 100px;
+  display: inline-block;
+  position: relative;
+  top:3px;
+}
+.si_sellers_info2{
+  width: 90%;
+  display: inline-block;
+  width: 10px;
+  /* background-color: blue; */
+}
+.si_sellers_info1{
+  width: 60%;
+  display: inline-block;
+  /* background-color: blue; */
+}
+.si_sellers_info{
+  width: 30%;
+  display: inline-block;
+  /* background-color: blue; */
+}
 .mp_prodotto_opzioni button {
   width: 100%;
   margin-top: 10px;

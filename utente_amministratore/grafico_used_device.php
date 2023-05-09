@@ -1,24 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <style>
-.card-1{
-    width: 180px;
-    height: 270px;
+.card-14{
+    width: 80%;
+    height: 320px;
     background-color: #DABE83 ;
     border-radius: 10px;
+    padding:10px;
     filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
 }
 </style>
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<div class="card-1">
+<div class="card-14">
         <span class="class-text-1">Used Devices</span> <br>
-    <canvas id="myChart2" width="80%" height="90%"></canvas>
+    <canvas id="myChart_device" ></canvas>
     </div>
     
 </body>
@@ -26,12 +20,12 @@
   var xValues = ["Desktop", "Mobile", "Tablet"];
 var yValues = [90, 49, 14];
 var barColors = [
-  "#768C65",
-  "#FF8F52",
-  "#424242",
+  "#575757",
+  "#949494",
+  "#FFFFFF",
 ];
 
-var myChart = new Chart(document.getElementById("myChart2"), {
+var myChart = new Chart(document.getElementById("myChart_device"), {
   type:"doughnut",
   data: {
     labels: xValues,

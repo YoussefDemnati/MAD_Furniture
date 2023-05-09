@@ -6,7 +6,7 @@
     height: 240px;
     background-color: #FFFFFF ;
     border-radius: 10px;
-    /* mettere le shadow */
+    filter: drop-shadow(0px 8px 4px rgba(0, 0, 0, 0.25));
 }
 .stars{
     margin:10px;

@@ -3,7 +3,7 @@
     <div class="footer_container">
         <div class="footer">
         <div class="footer_section logo_footer">
-            <img src="./assets/img/logo.png" alt="Logo">
+            <img src="../assets/img/logo.png" alt="Logo">
         </div>
         <div class="footer_section contacts">
             <h2>Contacts</h2>
@@ -67,9 +67,9 @@
     </div>
     <div class="copyright">
         <span id="copyright">Copiright © 2023 MAD Miners Co. All Right Reserved</span>
-        <img src="./assets/img/paypal.png" alt="paypal" id="paypal">
+        <img src="../assets/img/paypal.png" alt="paypal" id="paypal">
         <a href="#" class="go_up">
-            <img src="./assets/img/go_up.png" alt="Torna Su">
+            <img src="../assets/img/go_up.png" alt="Torna Su">
         </a>                        
     </div>
 </div>
