@@ -9,7 +9,7 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
     } else {
         $id = intval($_SESSION["id"]);
         $cart_list = get_products_by_user($conn, $id);
-        $result = mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id");
+        $result = mysqli_query($conn, "SELECT * FROM utente WHERE id_u = $id AND `hidden` = 0");
         $user = mysqli_fetch_assoc($result);
         if (isset($_GET["action"]) && isset($_GET["prodId"])) {
             if ($_GET["action"] == "add_item") {
@@ -163,13 +163,13 @@ if (isset($_SESSION["id"]) && isset($_SESSION["tipo"])) {
         });
         //removes all items
         $("button.cart-delete-all").click(function() {
-            $(".subtotal").find("h1").text(`Updating...`);
-            $(".subtotal").find("h2").text(`Subtotal - Updating...`);
             //initialize variables
             var cartItem = jQuery(this),
                 input = cartItem.find('input[type="number"]'),
                 idEc = input.attr('id');
             if (confirm("Do you want to remove all items?")) {
+                $(".subtotal").find("h1").text(`Updating...`);
+                $(".subtotal").find("h2").text(`Subtotal - Updating...`);
                 //prepare AJAX request
                 const xhttp = new XMLHttpRequest();
                 xhttp.onload = function() {

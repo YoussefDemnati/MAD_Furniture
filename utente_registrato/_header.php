@@ -24,8 +24,9 @@
     </ul>
 
     <div class="nav_buttons">
+      <button class="btn_search" id="btn_search" onclick="toggleSearchBox()"></button>
       <button class="btn_user"></button>
-      <button class="btn_cart"></a></button>
+      <button class="btn_cart"></button>
     </div>
   </nav>
 

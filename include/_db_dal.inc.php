@@ -30,10 +30,11 @@ function db_connect()
 
 function get_products_by_user($conn, $uid)
 {
-    $id = intval($id);
+    $uid = intval($uid);
     $sql = "SELECT *
-            FROM promozione
-            WHERE id_v = $id";
+            FROM elemento_carrello AS ec
+            INNER JOIN prodotto AS p ON ec.id_pr=p.id_p
+            WHERE id_u = $uid";
     $result = $conn->query($sql);
     $rows = $result->fetch_all(MYSQLI_ASSOC);
     return $rows;
@@ -365,7 +366,7 @@ function new_product_finito(
 
 function get_user($conn, $table, $email)
 {
-    $sql = "SELECT * FROM $table WHERE email = ?";
+    $sql = "SELECT * FROM $table WHERE email = ? AND hidden = 0";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('s', $email);
     $stmt->execute();
@@ -1025,6 +1026,14 @@ function get_flyers($conn)
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
 
+function get_user_profile($conn, $id_u){
+    $id_u = intval($id_u);
+    $sql = "SELECT u.id_u, u.nome AS user_name, u.cognome ,u.password, u.email, u.indirizzo, u.tipo, u.id_p, u.hidden, p.id_pv, p.nome AS province_name, p.latitudine, p.longitudine
+            FROM utente AS u 
+            LEFT JOIN provincia AS p ON u.id_p = p.id_pv 
+            WHERE u.id_u = $id_u AND u.hidden = 0";
+    return mysqli_fetch_assoc(mysqli_query($conn, $sql));
+}
 
 function get_users_number($conn){
     $sql = "SELECT count(*) FROM utente u WHERE u.tipo='privato'";
