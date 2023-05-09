@@ -17,7 +17,7 @@
     </div>
 
     <ul class="links">
-      <li><a href="#">HOME</a></li>
+      <li><a href="index.php">HOME</a></li>
       <li><a href="products.php?type=trending">TRENDING</a></li>
       <li><a href="products.php?type=new">NEW PRODUCTS</a></li>
       <li><a href="" onclick="scrollToDiv()">CATEGORIES</a></li>

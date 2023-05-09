@@ -864,12 +864,12 @@ function search_products($conn, $page, $search_query, $type, $category_id)
     $page = intval($page);
     debug_to_console($type);
     if ($type == "new") {
-        $sql = 'SELECT * FROM prodotto ORDER BY data_inserimento DESC LIMIT ' . $page * 100 . ', 100';
+        $sql = 'SELECT * FROM prodotto ORDER BY data_inserimento DESC LIMIT ' . ($page - 1) * 100 . ', 20';
         debug_to_console($sql);
 
         $stmt = $conn->prepare($sql);
     } else if ($type == "trending") {
-        $sql = 'SELECT p.* , COUNT(*) AS num_ordini FROM elemento_ordine eo INNER JOIN prodotto p ON p.id_p = eo.id_p GROUP BY eo.id_p ORDER BY num_ordini DESC LIMIT ' . $page * 100 . ', 100';
+        $sql = 'SELECT p.* , COUNT(*) AS num_ordini FROM elemento_ordine eo INNER JOIN prodotto p ON p.id_p = eo.id_p GROUP BY eo.id_p ORDER BY num_ordini DESC LIMIT ' . ($page - 1) * 100 . ', 20';
         debug_to_console($sql);
 
         $stmt = $conn->prepare($sql);
@@ -881,7 +881,7 @@ function search_products($conn, $page, $search_query, $type, $category_id)
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $category_id);
     } else if ($search_query !== NULL) {
-        $sql = 'SELECT * FROM prodotto WHERE titolo LIKE ? ORDER BY RAND() LIMIT ' . $page * 100 . ', 100';
+        $sql = 'SELECT * FROM prodotto WHERE titolo LIKE ? ORDER BY RAND() LIMIT ' . ($page - 1) * 100 . ', 20';
         debug_to_console($sql);
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $search_query);
@@ -908,3 +908,13 @@ function get_flyers($conn)
     LIMIT 4;";
     return $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
 }
+
+function add_searched_word($conn, $parola){
+    $oggi = date('Y-m-d H:i:s');
+    $sql = "INSERT INTO parola_cercata (nome, data) VALUES (?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('ss', $parola, $oggi);
+    $stmt->execute();
+    $stmt->close();
+}
+

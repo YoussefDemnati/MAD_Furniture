@@ -101,7 +101,7 @@ $trending = get_hompeage_trending($conn);
         }, speed);
     }
 
-    $(".btn_shopnow").click(function() {
+    $("#btn_shopnow").click(function() {
       window.location.href = "products.php?type=new";
     });
     
