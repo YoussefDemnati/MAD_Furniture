@@ -62,11 +62,12 @@ $trending = get_hompeage_trending($conn);
             <?php foreach ($categories as $category) { ?>
                 <div class="home_category">
                     <div>
+                        <?php debug_to_console($category["nome"]);?>
                         <h2><?= $category["nome"] ?></h2>
                         <span><?= $category["descrizione"] ?></span>
                         <a href="products.php?category=<?=$category["id_cat"]?>">View Category</a>
                     </div>
-                    <img src="./assets/img/kitchen.png" alt="">
+                    <img src="./assets/img/<?= $category["nome"] ?>" alt="">
                 </div>
             <?php } ?>
         </div>

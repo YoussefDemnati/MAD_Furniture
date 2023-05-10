@@ -2,6 +2,11 @@
 require('../include/_db_dal.inc.php');
 require('_header.php');
 $conn = db_connect();
+// DA INSERIRE
+if($_SESSION["tipo"] != " admin"){
+    header("Location: ../index.php");
+}
+// DA INSERIRE
 if(isset($_POST['delete'])){
     delete_product_2($conn,$_POST['id_p']);
     header("Location: ".$_SERVER['PHP_SELF']."?id_a=".$_POST['id_a']);

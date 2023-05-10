@@ -2,8 +2,8 @@
 <html lang="en">
 <style>
 .card-14{
-    width: 80%;
-    height: 320px;
+    width: 70%;
+    height: 350px;
     background-color: #DABE83 ;
     border-radius: 10px;
     padding:10px;

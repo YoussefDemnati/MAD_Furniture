@@ -55,7 +55,7 @@
         <script>
             function sendEmail() {
                 var message = document.getElementById('message').value;
-                var email = 'youssef.demnati.studenti@isii.it';
+                var email = 'gabriele.azzalin.studenti@isii.it';
                 var subject = 'Domanda di supporto';
                 var body = encodeURIComponent(message);
                 var link = 'mailto:' + email + '?subject=' + subject + '&body=' + body;

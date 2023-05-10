@@ -3,6 +3,12 @@ require('../include/_db_dal.inc.php');
 require('_header.php');
 $conn = db_connect();
 
+// DA INSERIRE
+if($_SESSION["tipo"] != " admin"){
+    header("Location: ../index.php");
+}
+// DA INSERIRE
+
 $currentDate = new DateTime();
 $day = $currentDate->format('d');
 $month = $currentDate->format('m');

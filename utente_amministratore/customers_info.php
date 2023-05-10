@@ -2,6 +2,11 @@
 require('../include/_db_dal.inc.php');
 require('_header.php');
 $conn = db_connect();
+// DA INSERIRE
+if($_SESSION["tipo"] != " admin"){
+    header("Location: ../index.php");
+}
+// DA INSERIRE
 ?>
 <br>
     <div class="quadrato1" style="height: 95vh;">
@@ -9,6 +14,7 @@ $conn = db_connect();
         <div class="rettangolo1" style="padding-top:20px;">
             <?php require('card_users_number.php');?> <br> <br> <br>
             <?php require('grafico_used_device.php');?> <br> <br> <br>
+            <?php require('grafico_parole.php');?> <br> <br> <br>
             <?php require('grafico_feedback.php');?>
         </div>
         <div class="rettangolo2">

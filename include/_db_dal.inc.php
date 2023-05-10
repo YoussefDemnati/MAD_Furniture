@@ -30,7 +30,7 @@ function db_connect()
 
 function get_products_by_user($conn, $uid)
 {
-    $id = intval($id);
+    $id = intval($uid);
     $sql = "SELECT *
             FROM promozione
             WHERE id_v = $id";
@@ -449,7 +449,9 @@ function get_product($conn, $id)
     $stmt->execute();
     $result = $stmt->get_result();
     $data = $result->fetch_assoc();
+    debug_to_console("data");
     debug_to_console($data);
+    return $data;
 }
 
 function get_product_rating($conn, $id)

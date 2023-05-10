@@ -3,9 +3,11 @@
 include("include/_header.inc.php");
 include("include/_db_dal.inc.php");
 
+
 if (isset($_GET["prod_id"])) {
     $conn = db_connect();
     $product = get_product($conn, $_GET["prod_id"]);
+    debug_to_console("product");
     debug_to_json($product);
     $feedbacks = get_product_rating($conn, $_GET["prod_id"]);
     $sum = 0;
